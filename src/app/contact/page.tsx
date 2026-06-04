@@ -23,8 +23,8 @@ export default function ContactPage() {
   };
 
   return (
-    <section className="py-20 w-full min-h-screen bg-black flex flex-col items-center justify-center relative overflow-hidden">
-      <div className="mx-auto max-w-7xl px-6 grid grid-cols-1 lg:grid-cols-12 gap-16 animate-slide-up w-full">
+    <section className="py-16 md:py-20 w-full min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-16 animate-slide-up w-full">
         {/* Info Column */}
         <div className="lg:col-span-5 flex flex-col justify-between gap-12">
           <div className="flex flex-col gap-6">
@@ -40,12 +40,12 @@ export default function ContactPage() {
           {/* Interactive Direct Contact */}
           <div className="flex flex-col gap-4">
             <span className="text-xs font-mono font-semibold text-[#cbd5e1]/60 uppercase tracking-widest">Direct Contact</span>
-            <div className="flex items-center gap-2 p-1.5 pl-4 rounded-xl border border-white/5 bg-[#0b0b0b] shadow-sm max-w-xs w-full">
+            <div className="flex items-center gap-2 p-1.5 pl-4 rounded-xl border border-white/5 bg-[#0b0b0b] shadow-sm w-full max-w-sm">
               <Mail className="w-4 h-4 text-[#cbd5e1]/60 shrink-0" />
               <code className="text-xs font-mono text-white select-all grow text-left">chaitanyajidigum@gmail.com</code>
               <button 
                 onClick={copyEmailAddress}
-                className="flex items-center justify-center p-1.5 rounded-lg text-xs font-medium bg-black hover:bg-neutral-900 text-[#cbd5e1] border border-white/10 transition-all active:scale-95 shrink-0 cursor-pointer"
+                className="flex items-center justify-center p-1.5 rounded-lg text-xs font-medium hover:bg-white/5 text-[#cbd5e1] border border-white/10 transition-all active:scale-95 shrink-0 cursor-pointer"
                 title="Copy Email Address"
               >
                 {copiedEmail ? (
@@ -86,7 +86,7 @@ export default function ContactPage() {
                 value={formState.name}
                 onChange={(e) => setFormState({ ...formState, name: e.target.value })}
                 placeholder="John Doe"
-                className="w-full rounded-lg border border-white/10 bg-black px-4 py-2.5 text-sm text-white placeholder:text-[#cbd5e1]/30 focus:border-[#2E54FE] focus:outline-hidden focus:ring-1 focus:ring-[#2E54FE]/25 transition-all"
+                className="w-full rounded-lg border border-white/10 bg-transparent px-4 py-2.5 text-sm text-white placeholder:text-[#cbd5e1]/30 focus:border-[#2E54FE] focus:outline-hidden focus:ring-1 focus:ring-[#2E54FE]/25 transition-all"
               />
             </div>
 
@@ -99,7 +99,7 @@ export default function ContactPage() {
                 value={formState.email}
                 onChange={(e) => setFormState({ ...formState, email: e.target.value })}
                 placeholder="john@example.com"
-                className="w-full rounded-lg border border-white/10 bg-black px-4 py-2.5 text-sm text-white placeholder:text-[#cbd5e1]/30 focus:border-[#2E54FE] focus:outline-hidden focus:ring-1 focus:ring-[#2E54FE]/25 transition-all"
+                className="w-full rounded-lg border border-white/10 bg-transparent px-4 py-2.5 text-sm text-white placeholder:text-[#cbd5e1]/30 focus:border-[#2E54FE] focus:outline-hidden focus:ring-1 focus:ring-[#2E54FE]/25 transition-all"
               />
             </div>
 
@@ -112,7 +112,7 @@ export default function ContactPage() {
                 value={formState.message}
                 onChange={(e) => setFormState({ ...formState, message: e.target.value })}
                 placeholder="Hello, I would like to discuss..."
-                className="w-full rounded-lg border border-white/10 bg-black px-4 py-2.5 text-sm text-white placeholder:text-[#cbd5e1]/30 focus:border-[#2E54FE] focus:outline-hidden focus:ring-1 focus:ring-[#2E54FE]/25 transition-all resize-none"
+                className="w-full rounded-lg border border-white/10 bg-transparent px-4 py-2.5 text-sm text-white placeholder:text-[#cbd5e1]/30 focus:border-[#2E54FE] focus:outline-hidden focus:ring-1 focus:ring-[#2E54FE]/25 transition-all resize-none"
               />
             </div>
 

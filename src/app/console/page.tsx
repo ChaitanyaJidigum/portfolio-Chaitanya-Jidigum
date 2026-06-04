@@ -29,6 +29,8 @@ export default function ConsolePage() {
 
   // Focus terminal input without scrolling the page down on load
   useEffect(() => {
+    // Snap page to top first, then focus input
+    window.scrollTo({ top: 0, behavior: "instant" });
     inputRef.current?.focus({ preventScroll: true });
   }, []);
 
@@ -86,8 +88,8 @@ export default function ConsolePage() {
   };
 
   return (
-    <section className="py-20 w-full min-h-screen bg-black flex flex-col items-center">
-      <div className="mx-auto max-w-7xl px-6 flex flex-col gap-8 animate-slide-up w-full">
+    <section className="py-16 md:py-20 w-full min-h-screen flex flex-col items-center">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 flex flex-col gap-6 md:gap-8 animate-slide-up w-full">
         {/* Title block */}
         <div className="flex flex-col gap-2 max-w-2xl">
           <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#2E54FE]">[ SANDBOX ]</span>
@@ -111,7 +113,7 @@ export default function ConsolePage() {
           </div>
 
           {/* Console Log */}
-          <div className="p-5 h-80 overflow-y-auto font-mono text-sm flex flex-col gap-2.5">
+          <div className="p-4 md:p-5 h-80 md:h-[28rem] overflow-y-auto font-mono text-sm flex flex-col gap-2.5">
             {terminalHistory.map((item, idx) => (
               <div 
                 key={idx} 
@@ -130,7 +132,7 @@ export default function ConsolePage() {
           </div>
 
           {/* Input Line */}
-          <form onSubmit={handleTerminalSubmit} className="flex items-center border-t border-white/5 bg-black px-5 py-3">
+          <form onSubmit={handleTerminalSubmit} className="flex items-center border-t border-white/5 bg-white/[0.02] px-5 py-3">
             <ChevronRight className="w-4 h-4 text-[#2E54FE] shrink-0 mr-1.5" />
             <input
               ref={inputRef}

@@ -2,9 +2,9 @@ import { Sparkles } from "lucide-react";
 
 export default function AboutPage() {
   return (
-    <section className="relative min-h-screen py-20 w-full overflow-hidden border-b border-white/5 flex flex-col items-center">
+    <section className="relative min-h-screen py-16 md:py-20 w-full overflow-hidden border-b border-white/5 flex flex-col items-center">
 
-      <div className="relative z-10 mx-auto max-w-7xl px-6 flex flex-col gap-16 animate-slide-up w-full">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 flex flex-col gap-10 md:gap-16 animate-slide-up w-full">
         {/* Page Title */}
         <div className="flex flex-col gap-2 text-center md:text-left">
           <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#2E54FE]">[ WHO I AM ]</span>
@@ -29,12 +29,12 @@ export default function AboutPage() {
             </p>
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-2 gap-6 border border-white/5 p-6 rounded-2xl bg-[#0b0b0b]/60 backdrop-blur-xs text-[#cbd5e1] hover-lift">
-              <div className="flex flex-col gap-1 border-r border-white/5 pr-4">
+            <div className="grid grid-cols-2 gap-4 md:gap-6 border border-white/5 p-5 md:p-6 rounded-2xl bg-[#0b0b0b]/60 backdrop-blur-xs text-[#cbd5e1] hover-lift">
+              <div className="flex flex-col gap-1">
                 <span className="text-2xl sm:text-3xl font-extrabold text-white">4+</span>
-                <span className="text-xs font-mono uppercase tracking-wider text-[#cbd5e1]/60 font-semibold">Years Experience</span>
+                <span className="text-xs font-mono uppercase tracking-wider text-[#cbd5e1]/60 font-semibold">Years Exp.</span>
               </div>
-              <div className="flex flex-col gap-1 pl-2">
+              <div className="flex flex-col gap-1">
                 <span className="text-2xl sm:text-3xl font-extrabold text-[#2E54FE]">40+</span>
                 <span className="text-xs font-mono uppercase tracking-wider text-[#cbd5e1]/60 font-semibold">Projects Built</span>
               </div>

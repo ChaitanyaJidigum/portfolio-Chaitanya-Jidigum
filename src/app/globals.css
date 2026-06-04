@@ -51,18 +51,26 @@ body {
 
 /* Custom Scrollbars */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 6px;
 }
 ::-webkit-scrollbar-track {
   background: #000000;
 }
 ::-webkit-scrollbar-thumb {
   background: #2E54FE;
-  border: 3px solid #000000;
+  border: 2px solid #000000;
   border-radius: 5px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #1d3dbd;
+}
+
+/* Hide scrollbar on mobile touch devices */
+@media (pointer: coarse) {
+  ::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
 }
 
 .glow-blue {

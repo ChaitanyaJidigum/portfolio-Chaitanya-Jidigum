@@ -58,9 +58,9 @@ export default function Home() {
   return (
     <div className="flex flex-col grow">
       {/* Hero Section */}
-      <section className="relative pt-20 pb-16 md:py-32 w-full overflow-hidden border-b border-white/5">
+      <section className="relative pt-16 pb-12 md:py-32 w-full overflow-hidden border-b border-white/5">
 
-        <div className="relative z-10 mx-auto max-w-7xl px-6 flex flex-col items-center text-center gap-8 animate-slide-up">
+        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 flex flex-col items-center text-center gap-6 md:gap-8 animate-slide-up">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono uppercase tracking-wider bg-[#0b0b0b] border border-white/10 text-[#2E54FE]">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Open for new projects</span>
@@ -91,20 +91,20 @@ export default function Home() {
           </div>
 
           {/* Statistics Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 w-full max-w-4xl border border-white/5 p-6 md:p-8 rounded-2xl bg-[#0b0b0b]/60 backdrop-blur-xs mt-12 text-[#cbd5e1] hover-lift">
-            <div className="flex flex-col gap-1 border-r border-white/5 last:border-0 pr-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 w-full max-w-4xl border border-white/5 p-5 md:p-8 rounded-2xl bg-[#0b0b0b]/60 backdrop-blur-xs mt-8 md:mt-12 text-[#cbd5e1] hover-lift">
+            <div className="flex flex-col gap-1 md:border-r md:border-white/5 md:pr-4">
               <span className="text-2xl md:text-3xl font-extrabold text-white">4+</span>
-              <span className="text-xs font-mono uppercase tracking-wider text-[#cbd5e1]/60 font-semibold">Years Experience</span>
+              <span className="text-xs font-mono uppercase tracking-wider text-[#cbd5e1]/60 font-semibold">Years Exp.</span>
             </div>
-            <div className="flex flex-col gap-1 border-r border-white/5 last:border-0 md:pr-4">
+            <div className="flex flex-col gap-1 md:border-r md:border-white/5 md:pr-4">
               <span className="text-2xl md:text-3xl font-extrabold text-[#2E54FE]">40+</span>
               <span className="text-xs font-mono uppercase tracking-wider text-[#cbd5e1]/60 font-semibold">Projects Built</span>
             </div>
-            <div className="flex flex-col gap-1 border-r border-white/5 last:border-0 pr-4">
+            <div className="flex flex-col gap-1 md:border-r md:border-white/5 md:pr-4">
               <span className="text-2xl md:text-3xl font-extrabold text-white">12k+</span>
               <span className="text-xs font-mono uppercase tracking-wider text-[#cbd5e1]/60 font-semibold">GitHub Commits</span>
             </div>
-            <div className="flex flex-col gap-1 last:border-0">
+            <div className="flex flex-col gap-1">
               <span className="text-2xl md:text-3xl font-extrabold text-[#2E54FE]">100%</span>
               <span className="text-xs font-mono uppercase tracking-wider text-[#cbd5e1]/60 font-semibold">Client Love</span>
             </div>
@@ -113,8 +113,8 @@ export default function Home() {
       </section>
 
       {/* Gateway Portal Section */}
-      <section className="py-20 w-full bg-black relative z-10">
-        <div className="mx-auto max-w-7xl px-6 flex flex-col gap-12 animate-slide-up">
+      <section className="py-14 md:py-20 w-full relative z-10">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 flex flex-col gap-10 md:gap-12 animate-slide-up">
           <div className="flex flex-col gap-2 max-w-2xl">
             <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#2E54FE]">[ PORTAL NAVIGATOR ]</span>
             <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">Explore the Workspace</h2>
@@ -124,7 +124,7 @@ export default function Home() {
           </div>
 
           {/* Portal Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
             {portalCards.map((portal, idx) => {
               const Icon = portal.icon;
               return (

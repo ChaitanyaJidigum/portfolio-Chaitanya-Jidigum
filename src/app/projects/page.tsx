@@ -72,8 +72,8 @@ export default function ProjectsPage() {
     : projects.filter(p => p.category === activeProjectTab);
 
   return (
-    <section className="py-20 w-full min-h-screen bg-black flex flex-col items-center">
-      <div className="mx-auto max-w-7xl px-6 flex flex-col gap-12 animate-slide-up w-full">
+    <section className="py-16 md:py-20 w-full min-h-screen flex flex-col items-center">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 flex flex-col gap-10 md:gap-12 animate-slide-up w-full">
         {/* Header Block */}
         <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6">
           <div className="flex flex-col gap-2">
@@ -85,7 +85,7 @@ export default function ProjectsPage() {
           </div>
 
           {/* Project Filters */}
-          <div className="flex border border-white/5 bg-[#0b0b0b] p-1.5 rounded-xl gap-1 shrink-0 overflow-x-auto max-w-full">
+          <div className="flex border border-white/5 bg-[#0b0b0b] p-1.5 rounded-xl gap-1 shrink-0 max-w-full overflow-x-auto -mx-1 px-1">
             {(["all", "frontend", "fullstack", "ml_ai"] as const).map((tab) => (
               <button
                 key={tab}
@@ -103,7 +103,7 @@ export default function ProjectsPage() {
         </div>
 
         {/* Project Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-8">
           {filteredProjects.map((project, idx) => (
             <div 
               key={idx} 
@@ -117,7 +117,7 @@ export default function ProjectsPage() {
                       href={project.github} 
                       target="_blank" 
                       rel="noopener noreferrer" 
-                      className="p-1.5 rounded-md hover:bg-black text-[#cbd5e1]/60 hover:text-[#2E54FE] transition-colors"
+                      className="p-1.5 rounded-md hover:bg-white/5 text-[#cbd5e1]/60 hover:text-[#2E54FE] transition-colors"
                       title="GitHub Repository"
                     >
                       <GithubIcon className="w-4 h-4" />
@@ -126,7 +126,7 @@ export default function ProjectsPage() {
                       href={project.live} 
                       target="_blank" 
                       rel="noopener noreferrer" 
-                      className="p-1.5 rounded-md hover:bg-black text-[#cbd5e1]/60 hover:text-[#2E54FE] transition-colors"
+                      className="p-1.5 rounded-md hover:bg-white/5 text-[#cbd5e1]/60 hover:text-[#2E54FE] transition-colors"
                       title="Live Site"
                     >
                       <ArrowUpRight className="w-4 h-4" />
@@ -147,7 +147,7 @@ export default function ProjectsPage() {
                 {project.tags.map((tag, tagIdx) => (
                   <span 
                     key={tagIdx} 
-                    className="px-2.5 py-1 rounded-md text-xs font-mono bg-black text-[#cbd5e1]/80 border border-white/5 group-hover:border-[#2E54FE]/20 group-hover:text-white transition-colors"
+                    className="px-2.5 py-1 rounded-md text-xs font-mono bg-transparent text-[#cbd5e1]/80 border border-white/5 group-hover:border-[#2E54FE]/20 group-hover:text-white transition-colors"
                   >
                     {tag}
                   </span>

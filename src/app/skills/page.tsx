@@ -4,8 +4,8 @@ import { Cpu, Palette, Code2, Layers } from "lucide-react";
 
 export default function SkillsPage() {
   return (
-    <section className="py-20 w-full min-h-screen bg-black flex flex-col items-center">
-      <div className="mx-auto max-w-7xl px-6 flex flex-col gap-12 animate-slide-up w-full">
+    <section className="py-16 md:py-20 w-full min-h-screen flex flex-col items-center">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 flex flex-col gap-10 md:gap-12 animate-slide-up w-full">
         {/* Title Block */}
         <div className="flex flex-col gap-2 max-w-2xl">
           <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#2E54FE]">[ CORE COMPETENCY ]</span>
@@ -16,7 +16,7 @@ export default function SkillsPage() {
         </div>
 
         {/* Competencies Matrix */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-8 mt-4">
           <div className="p-6 sm:p-8 rounded-2xl border border-white/5 bg-[#0b0b0b] hover:border-[#2E54FE]/30 transition-all group hover-lift flex flex-col justify-between">
             <div>
               <div className="w-10 h-10 rounded-xl bg-[#2E54FE]/10 flex items-center justify-center text-[#2E54FE] mb-4 group-hover:scale-105 transition-transform">

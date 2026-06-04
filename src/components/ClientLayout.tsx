@@ -166,7 +166,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
             borderStyle: "solid"
           }}
           transition={{ type: "spring", stiffness: 200, damping: 25 }}
-          className="sticky top-0 z-50 mx-auto bg-black/85 backdrop-blur-md text-white overflow-hidden"
+          className="sticky top-0 z-50 mx-auto bg-black/85 backdrop-blur-md text-white overflow-hidden w-full"
         >
           {/* Visual Highlight Bar at the very top of Header (only when not scrolled) */}
           {!isScrolled && (
@@ -212,13 +212,15 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
             </nav>
 
             {/* Social Icons & CTA */}
-            <div className="flex items-center gap-4">
-              <a href="https://github.com/ChaitanyaJidigum" target="_blank" rel="noopener noreferrer" className="text-[#cbd5e1]/70 hover:text-[#2E54FE] transition-colors" aria-label="GitHub">
+            <div className="flex items-center gap-3">
+              <a href="https://github.com/ChaitanyaJidigum" target="_blank" rel="noopener noreferrer" className="text-[#cbd5e1]/70 hover:text-[#2E54FE] transition-colors p-1.5" aria-label="GitHub">
                 <GithubIcon className="w-4 h-4" />
               </a>
-              <a href="https://www.linkedin.com/in/chaitanya-jidigum-082091268/" target="_blank" rel="noopener noreferrer" className="text-[#cbd5e1]/70 hover:text-[#2E54FE] transition-colors" aria-label="LinkedIn">
+              <a href="https://www.linkedin.com/in/chaitanya-jidigum-082091268/" target="_blank" rel="noopener noreferrer" className="text-[#cbd5e1]/70 hover:text-[#2E54FE] transition-colors p-1.5" aria-label="LinkedIn">
                 <LinkedinIcon className="w-4 h-4" />
               </a>
+              {/* Divider */}
+              <div className="hidden sm:block w-px h-4 bg-white/10 mx-4" />
               <Link 
                 href="/contact" 
                 className={`hidden sm:inline-flex h-9 items-center justify-center rounded-lg border px-4 text-xs font-semibold transition-all ${
@@ -259,7 +261,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
               className="md:hidden border-b border-white/5 bg-black/95 backdrop-blur-lg overflow-hidden fixed left-0 w-full z-40 shadow-2xl"
-              style={{ top: isScrolled ? "72px" : "64px" }}
+              style={{ top: isScrolled ? "76px" : "64px" }}
             >
               <nav className="flex flex-col p-6 gap-4 text-sm font-semibold">
                 {navLinks.map((link) => {
@@ -308,12 +310,12 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
           initial={{ y: 70, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="border-t border-white/5 bg-black py-8 text-[#cbd5e1]/50 relative z-10"
+          className="border-t border-white/5 bg-black pb-safe pt-8 text-[#cbd5e1]/50 relative z-10" style={{ paddingBottom: 'max(2rem, env(safe-area-inset-bottom))' }}
         >
           {/* Visual Highlight Bar at the very bottom of Footer */}
           <div className="absolute bottom-0 left-0 w-full h-[3px] bg-[#2E54FE]" />
           
-          <div className="mx-auto max-w-7xl px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs">
             <div>
               &copy; {new Date().getFullYear()} Chaitanya Jidigum. All rights reserved.
             </div>
@@ -329,7 +331,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
         {showScrollTop && (
           <button
             onClick={scrollToTop}
-            className="fixed bottom-6 right-6 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-black/85 text-[#cbd5e1] border border-white/10 hover:border-[#2E54FE] hover:text-[#2E54FE] shadow-[0_0_15px_rgba(46,84,254,0.15)] transition-all duration-300 hover:scale-110 active:scale-95 animate-fade-in group cursor-pointer"
+            className="fixed bottom-6 right-4 sm:right-6 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-black/85 text-[#cbd5e1] border border-white/10 hover:border-[#2E54FE] hover:text-[#2E54FE] shadow-[0_0_15px_rgba(46,84,254,0.15)] transition-all duration-300 hover:scale-110 active:scale-95 animate-fade-in group cursor-pointer"
             aria-label="Scroll to Top"
           >
             <ArrowUp className="w-5 h-5 group-hover:-translate-y-0.5 transition-transform" />

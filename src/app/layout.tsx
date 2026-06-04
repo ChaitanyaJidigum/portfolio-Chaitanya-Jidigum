@@ -18,6 +18,14 @@ export const metadata: Metadata = {
   description: "Creative developer portfolio specializing in high-performance React, Next.js, and Tailwind CSS applications with interactive dark-mode interfaces.",
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: "cover",
+  themeColor: "#000000",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
