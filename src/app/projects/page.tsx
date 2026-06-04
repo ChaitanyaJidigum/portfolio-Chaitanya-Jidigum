@@ -85,7 +85,7 @@ export default function ProjectsPage() {
           </div>
 
           {/* Project Filters */}
-          <div className="flex border border-white/5 bg-[#0b0b0b] p-1.5 rounded-xl gap-1 shrink-0">
+          <div className="flex border border-white/5 bg-[#0b0b0b] p-1.5 rounded-xl gap-1 shrink-0 overflow-x-auto max-w-full">
             {(["all", "frontend", "fullstack", "ml_ai"] as const).map((tab) => (
               <button
                 key={tab}

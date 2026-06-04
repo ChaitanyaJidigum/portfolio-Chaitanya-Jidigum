@@ -47,7 +47,7 @@ export default function AboutPage() {
             
             <div className="relative pl-6 border-l border-white/5 flex flex-col gap-8">
               <div className="relative animate-slide-up">
-                <div className="absolute -left-[30px] top-1.5 w-4 h-4 rounded-full bg-[#2E54FE] border-4 border-black shadow-[0_0_10px_rgba(46,84,254,0.3)]" />
+                <div className="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-[#2E54FE] border-4 border-black shadow-[0_0_10px_rgba(46,84,254,0.3)]" />
                 <div>
                   <span className="text-xs font-bold font-mono text-[#2E54FE] bg-[#2E54FE]/5 px-2 py-0.5 rounded border border-[#2E54FE]/10">[ 2024 &mdash; Present ]</span>
                   <h4 className="text-base font-bold text-white mt-2">Software Developer & IoT Club Coordinator</h4>
@@ -59,7 +59,7 @@ export default function AboutPage() {
               </div>
 
               <div className="relative animate-slide-up animation-delay-100">
-                <div className="absolute -left-[30px] top-1.5 w-4 h-4 rounded-full bg-[#2E54FE] border-4 border-black shadow-[0_0_10px_rgba(46,84,254,0.4)]" />
+                <div className="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-[#2E54FE] border-4 border-black shadow-[0_0_10px_rgba(46,84,254,0.4)]" />
                 <div>
                   <span className="text-xs font-bold font-mono text-[#2E54FE] bg-[#2E54FE]/5 px-2 py-0.5 rounded border border-[#2E54FE]/10">[ 2022 &mdash; 2024 ]</span>
                   <h4 className="text-base font-bold text-white mt-2">AI/ML Developer Intern</h4>
@@ -71,7 +71,7 @@ export default function AboutPage() {
               </div>
 
               <div className="relative animate-slide-up animation-delay-200">
-                <div className="absolute -left-[30px] top-1.5 w-4 h-4 rounded-full bg-white border-4 border-black shadow-[0_0_10px_rgba(255,255,255,0.2)]" />
+                <div className="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-white border-4 border-black shadow-[0_0_10px_rgba(255,255,255,0.2)]" />
                 <div>
                   <span className="text-xs font-bold font-mono text-white bg-white/5 px-2 py-0.5 rounded border border-white/10">[ 2020 &mdash; 2022 ]</span>
                   <h4 className="text-base font-bold text-white mt-2">Web Automation & Software Developer</h4>

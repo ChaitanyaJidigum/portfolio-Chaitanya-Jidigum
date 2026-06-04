@@ -54,6 +54,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Mouse tracker for cursor spotlight glow effect
   useEffect(() => {
@@ -228,9 +229,65 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
               >
                 Get in Touch
               </Link>
+
+              {/* Mobile Menu Toggle Button */}
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="md:hidden p-2 text-[#cbd5e1]/70 hover:text-[#2E54FE] transition-colors focus:outline-hidden cursor-pointer"
+                aria-label="Toggle Navigation Menu"
+              >
+                {isMobileMenuOpen ? (
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                ) : (
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                )}
+              </button>
             </div>
           </div>
         </motion.header>
+
+        {/* Mobile Navigation Menu Panel */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="md:hidden border-b border-white/5 bg-black/95 backdrop-blur-lg overflow-hidden fixed left-0 w-full z-40 shadow-2xl"
+              style={{ top: isScrolled ? "72px" : "64px" }}
+            >
+              <nav className="flex flex-col p-6 gap-4 text-sm font-semibold">
+                {navLinks.map((link) => {
+                  const isActive = pathname === link.href;
+                  return (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={`py-2 border-b border-white/5 last:border-0 transition-colors ${
+                        isActive ? "text-[#2E54FE]" : "text-[#cbd5e1]/70 hover:text-[#2E54FE]"
+                      }`}
+                    >
+                      {link.name}
+                    </Link>
+                  );
+                })}
+                <Link
+                  href="/contact"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="mt-2 flex h-10 items-center justify-center rounded-lg bg-[#2E54FE] text-white text-xs font-semibold hover:bg-[#1d3dbd] transition-all"
+                >
+                  Get in Touch
+                </Link>
+              </nav>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Dynamic Page Content with Slide & Fade Page Transition */}
         <AnimatePresence mode="wait">
