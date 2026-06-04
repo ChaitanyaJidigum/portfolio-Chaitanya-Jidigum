@@ -16,7 +16,8 @@ import {
   FileText, 
   Send, 
   Code2,
-  ChevronRight
+  ChevronRight,
+  ArrowUp
 } from "lucide-react";
 
 interface Project {
@@ -74,6 +75,7 @@ export default function Home() {
   const [contactSuccess, setContactSuccess] = useState(false);
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
     let rafId: number;
@@ -89,6 +91,19 @@ export default function Home() {
     };
   }, []);
 
+  // Monitor scroll for Scroll-to-Top button
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 400) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   // Contact Form State
   const [formState, setFormState] = useState({ name: "", email: "", message: "" });
 
@@ -100,10 +115,46 @@ export default function Home() {
   ]);
   const terminalEndRef = useRef<HTMLDivElement>(null);
 
-  // Auto scroll terminal to bottom
+  // Auto scroll terminal to bottom (preventing jump on mount)
+  const isInitialMount = useRef(true);
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
     terminalEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [terminalHistory]);
+
+  // Ensure page scroll starts at top on initial mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (window.history) {
+        window.history.scrollRestoration = "manual";
+      }
+      window.scrollTo(0, 0);
+
+      const handleScrollRestoration = () => {
+        window.scrollTo(0, 0);
+      };
+      // Run immediately and after a short timeout to bypass browser rendering cycles
+      const timer = setTimeout(handleScrollRestoration, 0);
+      const timerLong = setTimeout(handleScrollRestoration, 150);
+
+      window.addEventListener("load", handleScrollRestoration);
+      return () => {
+        clearTimeout(timer);
+        clearTimeout(timerLong);
+        window.removeEventListener("load", handleScrollRestoration);
+      };
+    }
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   const copyEmailAddress = () => {
     navigator.clipboard.writeText("chaitanyajidigum@gmail.com");
@@ -214,15 +265,15 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col bg-black text-[#cbd5e1] selection:bg-[#2E54FE]/20 selection:text-[#2E54FE] relative dot-grid-blue">
       <GhostCursor
-        trailLength={25}
-        inertia={0.6}
-        grainIntensity={0.02}
-        bloomStrength={0.1}
-        bloomRadius={1.0}
-        brightness={0.8}
+        trailLength={35}
+        inertia={0.7}
+        grainIntensity={0.03}
+        bloomStrength={0.8}
+        bloomRadius={2.5}
+        brightness={2.5}
         color="#2E54FE"
         className="absolute inset-0 pointer-events-none"
-        style={{ opacity: 0.12 }}
+        style={{ opacity: 0.65 }}
         zIndex={0}
       />
       
@@ -715,6 +766,17 @@ export default function Home() {
             </div>
           </div>
         </footer>
+
+        {/* Floating Scroll-to-Top Button */}
+        {showScrollTop && (
+          <button
+            onClick={scrollToTop}
+            className="fixed bottom-6 right-6 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-black/85 text-[#cbd5e1] border border-white/10 hover:border-[#2E54FE] hover:text-[#2E54FE] shadow-[0_0_15px_rgba(46,84,254,0.15)] transition-all duration-300 hover:scale-110 active:scale-95 animate-fade-in group cursor-pointer"
+            aria-label="Scroll to Top"
+          >
+            <ArrowUp className="w-5 h-5 group-hover:-translate-y-0.5 transition-transform" />
+          </button>
+        )}
       </div>
     </div>
   );
