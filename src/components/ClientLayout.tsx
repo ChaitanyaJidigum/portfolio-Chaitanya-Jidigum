@@ -1,0 +1,231 @@
+"use client";
+
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import dynamic from "next/dynamic";
+import { ArrowUp } from "lucide-react";
+
+// Dynamically import GhostCursor to avoid SSR issues with canvas/WebGL
+const GhostCursor = dynamic(() => import("@/components/GhostCursor"), { ssr: false });
+
+function GithubIcon({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+      <path d="M9 18c-4.51 2-5-2-7-2" />
+    </svg>
+  );
+}
+
+function LinkedinIcon({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+      <rect x="2" y="9" width="4" height="12" />
+      <circle cx="4" cy="4" r="2" />
+    </svg>
+  );
+}
+
+interface ClientLayoutProps {
+  children: React.ReactNode;
+}
+
+export default function ClientLayout({ children }: ClientLayoutProps) {
+  const pathname = usePathname();
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  // Mouse tracker for cursor spotlight glow effect
+  useEffect(() => {
+    let rafId: number;
+    const updateMousePos = (e: MouseEvent) => {
+      rafId = requestAnimationFrame(() => {
+        setMousePos({ x: e.clientX, y: e.clientY });
+      });
+    };
+    window.addEventListener("pointermove", updateMousePos, { passive: true });
+    return () => {
+      window.removeEventListener("pointermove", updateMousePos);
+      cancelAnimationFrame(rafId);
+    };
+  }, []);
+
+  // Monitor scroll for Scroll-to-Top button
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 400) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Ensure page scroll resets to top on route change
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (window.history) {
+        window.history.scrollRestoration = "manual";
+      }
+      window.scrollTo(0, 0);
+
+      const handleScrollRestoration = () => {
+        window.scrollTo(0, 0);
+      };
+      
+      const timer = setTimeout(handleScrollRestoration, 0);
+      const timerLong = setTimeout(handleScrollRestoration, 150);
+
+      return () => {
+        clearTimeout(timer);
+        clearTimeout(timerLong);
+      };
+    }
+  }, [pathname]);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  const navLinks = [
+    { name: "Home", href: "/" },
+    { name: "About", href: "/about" },
+    { name: "Projects", href: "/projects" },
+    { name: "Skills", href: "/skills" },
+    { name: "Console", href: "/console" },
+    { name: "Contact", href: "/contact" },
+  ];
+
+  return (
+    <div className="min-h-screen flex flex-col bg-black text-[#cbd5e1] selection:bg-[#2E54FE]/20 selection:text-[#2E54FE] relative dot-grid-blue">
+      {/* 3D Smoky GhostCursor Backdrop Layer */}
+      <GhostCursor
+        trailLength={35}
+        inertia={0.7}
+        grainIntensity={0.03}
+        bloomStrength={0.8}
+        bloomRadius={2.5}
+        brightness={2.5}
+        color="#2E54FE"
+        className="absolute inset-0 pointer-events-none"
+        style={{ opacity: 0.65 }}
+        zIndex={0}
+      />
+      
+      {/* Dynamic Cursor Spotlight Effect */}
+      <div 
+        className="pointer-events-none fixed inset-0 z-30"
+        style={{
+          background: `radial-gradient(400px circle at ${mousePos.x}px ${mousePos.y}px, rgba(46, 84, 254, 0.12), transparent 80%)`
+        }}
+      />
+      
+      <div className="relative z-10 flex flex-col grow">
+        {/* Persistent Header */}
+        <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-black/85 backdrop-blur-md text-white animate-fade-in">
+          <div className="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
+            <Link href="/" className="flex items-center gap-2.5 group">
+              <div className="w-8 h-8 rounded-lg bg-[#2E54FE] flex items-center justify-center text-white font-extrabold text-sm group-hover:scale-105 transition-transform duration-200">
+                CJ
+              </div>
+              <span className="font-bold text-white tracking-tight group-hover:text-[#2E54FE] transition-colors">Chaitanya Jidigum</span>
+            </Link>
+
+            {/* Desktop Nav Links */}
+            <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <Link 
+                    key={link.href} 
+                    href={link.href} 
+                    className={`transition-colors font-semibold ${
+                      isActive 
+                        ? "text-[#2E54FE]" 
+                        : "text-[#cbd5e1]/70 hover:text-[#2E54FE]"
+                    }`}
+                  >
+                    {link.name}
+                  </Link>
+                );
+              })}
+            </nav>
+
+            {/* Social Icons & CTA */}
+            <div className="flex items-center gap-4">
+              <a href="https://github.com/ChaitanyaJidigum" target="_blank" rel="noopener noreferrer" className="text-[#cbd5e1]/70 hover:text-[#2E54FE] transition-colors" aria-label="GitHub">
+                <GithubIcon className="w-4 h-4" />
+              </a>
+              <a href="https://www.linkedin.com/in/chaitanya-jidigum-082091268/" target="_blank" rel="noopener noreferrer" className="text-[#cbd5e1]/70 hover:text-[#2E54FE] transition-colors" aria-label="LinkedIn">
+                <LinkedinIcon className="w-4 h-4" />
+              </a>
+              <Link 
+                href="/contact" 
+                className={`hidden sm:inline-flex h-9 items-center justify-center rounded-lg border px-4 text-xs font-semibold transition-all ${
+                  pathname === "/contact"
+                    ? "bg-[#2E54FE] border-[#2E54FE] text-white"
+                    : "border-[#2E54FE] text-[#2E54FE] hover:bg-[#2E54FE] hover:text-white"
+                }`}
+              >
+                Get in Touch
+              </Link>
+            </div>
+          </div>
+        </header>
+
+        {/* Dynamic Page Content */}
+        <main className="flex flex-col grow">
+          {children}
+        </main>
+
+        {/* Persistent Footer */}
+        <footer className="border-t border-white/5 bg-black py-8 text-[#cbd5e1]/50 relative z-10 animate-fade-in">
+          <div className="mx-auto max-w-7xl px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs">
+            <div>
+              &copy; {new Date().getFullYear()} Chaitanya Jidigum. All rights reserved.
+            </div>
+            <div className="flex gap-4">
+              <a href="https://nextjs.org" className="hover:underline transition-all">Next.js</a>
+              <a href="https://tailwindcss.com" className="hover:underline transition-all">Tailwind CSS</a>
+              <a href="https://typescriptlang.org" className="hover:underline transition-all">TypeScript</a>
+            </div>
+          </div>
+        </footer>
+
+        {/* Floating Scroll-to-Top Button */}
+        {showScrollTop && (
+          <button
+            onClick={scrollToTop}
+            className="fixed bottom-6 right-6 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-black/85 text-[#cbd5e1] border border-white/10 hover:border-[#2E54FE] hover:text-[#2E54FE] shadow-[0_0_15px_rgba(46,84,254,0.15)] transition-all duration-300 hover:scale-110 active:scale-95 animate-fade-in group cursor-pointer"
+            aria-label="Scroll to Top"
+          >
+            <ArrowUp className="w-5 h-5 group-hover:-translate-y-0.5 transition-transform" />
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
