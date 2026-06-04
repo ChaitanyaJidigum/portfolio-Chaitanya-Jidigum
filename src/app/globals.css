@@ -5,23 +5,23 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --muted: oklch(0.97 0 0);
-  --border: oklch(0.922 0 0);
-  --background: #FFBC95;
-  --foreground: #2E54FE;
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
+  --muted: oklch(0.25 0 0);
+  --border: rgba(255, 255, 255, 0.08);
+  --background: #000000;
+  --foreground: #cbd5e1;
+  --card: #0b0b0b;
+  --card-foreground: #ffffff;
+  --popover: #0b0b0b;
+  --popover-foreground: #cbd5e1;
   --primary: #2E54FE;
-  --primary-foreground: #FFBC95;
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --primary-foreground: #ffffff;
+  --secondary: #1a1a1a;
+  --secondary-foreground: #cbd5e1;
+  --muted-foreground: #94a3b8;
+  --accent: #1a1a1a;
+  --accent-foreground: #2E54FE;
   --destructive: oklch(0.577 0.245 27.325);
-  --input: oklch(0.922 0 0);
+  --input: rgba(255, 255, 255, 0.05);
   --ring: #2E54FE;
   --radius: 0.625rem;
 }
@@ -29,37 +29,23 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-peach: #FFBC95;
   --color-blue: #2E54FE;
-  --color-dark: #0B0B0B;
+  --color-dark: #000000;
+  --color-charcoal: #0b0b0b;
+  --color-silver: #cbd5e1;
   --font-sans: var(--font-geist-sans), sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
 }
 
 body {
-  background-color: #FFBC95;
-  color: #2E54FE;
+  background-color: #000000;
+  color: #cbd5e1;
   font-family: var(--font-sans);
   overflow-x: hidden;
 }
 
-.theme-peach {
-  background-color: #FFBC95;
-  color: #2E54FE;
-}
-
-.theme-dark {
-  background-color: #0B0B0B;
-  color: #FFBC95;
-}
-
-.dot-grid-peach {
-  background-image: radial-gradient(rgba(46, 84, 254, 0.08) 1.2px, transparent 1.2px);
-  background-size: 24px 24px;
-}
-
-.dot-grid-dark {
-  background-image: radial-gradient(rgba(255, 188, 149, 0.06) 1.2px, transparent 1.2px);
+.dot-grid-blue {
+  background-image: radial-gradient(rgba(46, 84, 254, 0.04) 1.2px, transparent 1.2px);
   background-size: 24px 24px;
 }
 
@@ -68,44 +54,83 @@ body {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #FFBC95;
+  background: #000000;
 }
 ::-webkit-scrollbar-thumb {
   background: #2E54FE;
-  border: 2px solid #FFBC95;
+  border: 3px solid #000000;
   border-radius: 5px;
 }
-.theme-dark-scroll ::-webkit-scrollbar-track {
-  background: #0B0B0B;
-}
-.theme-dark-scroll ::-webkit-scrollbar-thumb {
-  background: #FFBC95;
-  border: 2px solid #0B0B0B;
+::-webkit-scrollbar-thumb:hover {
+  background: #1d3dbd;
 }
 
 .glow-blue {
-  box-shadow: 0 0 35px rgba(46, 84, 254, 0.25);
+  box-shadow: 0 0 35px rgba(46, 84, 254, 0.2);
 }
 
-.glow-peach {
-  box-shadow: 0 0 35px rgba(255, 188, 149, 0.15);
+.glow-silver {
+  box-shadow: 0 0 35px rgba(203, 213, 225, 0.05);
 }
 
-.text-gradient-blue-peach {
-  background: linear-gradient(135deg, #2E54FE 0%, #1d3dbd 60%, #FFBC95 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* Smooth Animation Styling */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.text-gradient-peach-blue {
-  background: linear-gradient(135deg, #FFBC95 0%, #dca281 60%, #2E54FE 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 1.2s ease-out forwards;
+}
+
+.animation-delay-100 {
+  animation-delay: 100ms;
+}
+
+.animation-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animation-delay-300 {
+  animation-delay: 300ms;
+}
+
+.animation-delay-500 {
+  animation-delay: 500ms;
+}
+
+/* Custom transition curves for smooth lifts */
+.hover-lift {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-4px);
+  border-color: rgba(46, 84, 254, 0.4);
+  box-shadow: 0 10px 30px rgba(46, 84, 254, 0.08);
 }
 
 @layer base {
   * {
-    @apply border-slate-200/10 outline-blue/50;
+    @apply border-white/5 outline-blue/50;
   }
   body {
     @apply bg-background text-foreground;
