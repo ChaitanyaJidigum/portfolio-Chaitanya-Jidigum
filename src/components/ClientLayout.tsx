@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
 import { ArrowUp } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 // Dynamically import GhostCursor to avoid SSR issues with canvas/WebGL
 const GhostCursor = dynamic(() => import("@/components/GhostCursor"), { ssr: false });
@@ -144,8 +145,16 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
       />
       
       <div className="relative z-10 flex flex-col grow">
-        {/* Persistent Header */}
-        <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-black/85 backdrop-blur-md text-white animate-fade-in">
+        {/* Sliding Persistent Header */}
+        <motion.header 
+          initial={{ y: -70, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="sticky top-0 z-50 w-full border-b border-white/5 bg-black/85 backdrop-blur-md text-white"
+        >
+          {/* Visual Highlight Bar at the very top of Header */}
+          <div className="absolute top-0 left-0 w-full h-[3px] bg-[#2E54FE]" />
+          
           <div className="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2.5 group">
               <div className="w-8 h-8 rounded-lg bg-[#2E54FE] flex items-center justify-center text-white font-extrabold text-sm group-hover:scale-105 transition-transform duration-200">
@@ -154,21 +163,28 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
               <span className="font-bold text-white tracking-tight group-hover:text-[#2E54FE] transition-colors">Chaitanya Jidigum</span>
             </Link>
 
-            {/* Desktop Nav Links */}
-            <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
+            {/* Desktop Nav Links with Sliding Active Underline */}
+            <nav className="hidden md:flex items-center gap-8 text-sm font-medium relative h-full">
               {navLinks.map((link) => {
                 const isActive = pathname === link.href;
                 return (
                   <Link 
                     key={link.href} 
                     href={link.href} 
-                    className={`transition-colors font-semibold ${
+                    className={`relative py-1.5 transition-colors font-semibold ${
                       isActive 
                         ? "text-[#2E54FE]" 
                         : "text-[#cbd5e1]/70 hover:text-[#2E54FE]"
                     }`}
                   >
                     {link.name}
+                    {isActive && (
+                      <motion.div
+                        layoutId="active-nav-underline"
+                        className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#2E54FE]"
+                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      />
+                    )}
                   </Link>
                 );
               })}
@@ -194,15 +210,32 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
               </Link>
             </div>
           </div>
-        </header>
+        </motion.header>
 
-        {/* Dynamic Page Content */}
-        <main className="flex flex-col grow">
-          {children}
-        </main>
+        {/* Dynamic Page Content with Slide & Fade Page Transition */}
+        <AnimatePresence mode="wait">
+          <motion.main
+            key={pathname}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-col grow"
+          >
+            {children}
+          </motion.main>
+        </AnimatePresence>
 
-        {/* Persistent Footer */}
-        <footer className="border-t border-white/5 bg-black py-8 text-[#cbd5e1]/50 relative z-10 animate-fade-in">
+        {/* Sliding Persistent Footer */}
+        <motion.footer 
+          initial={{ y: 70, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="border-t border-white/5 bg-black py-8 text-[#cbd5e1]/50 relative z-10"
+        >
+          {/* Visual Highlight Bar at the very bottom of Footer */}
+          <div className="absolute bottom-0 left-0 w-full h-[3px] bg-[#2E54FE]" />
+          
           <div className="mx-auto max-w-7xl px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs">
             <div>
               &copy; {new Date().getFullYear()} Chaitanya Jidigum. All rights reserved.
@@ -213,7 +246,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
               <a href="https://typescriptlang.org" className="hover:underline transition-all">TypeScript</a>
             </div>
           </div>
-        </footer>
+        </motion.footer>
 
         {/* Floating Scroll-to-Top Button */}
         {showScrollTop && (
