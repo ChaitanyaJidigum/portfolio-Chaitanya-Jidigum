@@ -15,11 +15,22 @@ export default function ConsolePage() {
     { text: "Type 'help' to see list of available commands.", type: "output" }
   ]);
   const terminalEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const isInitialMount = useRef(true);
 
-  // Auto scroll terminal log to bottom on entries
+  // Auto scroll terminal log to bottom on entries (preventing jump on mount)
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
     terminalEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [terminalHistory]);
+
+  // Focus terminal input without scrolling the page down on load
+  useEffect(() => {
+    inputRef.current?.focus({ preventScroll: true });
+  }, []);
 
   const handleTerminalSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -122,12 +133,12 @@ export default function ConsolePage() {
           <form onSubmit={handleTerminalSubmit} className="flex items-center border-t border-white/5 bg-black px-5 py-3">
             <ChevronRight className="w-4 h-4 text-[#2E54FE] shrink-0 mr-1.5" />
             <input
+              ref={inputRef}
               type="text"
               value={terminalInput}
               onChange={(e) => setTerminalInput(e.target.value)}
               placeholder="Type 'help' and press Enter..."
               className="w-full bg-transparent border-0 outline-hidden font-mono text-sm text-white placeholder:text-[#cbd5e1]/30 focus:outline-hidden"
-              autoFocus
             />
           </form>
         </div>
