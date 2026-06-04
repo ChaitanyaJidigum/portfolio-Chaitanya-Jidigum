@@ -73,6 +73,21 @@ export default function Home() {
   const [activeProjectTab, setActiveProjectTab] = useState<"all" | "frontend" | "fullstack" | "ml_ai">("all");
   const [contactSuccess, setContactSuccess] = useState(false);
   const [copiedEmail, setCopiedEmail] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    let rafId: number;
+    const updateMousePos = (e: MouseEvent) => {
+      rafId = requestAnimationFrame(() => {
+        setMousePos({ x: e.clientX, y: e.clientY });
+      });
+    };
+    window.addEventListener("pointermove", updateMousePos, { passive: true });
+    return () => {
+      window.removeEventListener("pointermove", updateMousePos);
+      cancelAnimationFrame(rafId);
+    };
+  }, []);
 
   // Contact Form State
   const [formState, setFormState] = useState({ name: "", email: "", message: "" });
@@ -209,6 +224,14 @@ export default function Home() {
         className="absolute inset-0 pointer-events-none"
         style={{ opacity: 0.12 }}
         zIndex={0}
+      />
+      
+      {/* Dynamic Cursor Spotlight Effect */}
+      <div 
+        className="pointer-events-none fixed inset-0 z-30"
+        style={{
+          background: `radial-gradient(400px circle at ${mousePos.x}px ${mousePos.y}px, rgba(46, 84, 254, 0.12), transparent 80%)`
+        }}
       />
       
       <div className="relative z-10 flex flex-col grow">
