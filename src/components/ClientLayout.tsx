@@ -53,6 +53,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
   const pathname = usePathname();
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   // Mouse tracker for cursor spotlight glow effect
   useEffect(() => {
@@ -69,9 +70,10 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
     };
   }, []);
 
-  // Monitor scroll for Scroll-to-Top button
+  // Monitor scroll for Scroll-to-Top button and Header scrolled state
   useEffect(() => {
     const handleScroll = () => {
+      setIsScrolled(window.scrollY > 40);
       if (window.scrollY > 400) {
         setShowScrollTop(true);
       } else {
@@ -148,12 +150,30 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
         {/* Sliding Persistent Header */}
         <motion.header 
           initial={{ y: -70, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="sticky top-0 z-50 w-full border-b border-white/5 bg-black/85 backdrop-blur-md text-white"
+          animate={{ 
+            y: isScrolled ? 12 : 0,
+            opacity: 1,
+            width: isScrolled ? "90%" : "100%",
+            maxWidth: isScrolled ? "800px" : "100%",
+            borderRadius: isScrolled ? "9999px" : "0px",
+            borderColor: isScrolled ? "rgba(46, 84, 254, 0.3)" : "rgba(255, 255, 255, 0.05)",
+            boxShadow: isScrolled ? "0 10px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(46, 84, 254, 0.15)" : "none",
+            borderTopWidth: isScrolled ? "1px" : "0px",
+            borderLeftWidth: isScrolled ? "1px" : "0px",
+            borderRightWidth: isScrolled ? "1px" : "0px",
+            borderBottomWidth: "1px",
+            borderStyle: "solid"
+          }}
+          transition={{ type: "spring", stiffness: 200, damping: 25 }}
+          className="sticky top-0 z-50 mx-auto bg-black/85 backdrop-blur-md text-white overflow-hidden"
         >
-          {/* Visual Highlight Bar at the very top of Header */}
-          <div className="absolute top-0 left-0 w-full h-[3px] bg-[#2E54FE]" />
+          {/* Visual Highlight Bar at the very top of Header (only when not scrolled) */}
+          {!isScrolled && (
+            <motion.div 
+              layoutId="header-top-bar"
+              className="absolute top-0 left-0 w-full h-[3px] bg-[#2E54FE]" 
+            />
+          )}
           
           <div className="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2.5 group">

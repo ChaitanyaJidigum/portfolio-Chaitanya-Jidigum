@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { 
   Sparkles, 
   ArrowRight, 
@@ -60,19 +59,6 @@ export default function Home() {
     <div className="flex flex-col grow">
       {/* Hero Section */}
       <section className="relative pt-20 pb-16 md:py-32 w-full overflow-hidden border-b border-white/5">
-        {/* Background Image Layer */}
-        <div className="absolute inset-0 z-0">
-          <Image 
-            src="/background.png" 
-            alt="Background Character" 
-            fill
-            priority
-            className="object-cover object-center opacity-25 md:opacity-30" 
-          />
-          {/* Dark mask overlay to guarantee text contrast */}
-          <div className="absolute inset-0 bg-black/60" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,#000000_90%)]" />
-        </div>
 
         <div className="relative z-10 mx-auto max-w-7xl px-6 flex flex-col items-center text-center gap-8 animate-slide-up">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono uppercase tracking-wider bg-[#0b0b0b] border border-white/10 text-[#2E54FE]">

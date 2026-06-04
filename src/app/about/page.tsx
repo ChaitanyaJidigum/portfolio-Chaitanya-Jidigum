@@ -1,23 +1,8 @@
-"use client";
-
-import Image from "next/image";
 import { Sparkles } from "lucide-react";
 
 export default function AboutPage() {
   return (
     <section className="relative min-h-screen py-20 w-full overflow-hidden border-b border-white/5 flex flex-col items-center">
-      {/* Background Image Layer */}
-      <div className="absolute inset-0 z-0">
-        <Image 
-          src="/background.png" 
-          alt="Background Character" 
-          fill
-          priority
-          className="object-cover object-center opacity-25 md:opacity-30" 
-        />
-        <div className="absolute inset-0 bg-black/60" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,#000000_90%)]" />
-      </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 flex flex-col gap-16 animate-slide-up w-full">
         {/* Page Title */}
