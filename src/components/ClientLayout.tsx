@@ -324,44 +324,46 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
           )}
           
           <div className="mx-auto max-w-5xl px-5 sm:px-8 h-16 flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2.5 group">
-              <div 
-                className="w-8 h-8 flex items-center justify-center text-white group-hover:scale-105 transition-transform duration-200"
-                style={{ filter: "drop-shadow(0 0 8px rgba(46, 84, 254, 0.45))" }}
-              >
-                <svg viewBox="0 0 100 100" className="w-6 h-6 fill-white">
-                  <path d="M 10 10 H 90 V 30 H 30 V 70 H 90 V 90 H 10 Z" />
-                </svg>
-              </div>
-              <span className="font-bold text-white tracking-tight group-hover:text-[#2E54FE] transition-colors">Chaitanya Jidigum</span>
-            </Link>
+            <div className="flex items-center gap-8 md:gap-12 lg:gap-16 h-full">
+              <Link href="/" className="flex items-center gap-2.5 group">
+                <div 
+                  className="w-8 h-8 flex items-center justify-center text-white group-hover:scale-105 transition-transform duration-200"
+                  style={{ filter: "drop-shadow(0 0 8px rgba(46, 84, 254, 0.45))" }}
+                >
+                  <svg viewBox="0 0 100 100" className="w-6 h-6 fill-white">
+                    <path d="M 10 10 H 90 V 30 H 30 V 70 H 90 V 90 H 10 Z" />
+                  </svg>
+                </div>
+                <span className="font-bold text-white tracking-tight group-hover:text-[#2E54FE] transition-colors whitespace-nowrap">Chaitanya Jidigum</span>
+              </Link>
 
-            {/* Desktop Nav Links with Sliding Active Underline */}
-            <nav className="hidden md:flex items-center gap-4 lg:gap-6 text-xs lg:text-sm font-semibold relative h-full">
-              {navLinks.map((link) => {
-                const isActive = pathname === link.href;
-                return (
-                  <Link 
-                    key={link.href} 
-                    href={link.href} 
-                    className={`relative py-1.5 transition-colors font-semibold ${
-                      isActive 
-                        ? "text-[#2E54FE]" 
-                        : "text-[#cbd5e1]/70 hover:text-[#2E54FE]"
-                    }`}
-                  >
-                    {link.name}
-                    {isActive && (
-                      <motion.div
-                        layoutId="active-nav-underline"
-                        className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#2E54FE]"
-                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                      />
-                    )}
-                  </Link>
-                );
-              })}
-            </nav>
+              {/* Desktop Nav Links with Sliding Active Underline */}
+              <nav className="hidden md:flex items-center gap-4 lg:gap-6 text-xs lg:text-sm font-semibold relative h-full">
+                {navLinks.map((link) => {
+                  const isActive = pathname === link.href;
+                  return (
+                    <Link 
+                      key={link.href} 
+                      href={link.href} 
+                      className={`relative py-1.5 transition-colors font-semibold ${
+                        isActive 
+                          ? "text-[#2E54FE]" 
+                          : "text-[#cbd5e1]/70 hover:text-[#2E54FE]"
+                      }`}
+                    >
+                      {link.name}
+                      {isActive && (
+                        <motion.div
+                          layoutId="active-nav-underline"
+                          className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#2E54FE]"
+                          transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                        />
+                      )}
+                    </Link>
+                  );
+                })}
+              </nav>
+            </div>
 
             {/* Social Icons & CTA */}
             <div className="flex items-center gap-3">
@@ -518,25 +520,64 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
         </motion.footer>
 
         {/* Scroll Rocket Progress Indicator */}
-        <div className="fixed bottom-6 left-6 right-6 z-40 pointer-events-none select-none h-14 hidden sm:block">
+        <div className="fixed bottom-6 left-6 right-6 z-40 pointer-events-none select-none h-16 hidden sm:block">
           <div className="relative w-full h-full">
             <motion.div 
-              className="absolute bottom-0 w-12 h-12 flex items-center justify-center"
+              className="absolute bottom-0 w-14 h-20 flex items-center justify-center overflow-visible"
               style={{ 
-                left: `calc(${scrollPercent * 100}% - ${scrollPercent * 48}px)`,
+                left: `calc(${scrollPercent * 100}% - ${scrollPercent * 56}px)`,
                 y: -Math.sin(scrollPercent * Math.PI) * 35,
-                rotate: (scrollPercent - 0.5) * 25
+                rotate: 90 + (scrollPercent - 0.5) * 30
               }}
             >
-              <div className="relative flex flex-col items-center">
-                <img 
-                  src="/rocket.png" 
-                  alt="Scroll Rocket" 
-                  className="w-10 h-10 object-contain rotate-[35deg] drop-shadow-[0_0_12px_rgba(46,84,254,0.85)]"
-                />
-                {/* Simulated thrust glow */}
-                <div className="absolute -bottom-1 -left-1 w-3.5 h-3.5 bg-blue-500 rounded-full blur-[2px] opacity-75 animate-pulse" />
-                <div className="absolute -bottom-0.5 -left-0.5 w-2 h-2 bg-white rounded-full blur-[1px] opacity-90" />
+              <div className="relative flex flex-col items-center overflow-visible">
+                {/* SVG Animated Rocket */}
+                <svg viewBox="0 0 60 90" className="w-10 h-15 rocket-svg overflow-visible">
+                  <defs>
+                    <linearGradient id="flameOuterGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="#2E54FE" stopOpacity="0.95" />
+                      <stop offset="50%" stopColor="#38bdf8" stopOpacity="0.75" />
+                      <stop offset="100%" stopColor="#38bdf8" stopOpacity="0" />
+                    </linearGradient>
+                    <linearGradient id="flameInnerGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="#ffffff" stopOpacity="1" />
+                      <stop offset="50%" stopColor="#60a5fa" stopOpacity="0.85" />
+                      <stop offset="100%" stopColor="#2E54FE" stopOpacity="0" />
+                    </linearGradient>
+                  </defs>
+
+                  {/* Fuel burning exhaust sparks */}
+                  <circle className="spark spark-1" cx="30" cy="62" r="1.8" fill="#38bdf8" />
+                  <circle className="spark spark-2" cx="26" cy="64" r="1.5" fill="#2E54FE" />
+                  <circle className="spark spark-3" cx="34" cy="63" r="1.5" fill="#60a5fa" />
+                  <circle className="spark spark-4" cx="28" cy="65" r="1.2" fill="#ffffff" />
+                  <circle className="spark spark-5" cx="32" cy="64" r="1.2" fill="#38bdf8" />
+
+                  {/* Pulsing engine flames */}
+                  <path className="flame-outer" d="M22,60 Q30,85 38,60 Q30,65 22,60 Z" fill="url(#flameOuterGrad)" />
+                  <path className="flame-inner" d="M25,60 Q30,75 35,60 Q30,63 25,60 Z" fill="url(#flameInnerGrad)" />
+
+                  {/* Sleek Vector Rocket Body */}
+                  {/* Engine Nozzle */}
+                  <rect x="25" y="55" width="10" height="6" rx="1.5" fill="#334155" />
+                  
+                  {/* Outer wings */}
+                  <path d="M18,42 L8,55 L20,52 Z" fill="#2E54FE" />
+                  <path d="M42,42 L52,55 L40,52 Z" fill="#2E54FE" />
+                  
+                  {/* Center wing line shadow */}
+                  <path d="M29,40 L30,55 L31,40 Z" fill="#1d4ed8" />
+
+                  {/* Core Body */}
+                  <path d="M30,8 C42,22 43,42 43,53 L17,53 C17,42 18,22 30,8 Z" fill="#e2e8f0" />
+                  
+                  {/* Nose Cone */}
+                  <path d="M30,8 C36,15 37,20 37,24 L23,24 C23,20 24,15 30,8 Z" fill="#2E54FE" />
+
+                  {/* Cockpit Glowing Window */}
+                  <circle cx="30" cy="32" r="5" fill="#0f172a" stroke="#60a5fa" strokeWidth="1.5" />
+                  <circle cx="28.5" cy="30.5" r="1.5" fill="#ffffff" opacity="0.85" />
+                </svg>
               </div>
             </motion.div>
           </div>

@@ -38,6 +38,19 @@ export default function ContactPage() {
     e.preventDefault();
     if (!formState.name || !formState.email || !formState.message) return;
 
+    const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "YOUR_WEB3FORMS_ACCESS_KEY_HERE";
+
+    // If using placeholder key, immediately redirect to mailto synchronously to prevent browser popup blockers.
+    if (accessKey === "YOUR_WEB3FORMS_ACCESS_KEY_HERE" || !accessKey) {
+      const subject = encodeURIComponent(`Contact Form: Message from ${formState.name}`);
+      const body = encodeURIComponent(`Name: ${formState.name}\nEmail: ${formState.email}\n\nMessage:\n${formState.message}`);
+      window.location.href = `mailto:chaitanyajidigum@gmail.com?subject=${subject}&body=${body}`;
+      setContactSuccess(true);
+      setFormState({ name: "", email: "", message: "" });
+      setTimeout(() => setContactSuccess(false), 4000);
+      return;
+    }
+
     setIsSending(true);
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
@@ -47,7 +60,7 @@ export default function ContactPage() {
           Accept: "application/json",
         },
         body: JSON.stringify({
-          access_key: "YOUR_WEB3FORMS_ACCESS_KEY_HERE", // User can replace this with their actual key
+          access_key: accessKey,
           name: formState.name,
           email: formState.email,
           message: formState.message,
@@ -66,16 +79,18 @@ export default function ContactPage() {
         setContactSuccess(true);
         setFormState({ name: "", email: "", message: "" });
       }
-    } catch {
+    } catch (err) {
+      console.error("Form submit error, falling back to mailto:", err);
       // Fallback to mailto redirect
       const subject = encodeURIComponent(`Contact Form: Message from ${formState.name}`);
       const body = encodeURIComponent(`Name: ${formState.name}\nEmail: ${formState.email}\n\nMessage:\n${formState.message}`);
       window.location.href = `mailto:chaitanyajidigum@gmail.com?subject=${subject}&body=${body}`;
       setContactSuccess(true);
       setFormState({ name: "", email: "", message: "" });
+    } finally {
+      setIsSending(false);
+      setTimeout(() => setContactSuccess(false), 4000);
     }
-    setIsSending(false);
-    setTimeout(() => setContactSuccess(false), 4000);
   };
 
   return (
