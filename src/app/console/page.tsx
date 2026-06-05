@@ -1,148 +1,177 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Terminal, ChevronRight } from "lucide-react";
+import { Terminal, ChevronRight, RotateCcw } from "lucide-react";
 
-interface TerminalHistory {
+interface TerminalEntry {
   text: string;
   type: "command" | "output" | "error";
 }
 
+const INIT_HISTORY: TerminalEntry[] = [
+  { text: "Chaitanya Jidigum's workspace console — v1.0.0", type: "output" },
+  { text: "Type 'help' to see available commands.", type: "output" },
+];
+
 export default function ConsolePage() {
-  const [terminalInput, setTerminalInput] = useState("");
-  const [terminalHistory, setTerminalHistory] = useState<TerminalHistory[]>([
-    { text: "System initialized. Welcome to Chaitanya Jidigum's workspace console.", type: "output" },
-    { text: "Type 'help' to see list of available commands.", type: "output" }
-  ]);
-  const terminalEndRef = useRef<HTMLDivElement>(null);
+  const [input, setInput] = useState("");
+  const [history, setHistory] = useState<TerminalEntry[]>(INIT_HISTORY);
+  const endRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const isInitialMount = useRef(true);
 
-  // Auto scroll terminal log to bottom on entries (preventing jump on mount)
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
       return;
     }
-    terminalEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [terminalHistory]);
+    endRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [history]);
 
-  // Focus terminal input without scrolling the page down on load
   useEffect(() => {
-    // Snap page to top first, then focus input
     window.scrollTo({ top: 0, behavior: "instant" });
     inputRef.current?.focus({ preventScroll: true });
   }, []);
 
-  const handleTerminalSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const cmd = terminalInput.trim().toLowerCase();
+    const cmd = input.trim().toLowerCase();
     if (!cmd) return;
 
-    const newHistory = [...terminalHistory, { text: `visitor@chaitanya:~ $ ${terminalInput}`, type: "command" as const }];
+    const next: TerminalEntry[] = [...history, { text: `visitor@cj:~$ ${input}`, type: "command" }];
 
     switch (cmd) {
       case "help":
-        newHistory.push({
-          text: "Available commands:\n  about     - Displays biographical info\n  skills    - Lists core tech stack and libraries\n  projects  - Lists recent coding projects\n  contact   - Shows direct contact methods\n  clear     - Clears the terminal screen",
-          type: "output"
+        next.push({
+          text: "Commands:\n  about      Bio and background\n  skills     Tech stack and libraries\n  projects   Portfolio highlights\n  contact    Contact info\n  clear      Reset terminal",
+          type: "output",
         });
         break;
       case "about":
-        newHistory.push({
-          text: "Chaitanya Jidigum is a Software Engineer specializing in AI/ML solutions, Python automation, and web technologies. Experienced in building predictive models, computer vision systems, and databases.",
-          type: "output"
+        next.push({
+          text: "Chaitanya Jidigum — Software Engineer & IoT Coordinator\nSpecializing in AI/ML, computer vision, and automation.\nLocation: Hyderabad, India  ·  B.Tech CSE (IoT)",
+          type: "output",
         });
         break;
       case "skills":
-        newHistory.push({
-          text: "Tech Stack:\n  Languages  : Python, Java, C++, C, HTML5, CSS3, JavaScript\n  Tools/Libs : Pandas, NumPy, Scikit-Learn, OpenCV, Selenium\n  Databases  : MySQL\n  Environments: Windows, Ubuntu, Jupyter Notebook, Eclipse",
-          type: "output"
+        next.push({
+          text: "Languages  → Python, Java, C++, C, JavaScript, HTML5, CSS3\nLibraries  → Pandas, NumPy, Scikit-Learn, OpenCV, Selenium\nDatabases  → MySQL, Relational Modeling\nTools      → Jupyter Notebook, Eclipse, VS Code, Git",
+          type: "output",
         });
         break;
       case "projects":
-        newHistory.push({
-          text: "Featured Projects:\n  1. Airfare Prices Prediction - Machine learning cost estimation (Category: Fullstack)\n  2. AI Crowd Analytics - CCTV computer vision monitor (Category: AI/ML)\n  3. IoT Campus Event Portal - Event registration system (Category: Frontend)",
-          type: "output"
+        next.push({
+          text: "1. Airfare Prices Prediction   [ML / Regression]\n2. AI Crowd Analytics & CCTV   [Computer Vision]\n3. IoT Campus Events Dashboard  [Frontend / MySQL]\n4. Web Automation & Scraping    [Selenium / Python]",
+          type: "output",
         });
         break;
       case "contact":
-        newHistory.push({
-          text: "Reach out via email: chaitanyajidigum@gmail.com or navigate to the contact page to send a form message.",
-          type: "output"
+        next.push({
+          text: "Email   → chaitanyajidigum@gmail.com\nGitHub  → github.com/ChaitanyaJidigum\nLinkedIn→ linkedin.com/in/chaitanya-jidigum-082091268",
+          type: "output",
         });
         break;
       case "clear":
-        setTerminalHistory([]);
-        setTerminalInput("");
+        setHistory([]);
+        setInput("");
         return;
       default:
-        newHistory.push({
-          text: `Command not found: '${cmd}'. Type 'help' to see list of available commands.`,
-          type: "error"
+        next.push({
+          text: `bash: ${cmd}: command not found. Try 'help'.`,
+          type: "error",
         });
     }
 
-    setTerminalHistory(newHistory);
-    setTerminalInput("");
+    setHistory(next);
+    setInput("");
   };
 
   return (
-    <section className="py-16 md:py-20 w-full min-h-screen flex flex-col items-center">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 flex flex-col gap-6 md:gap-8 animate-slide-up w-full">
-        {/* Title block */}
-        <div className="flex flex-col gap-2 max-w-2xl">
-          <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#2E54FE]">[ SANDBOX ]</span>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight">Developer Console</h1>
-          <p className="text-sm text-[#cbd5e1]/80 leading-relaxed mt-2">
-            Interact directly with my workspace. Type commands in the terminal widget below to query my resume details in real-time.
+    <section className="py-20 md:py-28 w-full min-h-screen">
+      <div className="mx-auto max-w-5xl px-5 sm:px-8 flex flex-col gap-10 animate-slide-up w-full">
+
+        {/* ── Header ──────────────────────────────── */}
+        <div className="flex flex-col gap-3 border-b border-white/5 pb-10">
+          <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#2E54FE]">Sandbox</span>
+          <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter leading-none">Console</h1>
+          <p className="text-sm text-[#cbd5e1]/55 max-w-md leading-relaxed mt-1">
+            An interactive terminal to query my resume details in real-time. Type <code className="font-mono text-[#2E54FE]">help</code> to get started.
           </p>
         </div>
 
-        {/* Terminal Widget */}
-        <div className="w-full max-w-3xl mx-auto rounded-xl border border-white/5 bg-[#0b0b0b] shadow-2xl overflow-hidden hover:border-[#2E54FE]/40 transition-all duration-300">
-          {/* Header */}
-          <div className="flex items-center justify-between bg-black/60 px-4 py-3 border-b border-white/5">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-rose-500" />
-              <div className="w-3 h-3 rounded-full bg-amber-500" />
-              <div className="w-3 h-3 rounded-full bg-emerald-500" />
-              <span className="text-xs font-mono text-[#cbd5e1]/60 ml-2">chaitanya_workspace.sh</span>
+        {/* ── Terminal Widget ──────────────────────── */}
+        <div className="w-full rounded-xl border border-white/5 hover:border-[#2E54FE]/25 overflow-hidden transition-all duration-300 shadow-2xl shadow-black/40">
+
+          {/* Toolbar */}
+          <div className="flex items-center justify-between px-4 py-3 border-b border-white/5 bg-white/[0.02]">
+            <div className="flex items-center gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
+              <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+              <span className="text-[11px] font-mono text-[#cbd5e1]/35 ml-3">chaitanya_workspace — bash</span>
             </div>
-            <Terminal className="w-4 h-4 text-[#cbd5e1]/50" />
+            <div className="flex items-center gap-3">
+              <Terminal className="w-3.5 h-3.5 text-[#cbd5e1]/30" />
+              <button
+                onClick={() => setHistory(INIT_HISTORY)}
+                className="text-[#cbd5e1]/30 hover:text-[#2E54FE] transition-colors cursor-pointer"
+                title="Reset terminal"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+              </button>
+            </div>
           </div>
 
-          {/* Console Log */}
-          <div className="p-4 md:p-5 h-80 md:h-[28rem] overflow-y-auto font-mono text-sm flex flex-col gap-2.5">
-            {terminalHistory.map((item, idx) => (
-              <div 
-                key={idx} 
-                className={`whitespace-pre-line leading-relaxed ${
-                  item.type === "command" 
-                    ? "text-[#2E54FE] font-bold" 
-                    : item.type === "error" 
-                      ? "text-rose-400" 
-                      : "text-[#cbd5e1]"
+          {/* Log area */}
+          <div className="p-5 h-72 md:h-[26rem] overflow-y-auto font-mono text-[13px] flex flex-col gap-3 leading-relaxed">
+            {history.map((entry, i) => (
+              <div
+                key={i}
+                className={`whitespace-pre-line ${
+                  entry.type === "command"
+                    ? "text-[#2E54FE]"
+                    : entry.type === "error"
+                    ? "text-rose-400/90"
+                    : "text-[#cbd5e1]/75"
                 }`}
               >
-                {item.text}
+                {entry.text}
               </div>
             ))}
-            <div ref={terminalEndRef} />
+            <div ref={endRef} />
           </div>
 
-          {/* Input Line */}
-          <form onSubmit={handleTerminalSubmit} className="flex items-center border-t border-white/5 bg-white/[0.02] px-5 py-3">
-            <ChevronRight className="w-4 h-4 text-[#2E54FE] shrink-0 mr-1.5" />
+          {/* Input row */}
+          <form
+            onSubmit={handleSubmit}
+            className="flex items-center border-t border-white/5 bg-white/[0.015] px-5 py-3 gap-2"
+          >
+            <ChevronRight className="w-3.5 h-3.5 text-[#2E54FE] shrink-0" />
             <input
               ref={inputRef}
               type="text"
-              value={terminalInput}
-              onChange={(e) => setTerminalInput(e.target.value)}
-              placeholder="Type 'help' and press Enter..."
-              className="w-full bg-transparent border-0 outline-hidden font-mono text-sm text-white placeholder:text-[#cbd5e1]/30 focus:outline-hidden"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="enter command..."
+              className="w-full bg-transparent border-none outline-none font-mono text-[13px] text-white placeholder:text-[#cbd5e1]/20 focus:outline-none"
             />
           </form>
+        </div>
+
+        {/* Quick hints */}
+        <div className="flex flex-wrap gap-2">
+          {["help", "about", "skills", "projects", "contact", "clear"].map((cmd) => (
+            <button
+              key={cmd}
+              onClick={() => {
+                setInput(cmd);
+                inputRef.current?.focus({ preventScroll: true });
+              }}
+              className="px-3 py-1 rounded-md text-[10px] font-mono text-[#cbd5e1]/35 border border-white/5 hover:border-[#2E54FE]/25 hover:text-[#2E54FE] transition-all cursor-pointer"
+            >
+              {cmd}
+            </button>
+          ))}
         </div>
       </div>
     </section>

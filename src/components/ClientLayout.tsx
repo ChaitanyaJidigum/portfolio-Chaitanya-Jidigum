@@ -176,7 +176,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
             />
           )}
           
-          <div className="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
+          <div className="mx-auto max-w-5xl px-5 sm:px-8 h-16 flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2.5 group">
               <div className="w-8 h-8 rounded-lg bg-[#2E54FE] flex items-center justify-center text-white font-extrabold text-sm group-hover:scale-105 transition-transform duration-200">
                 CJ
@@ -263,7 +263,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
               className="md:hidden border-b border-white/5 bg-black/95 backdrop-blur-lg overflow-hidden fixed left-0 w-full z-40 shadow-2xl"
               style={{ top: isScrolled ? "76px" : "64px" }}
             >
-              <nav className="flex flex-col p-6 gap-4 text-sm font-semibold">
+              <nav className="mx-auto max-w-5xl px-5 sm:px-8 flex flex-col py-5 gap-1 text-sm font-semibold">
                 {navLinks.map((link) => {
                   const isActive = pathname === link.href;
                   return (
@@ -310,19 +310,21 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
           initial={{ y: 70, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="border-t border-white/5 bg-black pb-safe pt-8 text-[#cbd5e1]/50 relative z-10" style={{ paddingBottom: 'max(2rem, env(safe-area-inset-bottom))' }}
+          className="border-t border-white/5 bg-black/90 backdrop-blur-sm text-[#cbd5e1]/40 relative z-10" style={{ paddingBottom: 'max(2rem, env(safe-area-inset-bottom))' }}
         >
           {/* Visual Highlight Bar at the very bottom of Footer */}
           <div className="absolute bottom-0 left-0 w-full h-[3px] bg-[#2E54FE]" />
           
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs">
-            <div>
-              &copy; {new Date().getFullYear()} Chaitanya Jidigum. All rights reserved.
+          <div className="mx-auto max-w-5xl px-5 sm:px-8 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex flex-col items-center md:items-start gap-1">
+              <span className="text-xs font-bold text-white/60">Chaitanya Jidigum</span>
+              <span className="text-[10px] font-mono text-[#cbd5e1]/30">&copy; {new Date().getFullYear()} · All rights reserved.</span>
             </div>
-            <div className="flex gap-4">
-              <a href="https://nextjs.org" className="hover:underline transition-all">Next.js</a>
-              <a href="https://tailwindcss.com" className="hover:underline transition-all">Tailwind CSS</a>
-              <a href="https://typescriptlang.org" className="hover:underline transition-all">TypeScript</a>
+            <div className="flex items-center gap-5 text-[10px] font-mono text-[#cbd5e1]/30">
+              <a href="https://github.com/ChaitanyaJidigum" target="_blank" rel="noopener noreferrer" className="hover:text-[#2E54FE] transition-colors">GitHub</a>
+              <a href="https://www.linkedin.com/in/chaitanya-jidigum-082091268/" target="_blank" rel="noopener noreferrer" className="hover:text-[#2E54FE] transition-colors">LinkedIn</a>
+              <span className="w-px h-3 bg-white/10" />
+              <span>Built with Next.js &amp; Framer Motion</span>
             </div>
           </div>
         </motion.footer>
