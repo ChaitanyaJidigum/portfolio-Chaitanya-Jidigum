@@ -531,53 +531,63 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
               }}
             >
               <div className="relative flex flex-col items-center overflow-visible">
-                {/* SVG Animated Rocket */}
-                <svg viewBox="0 0 60 90" className="w-10 h-15 rocket-svg overflow-visible">
-                  <defs>
-                    <linearGradient id="flameOuterGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" stopColor="#2E54FE" stopOpacity="0.95" />
-                      <stop offset="50%" stopColor="#38bdf8" stopOpacity="0.75" />
-                      <stop offset="100%" stopColor="#38bdf8" stopOpacity="0" />
-                    </linearGradient>
-                    <linearGradient id="flameInnerGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" stopColor="#ffffff" stopOpacity="1" />
-                      <stop offset="50%" stopColor="#60a5fa" stopOpacity="0.85" />
-                      <stop offset="100%" stopColor="#2E54FE" stopOpacity="0" />
-                    </linearGradient>
-                  </defs>
+                  {/* SVG Animated Rocket */}
+                  <svg viewBox="0 0 60 90" className="w-10 h-15 rocket-svg overflow-visible">
+                    <defs>
+                      {/* Gradients for a premium, 3D metallic blue rocket body */}
+                      <linearGradient id="rocketBodyGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#3b82f6" />
+                        <stop offset="50%" stopColor="#2E54FE" />
+                        <stop offset="100%" stopColor="#1d4ed8" />
+                      </linearGradient>
+                      <linearGradient id="rocketWingGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#1e40af" />
+                        <stop offset="100%" stopColor="#172554" />
+                      </linearGradient>
+                      <linearGradient id="flameOuterGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stopColor="#2E54FE" stopOpacity="0.95" />
+                        <stop offset="50%" stopColor="#38bdf8" stopOpacity="0.75" />
+                        <stop offset="100%" stopColor="#38bdf8" stopOpacity="0" />
+                      </linearGradient>
+                      <linearGradient id="flameInnerGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stopColor="#ffffff" stopOpacity="1" />
+                        <stop offset="50%" stopColor="#60a5fa" stopOpacity="0.85" />
+                        <stop offset="100%" stopColor="#2E54FE" stopOpacity="0" />
+                      </linearGradient>
+                    </defs>
 
-                  {/* Fuel burning exhaust sparks */}
-                  <circle className="spark spark-1" cx="30" cy="62" r="1.8" fill="#38bdf8" />
-                  <circle className="spark spark-2" cx="26" cy="64" r="1.5" fill="#2E54FE" />
-                  <circle className="spark spark-3" cx="34" cy="63" r="1.5" fill="#60a5fa" />
-                  <circle className="spark spark-4" cx="28" cy="65" r="1.2" fill="#ffffff" />
-                  <circle className="spark spark-5" cx="32" cy="64" r="1.2" fill="#38bdf8" />
+                    {/* Fuel burning exhaust sparks */}
+                    <circle className="spark spark-1" cx="30" cy="62" r="1.8" fill="#38bdf8" />
+                    <circle className="spark spark-2" cx="26" cy="64" r="1.5" fill="#2E54FE" />
+                    <circle className="spark spark-3" cx="34" cy="63" r="1.5" fill="#60a5fa" />
+                    <circle className="spark spark-4" cx="28" cy="65" r="1.2" fill="#ffffff" />
+                    <circle className="spark spark-5" cx="32" cy="64" r="1.2" fill="#38bdf8" />
 
-                  {/* Pulsing engine flames */}
-                  <path className="flame-outer" d="M22,60 Q30,85 38,60 Q30,65 22,60 Z" fill="url(#flameOuterGrad)" />
-                  <path className="flame-inner" d="M25,60 Q30,75 35,60 Q30,63 25,60 Z" fill="url(#flameInnerGrad)" />
+                    {/* Pulsing engine flames */}
+                    <path className="flame-outer" d="M22,60 Q30,85 38,60 Q30,65 22,60 Z" fill="url(#flameOuterGrad)" />
+                    <path className="flame-inner" d="M25,60 Q30,75 35,60 Q30,63 25,60 Z" fill="url(#flameInnerGrad)" />
 
-                  {/* Sleek Vector Rocket Body */}
-                  {/* Engine Nozzle */}
-                  <rect x="25" y="55" width="10" height="6" rx="1.5" fill="#334155" />
-                  
-                  {/* Outer wings */}
-                  <path d="M18,42 L8,55 L20,52 Z" fill="#2E54FE" />
-                  <path d="M42,42 L52,55 L40,52 Z" fill="#2E54FE" />
-                  
-                  {/* Center wing line shadow */}
-                  <path d="M29,40 L30,55 L31,40 Z" fill="#1d4ed8" />
+                    {/* Sleek Vector Rocket Body */}
+                    {/* Engine Nozzle */}
+                    <rect x="25" y="55" width="10" height="6" rx="1.5" fill="#475569" stroke="#0f172a" strokeWidth="1.5" />
+                    
+                    {/* Left Fin Wing */}
+                    <path d="M18,40 L6,53 C6,53 10,54 18,50 Z" fill="url(#rocketWingGrad)" stroke="#0f172a" strokeWidth="1.5" strokeLinejoin="round" />
+                    
+                    {/* Right Fin Wing */}
+                    <path d="M42,40 L54,53 C54,53 50,54 42,50 Z" fill="url(#rocketWingGrad)" stroke="#0f172a" strokeWidth="1.5" strokeLinejoin="round" />
+                    
+                    {/* Main Capsule Body */}
+                    <path d="M30,8 C40,20 42,40 42,54 L18,54 C18,40 20,20 30,8 Z" fill="url(#rocketBodyGrad)" stroke="#0f172a" strokeWidth="1.8" />
+                    
+                    {/* Center Fin Wing */}
+                    <path d="M28,42 L30,54 L32,42 Z" fill="url(#rocketWingGrad)" stroke="#0f172a" strokeWidth="1.2" />
 
-                  {/* Core Body */}
-                  <path d="M30,8 C42,22 43,42 43,53 L17,53 C17,42 18,22 30,8 Z" fill="#e2e8f0" />
-                  
-                  {/* Nose Cone */}
-                  <path d="M30,8 C36,15 37,20 37,24 L23,24 C23,20 24,15 30,8 Z" fill="#2E54FE" />
-
-                  {/* Cockpit Glowing Window */}
-                  <circle cx="30" cy="32" r="5" fill="#0f172a" stroke="#60a5fa" strokeWidth="1.5" />
-                  <circle cx="28.5" cy="30.5" r="1.5" fill="#ffffff" opacity="0.85" />
-                </svg>
+                    {/* Cockpit Glowing Window */}
+                    <circle cx="30" cy="28" r="6" fill="#0f172a" stroke="#0f172a" strokeWidth="2" />
+                    <circle cx="30" cy="28" r="4.5" fill="#60a5fa" />
+                    <circle cx="28.5" cy="26.5" r="1.5" fill="#ffffff" opacity="0.8" />
+                  </svg>
               </div>
             </motion.div>
           </div>
