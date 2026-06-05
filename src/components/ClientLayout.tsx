@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
-import { ArrowUp } from "lucide-react";
+import { ArrowUp, Mail, Phone, MapPin } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // Dynamically import GhostCursor to avoid SSR issues with canvas/WebGL
@@ -118,8 +118,8 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
     { name: "Home", href: "/" },
     { name: "About", href: "/about" },
     { name: "Projects", href: "/projects" },
+    { name: "Experience", href: "/about#experience" },
     { name: "Skills", href: "/skills" },
-    { name: "Console", href: "/console" },
     { name: "Contact", href: "/contact" },
   ];
 
@@ -310,22 +310,62 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
           initial={{ y: 70, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="border-t border-white/5 bg-black/90 backdrop-blur-sm text-[#cbd5e1]/40 relative z-10" style={{ paddingBottom: 'max(2rem, env(safe-area-inset-bottom))' }}
+          className="border-t border-white/5 bg-black/90 backdrop-blur-sm text-[#cbd5e1]/40 relative z-10 w-full" 
+          style={{ paddingBottom: 'max(1.5rem, env(safe-area-inset-bottom))' }}
         >
-          {/* Visual Highlight Bar at the very bottom of Footer */}
-          <div className="absolute bottom-0 left-0 w-full h-[3px] bg-[#2E54FE]" />
-          
-          <div className="mx-auto max-w-5xl px-5 sm:px-8 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex flex-col items-center md:items-start gap-1">
-              <span className="text-xs font-bold text-white/60">Chaitanya Jidigum</span>
-              <span className="text-[10px] font-mono text-[#cbd5e1]/30">&copy; {new Date().getFullYear()} · All rights reserved.</span>
+          {/* Upper row: Let's build something, contacts, social links */}
+          <div className="mx-auto max-w-5xl px-5 sm:px-8 pt-12 pb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 border-b border-white/5">
+            {/* Left side: branding text */}
+            <div className="flex flex-col gap-1 max-w-xs text-left">
+              <h3 className="text-base font-bold text-white leading-tight">
+                Let&apos;s build something <br />
+                <span className="text-[#2E54FE]">amazing</span> together.
+              </h3>
             </div>
-            <div className="flex items-center gap-5 text-[10px] font-mono text-[#cbd5e1]/30">
-              <a href="https://github.com/ChaitanyaJidigum" target="_blank" rel="noopener noreferrer" className="hover:text-[#2E54FE] transition-colors">GitHub</a>
-              <a href="https://www.linkedin.com/in/chaitanya-jidigum-082091268/" target="_blank" rel="noopener noreferrer" className="hover:text-[#2E54FE] transition-colors">LinkedIn</a>
-              <span className="w-px h-3 bg-white/10" />
-              <span>Built with Next.js &amp; Framer Motion</span>
+
+            {/* Middle: contact info details */}
+            <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-4 sm:gap-6 text-xs text-[#cbd5e1]/65 font-mono">
+              <a href="mailto:chaitanyajidigum@gmail.com" className="flex items-center gap-2 hover:text-[#2E54FE] transition-colors">
+                <Mail className="w-3.5 h-3.5" />
+                <span>chaitanyajidigum@gmail.com</span>
+              </a>
+              <a href="tel:+917993932479" className="flex items-center gap-2 hover:text-[#2E54FE] transition-colors">
+                <Phone className="w-3.5 h-3.5" />
+                <span>+91 7993932479</span>
+              </a>
+              <div className="flex items-center gap-2 text-[#cbd5e1]/45">
+                <MapPin className="w-3.5 h-3.5" />
+                <span>Bangalore, India</span>
+              </div>
             </div>
+
+            {/* Right: Social icons inside rounded borders */}
+            <div className="flex items-center gap-2.5">
+              <a 
+                href="https://github.com/ChaitanyaJidigum" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="w-9 h-9 rounded-lg border border-white/10 bg-white/[0.02] hover:border-[#2E54FE]/50 hover:text-[#2E54FE] flex items-center justify-center text-[#cbd5e1]/60 transition-all cursor-pointer"
+                aria-label="GitHub"
+              >
+                <GithubIcon className="w-4 h-4" />
+              </a>
+              <a 
+                href="https://www.linkedin.com/in/chaitanya-jidigum-082091268/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="w-9 h-9 rounded-lg border border-white/10 bg-white/[0.02] hover:border-[#2E54FE]/50 hover:text-[#2E54FE] flex items-center justify-center text-[#cbd5e1]/60 transition-all cursor-pointer"
+                aria-label="LinkedIn"
+              >
+                <LinkedinIcon className="w-4 h-4" />
+              </a>
+            </div>
+          </div>
+
+          {/* Lower row: copyright */}
+          <div className="mx-auto max-w-5xl px-5 sm:px-8 py-5 flex items-center justify-between text-[10px] font-mono text-[#cbd5e1]/30">
+            <span>&copy; 2025 Chaitanya Jidigum. All rights reserved.</span>
+            <span className="hidden sm:inline">Built with Next.js &amp; Framer Motion</span>
           </div>
         </motion.footer>
 

@@ -72,7 +72,7 @@ export default function AboutPage() {
           </div>
 
           {/* Timeline Column */}
-          <div className="lg:col-span-6 flex flex-col gap-6">
+          <div id="experience" className="lg:col-span-6 flex flex-col gap-6 scroll-mt-24">
             <div className="flex flex-col gap-1">
               <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#2E54FE]">Career</span>
               <h2 className="text-xl font-bold text-white tracking-tight">Professional Timeline</h2>
@@ -88,7 +88,7 @@ export default function AboutPage() {
 
                   {/* Dot */}
                   <div className="relative mt-1.5 shrink-0">
-                    <div className={`w-4.5 h-4.5 rounded-full border-2 ${
+                    <div className={`w-[18px] h-[18px] rounded-full border-2 ${
                       item.active
                         ? "bg-[#2E54FE] border-[#2E54FE] shadow-[0_0_12px_rgba(46,84,254,0.5)]"
                         : "bg-[#0b0b0b] border-white/20"

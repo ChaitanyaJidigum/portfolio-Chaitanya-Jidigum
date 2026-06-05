@@ -54,7 +54,7 @@ export default function SkillsPage() {
               >
                 {/* Icon */}
                 <div className="w-9 h-9 rounded-lg bg-[#2E54FE]/10 flex items-center justify-center text-[#2E54FE] group-hover:bg-[#2E54FE]/20 transition-colors">
-                  <Icon className="w-4.5 h-4.5" strokeWidth={1.75} />
+                  <Icon className="w-[18px] h-[18px]" strokeWidth={1.75} />
                 </div>
 
                 {/* Text */}
