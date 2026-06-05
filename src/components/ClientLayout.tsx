@@ -476,7 +476,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
               </a>
               <div className="flex items-center gap-2 text-[#cbd5e1]/45">
                 <MapPin className="w-3.5 h-3.5" />
-                <span>Bangalore, India</span>
+                <span>Hyderabad, India</span>
               </div>
             </div>
 
