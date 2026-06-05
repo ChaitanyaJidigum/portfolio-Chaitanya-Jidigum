@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { ArrowUp, Mail, MapPin } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import Lenis from "lenis";
 
 // Dynamically import GhostCursor to avoid SSR issues with canvas/WebGL
 const GhostCursor = dynamic(() => import("@/components/GhostCursor"), { ssr: false });
@@ -56,9 +57,13 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [scrollPercent, setScrollPercent] = useState(0);
   
   // Transition Loader states
   const [showLoader, setShowLoader] = useState(true);
+
+  // Lenis instance reference
+  const lenisRef = useRef<Lenis | null>(null);
 
   // Splash screen timeout on initial mount
   useEffect(() => {
@@ -67,6 +72,74 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
     }, 1800);
     return () => clearTimeout(timer);
   }, []);
+
+  // Initialize Lenis smooth scroll
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // smooth exponential easing
+      orientation: "vertical",
+      gestureOrientation: "vertical",
+      smoothWheel: true,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.5,
+    });
+
+    lenisRef.current = lenis;
+
+    let rafId: number;
+    function raf(time: number) {
+      lenis.raf(time);
+      rafId = requestAnimationFrame(raf);
+    }
+    rafId = requestAnimationFrame(raf);
+
+    // Sync scroll percentage and states with Lenis scroll events
+    const handleLenisScroll = (e: { scroll: number }) => {
+      setIsScrolled(e.scroll > 40);
+      setShowScrollTop(e.scroll > 400);
+      
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight > 0) {
+        setScrollPercent(e.scroll / docHeight);
+      } else {
+        setScrollPercent(0);
+      }
+    };
+    
+    lenis.on("scroll", handleLenisScroll);
+
+    return () => {
+      lenis.destroy();
+      cancelAnimationFrame(rafId);
+    };
+  }, []);
+
+  // Reset Lenis scroll on pathname change
+  useEffect(() => {
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(0, { immediate: true });
+    }
+  }, [pathname]);
+
+  // Handle smooth scroll to hash on initial load or route transition
+  useEffect(() => {
+    if (typeof window !== "undefined" && lenisRef.current) {
+      const hash = window.location.hash;
+      if (hash) {
+        // Wait a brief moment for loader fade and layout adjustments
+        const timer = setTimeout(() => {
+          const element = document.querySelector(hash) as HTMLElement | null;
+          if (element && lenisRef.current) {
+            lenisRef.current.scrollTo(element, { immediate: false, duration: 1.8 });
+          }
+        }, 400);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [pathname, showLoader]);
 
   // Custom navigation handler with transition
   const navigateWithTransition = useCallback((href: string) => {
@@ -90,7 +163,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
     };
   }, [pathname, router]);
 
-  // Global click interceptor to apply transition to internal links automatically
+  // Global click interceptor to apply transition to internal links and smooth scroll hashes
   useEffect(() => {
     const handleGlobalClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
@@ -112,6 +185,14 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
 
           if (hrefPath === currentPath) {
             // standard scroll for same-page anchors
+            const hash = href.split("#")[1];
+            if (hash && lenisRef.current) {
+              const element = document.getElementById(hash);
+              if (element) {
+                e.preventDefault();
+                lenisRef.current.scrollTo(element, { duration: 1.5 });
+              }
+            }
             return;
           }
 
@@ -140,58 +221,17 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
     };
   }, []);
 
-  // Scroll percentage state for the rocket indicator
-  const [scrollPercent, setScrollPercent] = useState(0);
 
-  // Monitor scroll for Scroll-to-Top button, Header scrolled state, and Rocket progress
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40);
-      if (window.scrollY > 400) {
-        setShowScrollTop(true);
-      } else {
-        setShowScrollTop(false);
-      }
-
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      if (docHeight > 0) {
-        setScrollPercent(scrollTop / docHeight);
-      } else {
-        setScrollPercent(0);
-      }
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Ensure page scroll resets to top on route change
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (window.history) {
-        window.history.scrollRestoration = "manual";
-      }
-      window.scrollTo(0, 0);
-
-      const handleScrollRestoration = () => {
-        window.scrollTo(0, 0);
-      };
-      
-      const timer = setTimeout(handleScrollRestoration, 0);
-      const timerLong = setTimeout(handleScrollRestoration, 150);
-
-      return () => {
-        clearTimeout(timer);
-        clearTimeout(timerLong);
-      };
-    }
-  }, [pathname]);
 
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(0, { duration: 1.5 });
+    } else {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
   };
 
   const navLinks = [
