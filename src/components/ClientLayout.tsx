@@ -77,6 +77,10 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
+    if (window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // smooth exponential easing
@@ -119,6 +123,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
 
   // Reset Lenis scroll on pathname change
   useEffect(() => {
+    window.scrollTo(0, 0);
     if (lenisRef.current) {
       lenisRef.current.scrollTo(0, { immediate: true });
     }
@@ -150,11 +155,19 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
     // Change route after loading logo animation plays
     const routeTimer = setTimeout(() => {
       router.push(href);
+      window.scrollTo(0, 0);
+      if (lenisRef.current) {
+        lenisRef.current.scrollTo(0, { immediate: true });
+      }
     }, 1200);
 
     // Fade loader out after page mounts
     const fadeTimer = setTimeout(() => {
       setShowLoader(false);
+      window.scrollTo(0, 0);
+      if (lenisRef.current) {
+        lenisRef.current.scrollTo(0, { immediate: true });
+      }
     }, 1900);
 
     return () => {
@@ -355,14 +368,6 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
           transition={{ type: "spring", stiffness: 200, damping: 25 }}
           className="sticky top-0 z-50 mx-auto bg-black/85 backdrop-blur-md text-white overflow-hidden w-full"
         >
-          {/* Visual Highlight Bar at the very top of Header (only when not scrolled) */}
-          {!isScrolled && (
-            <motion.div 
-              layoutId="header-top-bar"
-              className="absolute top-0 left-0 w-full h-[3px] bg-[#2E54FE]" 
-            />
-          )}
-          
           <div className="mx-auto max-w-5xl px-5 sm:px-8 h-16 flex items-center justify-between">
             <div className="flex items-center gap-8 md:gap-12 lg:gap-16 h-full">
               <Link href="/" className="flex items-center gap-2.5 group">
@@ -559,79 +564,11 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
           </div>
         </motion.footer>
 
-        {/* Scroll Rocket Progress Indicator */}
-        <div className="fixed bottom-6 left-6 right-6 z-40 pointer-events-none select-none h-16 hidden sm:block">
-          <div className="relative w-full h-full">
-            <motion.div 
-              className="absolute bottom-0 w-14 h-20 flex items-center justify-center overflow-visible"
-              style={{ 
-                left: `calc(${scrollPercent * 100}% - ${scrollPercent * 56}px)`,
-                y: -Math.sin(scrollPercent * Math.PI) * 35,
-                rotate: 90 + (scrollPercent - 0.5) * 30
-              }}
-            >
-              <div className="relative flex flex-col items-center overflow-visible">
-                  {/* SVG Animated Rocket */}
-                  <svg viewBox="0 0 60 90" className="w-10 h-15 rocket-svg overflow-visible">
-                    <defs>
-                      {/* Gradients for a premium, 3D metallic blue rocket body */}
-                      <linearGradient id="rocketBodyGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stopColor="#3b82f6" />
-                        <stop offset="50%" stopColor="#2E54FE" />
-                        <stop offset="100%" stopColor="#1d4ed8" />
-                      </linearGradient>
-                      <linearGradient id="rocketWingGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stopColor="#1e40af" />
-                        <stop offset="100%" stopColor="#172554" />
-                      </linearGradient>
-                      <linearGradient id="flameOuterGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stopColor="#2E54FE" stopOpacity="0.95" />
-                        <stop offset="50%" stopColor="#38bdf8" stopOpacity="0.75" />
-                        <stop offset="100%" stopColor="#38bdf8" stopOpacity="0" />
-                      </linearGradient>
-                      <linearGradient id="flameInnerGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stopColor="#ffffff" stopOpacity="1" />
-                        <stop offset="50%" stopColor="#60a5fa" stopOpacity="0.85" />
-                        <stop offset="100%" stopColor="#2E54FE" stopOpacity="0" />
-                      </linearGradient>
-                    </defs>
-
-                    {/* Fuel burning exhaust sparks */}
-                    <circle className="spark spark-1" cx="30" cy="62" r="1.8" fill="#38bdf8" />
-                    <circle className="spark spark-2" cx="26" cy="64" r="1.5" fill="#2E54FE" />
-                    <circle className="spark spark-3" cx="34" cy="63" r="1.5" fill="#60a5fa" />
-                    <circle className="spark spark-4" cx="28" cy="65" r="1.2" fill="#ffffff" />
-                    <circle className="spark spark-5" cx="32" cy="64" r="1.2" fill="#38bdf8" />
-
-                    {/* Pulsing engine flames */}
-                    <path className="flame-outer" d="M22,60 Q30,85 38,60 Q30,65 22,60 Z" fill="url(#flameOuterGrad)" />
-                    <path className="flame-inner" d="M25,60 Q30,75 35,60 Q30,63 25,60 Z" fill="url(#flameInnerGrad)" />
-
-                    {/* Sleek Vector Rocket Body */}
-                    {/* Engine Nozzle */}
-                    <rect x="25" y="55" width="10" height="6" rx="1.5" fill="#475569" stroke="#0f172a" strokeWidth="1.5" />
-                    
-                    {/* Left Fin Wing */}
-                    <path d="M18,40 L6,53 C6,53 10,54 18,50 Z" fill="url(#rocketWingGrad)" stroke="#0f172a" strokeWidth="1.5" strokeLinejoin="round" />
-                    
-                    {/* Right Fin Wing */}
-                    <path d="M42,40 L54,53 C54,53 50,54 42,50 Z" fill="url(#rocketWingGrad)" stroke="#0f172a" strokeWidth="1.5" strokeLinejoin="round" />
-                    
-                    {/* Main Capsule Body */}
-                    <path d="M30,8 C40,20 42,40 42,54 L18,54 C18,40 20,20 30,8 Z" fill="url(#rocketBodyGrad)" stroke="#0f172a" strokeWidth="1.8" />
-                    
-                    {/* Center Fin Wing */}
-                    <path d="M28,42 L30,54 L32,42 Z" fill="url(#rocketWingGrad)" stroke="#0f172a" strokeWidth="1.2" />
-
-                    {/* Cockpit Glowing Window */}
-                    <circle cx="30" cy="28" r="6" fill="#0f172a" stroke="#0f172a" strokeWidth="2" />
-                    <circle cx="30" cy="28" r="4.5" fill="#60a5fa" />
-                    <circle cx="28.5" cy="26.5" r="1.5" fill="#ffffff" opacity="0.8" />
-                  </svg>
-              </div>
-            </motion.div>
-          </div>
-        </div>
+        {/* Minimalist Top Scroll Progress Bar */}
+        <div 
+          className="fixed top-0 left-0 right-0 h-[3px] bg-[#2E54FE] z-[9999] origin-left pointer-events-none transition-transform duration-75"
+          style={{ transform: `scaleX(${scrollPercent})` }}
+        />
 
         {/* Floating Scroll-to-Top Button */}
         {showScrollTop && (
