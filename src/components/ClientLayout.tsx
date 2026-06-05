@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { ArrowUp, Mail, Phone, MapPin } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -51,10 +51,79 @@ interface ClientLayoutProps {
 
 export default function ClientLayout({ children }: ClientLayoutProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  // Transition Loader states
+  const [showLoader, setShowLoader] = useState(true);
+
+  // Splash screen timeout on initial mount
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLoader(false);
+    }, 1800);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Custom navigation handler with transition
+  const navigateWithTransition = useCallback((href: string) => {
+    if (pathname === href) return;
+    setShowLoader(true);
+    setIsMobileMenuOpen(false);
+
+    // Change route after loading logo animation plays
+    const routeTimer = setTimeout(() => {
+      router.push(href);
+    }, 1200);
+
+    // Fade loader out after page mounts
+    const fadeTimer = setTimeout(() => {
+      setShowLoader(false);
+    }, 1900);
+
+    return () => {
+      clearTimeout(routeTimer);
+      clearTimeout(fadeTimer);
+    };
+  }, [pathname, router]);
+
+  // Global click interceptor to apply transition to internal links automatically
+  useEffect(() => {
+    const handleGlobalClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const anchor = target.closest("a");
+
+      if (anchor) {
+        const href = anchor.getAttribute("href");
+        const targetAttr = anchor.getAttribute("target");
+
+        if (
+          href && 
+          href.startsWith("/") && 
+          !href.startsWith("//") &&
+          targetAttr !== "_blank" &&
+          !anchor.hasAttribute("download")
+        ) {
+          const hrefPath = href.split("#")[0];
+          const currentPath = pathname;
+
+          if (hrefPath === currentPath) {
+            // standard scroll for same-page anchors
+            return;
+          }
+
+          e.preventDefault();
+          navigateWithTransition(href);
+        }
+      }
+    };
+
+    window.addEventListener("click", handleGlobalClick, { capture: true });
+    return () => window.removeEventListener("click", handleGlobalClick, { capture: true });
+  }, [pathname, navigateWithTransition]);
 
   // Mouse tracker for cursor spotlight glow effect
   useEffect(() => {
@@ -125,6 +194,73 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
 
   return (
     <div className="min-h-screen flex flex-col bg-black text-[#cbd5e1] selection:bg-[#2E54FE]/20 selection:text-[#2E54FE] relative dot-grid-blue">
+      {/* Lusion-Inspired Twisting C Loading Overlay */}
+      <AnimatePresence>
+        {showLoader && (
+          <motion.div
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="fixed inset-0 bg-black z-[9999] flex flex-col items-center justify-center gap-8 text-white select-none pointer-events-auto"
+          >
+            <div className="flex flex-col items-center gap-6">
+              {/* Twisting C Drawing SVG */}
+              <motion.svg 
+                width="120" 
+                height="120" 
+                viewBox="0 0 100 100" 
+                className="text-white relative"
+                initial={{ rotate: -15, scale: 0.9 }}
+                animate={{ rotate: 0, scale: 1 }}
+                transition={{ duration: 1.1, ease: "easeOut" }}
+                style={{ filter: "drop-shadow(0 0 20px rgba(46, 84, 254, 0.45))" }}
+              >
+                {/* Vertical bar (Step 01) */}
+                <motion.path
+                  d="M 35 25 L 35 75"
+                  stroke="white"
+                  strokeWidth={14}
+                  strokeLinecap="square"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 0.4, ease: "easeInOut" }}
+                />
+                {/* Top bar (Step 02) */}
+                <motion.path
+                  d="M 35 25 L 65 25"
+                  stroke="white"
+                  strokeWidth={14}
+                  strokeLinecap="square"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 0.4, ease: "easeInOut", delay: 0.4 }}
+                />
+                {/* Bottom bar (Step 03) */}
+                <motion.path
+                  d="M 35 75 L 65 75"
+                  stroke="white"
+                  strokeWidth={14}
+                  strokeLinecap="square"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 0.4, ease: "easeInOut", delay: 0.6 }}
+                />
+              </motion.svg>
+
+              {/* Text reveal (Step 09) */}
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 1.0, ease: "easeOut" }}
+                className="flex flex-col items-center gap-1.5 text-center tracking-[0.35em]"
+              >
+                <span className="text-sm font-black tracking-[0.45em] uppercase text-white">Chaitanya</span>
+                <span className="text-[9px] font-mono text-[#2E54FE] uppercase tracking-[0.25em]">Engineer &bull; Developer</span>
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       {/* 3D Smoky GhostCursor Backdrop Layer */}
       <GhostCursor
         trailLength={35}
@@ -178,8 +314,13 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
           
           <div className="mx-auto max-w-5xl px-5 sm:px-8 h-16 flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="w-8 h-8 rounded-lg bg-[#2E54FE] flex items-center justify-center text-white font-extrabold text-sm group-hover:scale-105 transition-transform duration-200">
-                CJ
+              <div 
+                className="w-8 h-8 flex items-center justify-center text-white group-hover:scale-105 transition-transform duration-200"
+                style={{ filter: "drop-shadow(0 0 8px rgba(46, 84, 254, 0.45))" }}
+              >
+                <svg viewBox="0 0 100 100" className="w-6 h-6 fill-white">
+                  <path d="M 10 10 H 90 V 30 H 30 V 70 H 90 V 90 H 10 Z" />
+                </svg>
               </div>
               <span className="font-bold text-white tracking-tight group-hover:text-[#2E54FE] transition-colors">Chaitanya Jidigum</span>
             </Link>
