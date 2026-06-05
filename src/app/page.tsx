@@ -12,7 +12,16 @@ function TypewriterEffect() {
   const [typingSpeed, setTypingSpeed] = useState(120);
 
   useEffect(() => {
-    const phrases = ["an AI ENGINEER", "a SOFTWARE ENGINEER"];
+    const phrases = [
+      "an AI ENGINEER",
+      "a SOFTWARE ENGINEER",
+      "a FULLSTACK DEVELOPER",
+      "a WEB DEVELOPER",
+      "an APP DEVELOPER",
+      "a GAME DEVELOPER",
+      "a VIDEO EDITOR",
+      "a PHOTO EDITOR"
+    ];
     const currentPhrase = phrases[loopNum % phrases.length];
 
     const handleType = () => {

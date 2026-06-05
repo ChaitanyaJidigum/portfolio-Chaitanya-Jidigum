@@ -69,6 +69,49 @@ export default function AboutPage() {
                 <span className="text-[10px] font-mono uppercase tracking-widest text-[#cbd5e1]/40">Projects Built</span>
               </div>
             </div>
+
+            {/* Languages Known & Duolingo */}
+            <div className="flex flex-col gap-5 p-6 rounded-xl border border-white/5 bg-white/[0.01] mt-5">
+              <div className="flex flex-col gap-1.5">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#2E54FE]">Languages</span>
+                <h3 className="text-sm font-bold text-white tracking-tight">Languages Known</h3>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { name: "English", level: "Fluent" },
+                  { name: "Hindi", level: "Conversational" },
+                  { name: "Telugu", level: "Native" },
+                  { name: "German", level: "Elementary (A1)" }
+                ].map((lang, lIdx) => (
+                  <span 
+                    key={lIdx} 
+                    className="px-2.5 py-1 rounded bg-[#2E54FE]/5 border border-[#2E54FE]/15 text-xs text-[#cbd5e1] flex items-center gap-1.5"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#2E54FE]" />
+                    <span>{lang.name}</span>
+                    <span className="text-[10px] text-[#cbd5e1]/40">({lang.level})</span>
+                  </span>
+                ))}
+              </div>
+
+              {/* Duolingo Learning Streak Widget */}
+              <div className="flex items-center gap-4 pt-4 border-t border-white/5 mt-1 bg-gradient-to-r from-emerald-500/[0.02] to-transparent p-3 rounded-lg border border-emerald-500/10">
+                <div className="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-center text-emerald-400 shrink-0 font-black text-xl animate-[pulse_2s_infinite]" title="Duolingo">
+                  🦉
+                </div>
+                <div className="flex flex-col gap-0.5 grow">
+                  <span className="text-xs font-bold text-white flex items-center gap-1.5">
+                    German learning on Duolingo
+                    <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[9px] font-mono bg-amber-500/10 border border-amber-500/20 text-amber-400">
+                      🔥 150+ Day Streak
+                    </span>
+                  </span>
+                  <span className="text-[10px] text-[#cbd5e1]/50 font-mono">
+                    XP: 4,820 · Level: A1 · Daily Active Practice
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Timeline Column */}

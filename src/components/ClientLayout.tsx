@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-import { ArrowUp, Mail, Phone, MapPin } from "lucide-react";
+import { ArrowUp, Mail, MapPin } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // Dynamically import GhostCursor to avoid SSR issues with canvas/WebGL
@@ -140,7 +140,10 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
     };
   }, []);
 
-  // Monitor scroll for Scroll-to-Top button and Header scrolled state
+  // Scroll percentage state for the rocket indicator
+  const [scrollPercent, setScrollPercent] = useState(0);
+
+  // Monitor scroll for Scroll-to-Top button, Header scrolled state, and Rocket progress
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 40);
@@ -148,6 +151,14 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
         setShowScrollTop(true);
       } else {
         setShowScrollTop(false);
+      }
+
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight > 0) {
+        setScrollPercent(scrollTop / docHeight);
+      } else {
+        setScrollPercent(0);
       }
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -326,7 +337,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
             </Link>
 
             {/* Desktop Nav Links with Sliding Active Underline */}
-            <nav className="hidden md:flex items-center gap-8 text-sm font-medium relative h-full">
+            <nav className="hidden md:flex items-center gap-4 lg:gap-6 text-xs lg:text-sm font-semibold relative h-full">
               {navLinks.map((link) => {
                 const isActive = pathname === link.href;
                 return (
@@ -470,10 +481,6 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
                 <Mail className="w-3.5 h-3.5" />
                 <span>chaitanyajidigum@gmail.com</span>
               </a>
-              <a href="tel:+917993932479" className="flex items-center gap-2 hover:text-[#2E54FE] transition-colors">
-                <Phone className="w-3.5 h-3.5" />
-                <span>+91 7993932479</span>
-              </a>
               <div className="flex items-center gap-2 text-[#cbd5e1]/45">
                 <MapPin className="w-3.5 h-3.5" />
                 <span>Hyderabad, India</span>
@@ -509,6 +516,31 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
             <span className="hidden sm:inline">Built with Next.js &amp; Framer Motion</span>
           </div>
         </motion.footer>
+
+        {/* Scroll Rocket Progress Indicator */}
+        <div className="fixed bottom-6 left-6 right-6 z-40 pointer-events-none select-none h-14 hidden sm:block">
+          <div className="relative w-full h-full">
+            <motion.div 
+              className="absolute bottom-0 w-12 h-12 flex items-center justify-center"
+              style={{ 
+                left: `calc(${scrollPercent * 100}% - ${scrollPercent * 48}px)`,
+                y: -Math.sin(scrollPercent * Math.PI) * 35,
+                rotate: (scrollPercent - 0.5) * 25
+              }}
+            >
+              <div className="relative flex flex-col items-center">
+                <img 
+                  src="/rocket.png" 
+                  alt="Scroll Rocket" 
+                  className="w-10 h-10 object-contain rotate-[35deg] drop-shadow-[0_0_12px_rgba(46,84,254,0.85)]"
+                />
+                {/* Simulated thrust glow */}
+                <div className="absolute -bottom-1 -left-1 w-3.5 h-3.5 bg-blue-500 rounded-full blur-[2px] opacity-75 animate-pulse" />
+                <div className="absolute -bottom-0.5 -left-0.5 w-2 h-2 bg-white rounded-full blur-[1px] opacity-90" />
+              </div>
+            </motion.div>
+          </div>
+        </div>
 
         {/* Floating Scroll-to-Top Button */}
         {showScrollTop && (

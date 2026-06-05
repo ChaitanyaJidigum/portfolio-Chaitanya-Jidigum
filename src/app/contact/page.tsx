@@ -25,6 +25,7 @@ function LinkedinIcon({ className = "w-4 h-4" }: { className?: string }) {
 export default function ContactPage() {
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [contactSuccess, setContactSuccess] = useState(false);
+  const [isSending, setIsSending] = useState(false);
   const [formState, setFormState] = useState({ name: "", email: "", message: "" });
 
   const copyEmailAddress = () => {
@@ -33,12 +34,48 @@ export default function ContactPage() {
     setTimeout(() => setCopiedEmail(false), 2000);
   };
 
-  const handleContactSubmit = (e: React.FormEvent) => {
+  const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formState.name || !formState.email || !formState.message) return;
-    setContactSuccess(true);
-    setFormState({ name: "", email: "", message: "" });
-    setTimeout(() => setContactSuccess(false), 3000);
+
+    setIsSending(true);
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: "YOUR_WEB3FORMS_ACCESS_KEY_HERE", // User can replace this with their actual key
+          name: formState.name,
+          email: formState.email,
+          message: formState.message,
+        }),
+      });
+
+      const res = await response.json();
+      if (res.success) {
+        setContactSuccess(true);
+        setFormState({ name: "", email: "", message: "" });
+      } else {
+        // Fallback to mailto redirect
+        const subject = encodeURIComponent(`Contact Form: Message from ${formState.name}`);
+        const body = encodeURIComponent(`Name: ${formState.name}\nEmail: ${formState.email}\n\nMessage:\n${formState.message}`);
+        window.location.href = `mailto:chaitanyajidigum@gmail.com?subject=${subject}&body=${body}`;
+        setContactSuccess(true);
+        setFormState({ name: "", email: "", message: "" });
+      }
+    } catch {
+      // Fallback to mailto redirect
+      const subject = encodeURIComponent(`Contact Form: Message from ${formState.name}`);
+      const body = encodeURIComponent(`Name: ${formState.name}\nEmail: ${formState.email}\n\nMessage:\n${formState.message}`);
+      window.location.href = `mailto:chaitanyajidigum@gmail.com?subject=${subject}&body=${body}`;
+      setContactSuccess(true);
+      setFormState({ name: "", email: "", message: "" });
+    }
+    setIsSending(false);
+    setTimeout(() => setContactSuccess(false), 4000);
   };
 
   return (
@@ -178,9 +215,12 @@ export default function ContactPage() {
 
               <button
                 type="submit"
-                className="flex items-center justify-center gap-2 h-11 w-full rounded-lg bg-[#2E54FE] hover:bg-[#1d3dbd] text-white font-semibold text-sm transition-all active:scale-[0.98] cursor-pointer mt-1"
+                disabled={isSending}
+                className="flex items-center justify-center gap-2 h-11 w-full rounded-lg bg-[#2E54FE] hover:bg-[#1d3dbd] text-white font-semibold text-sm transition-all active:scale-[0.98] cursor-pointer mt-1 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {contactSuccess ? (
+                {isSending ? (
+                  <span>Sending Message...</span>
+                ) : contactSuccess ? (
                   <>
                     <CheckCircle2 className="w-4 h-4" />
                     <span>Message Sent!</span>

@@ -49,28 +49,15 @@ body {
   background-size: 24px 24px;
 }
 
-/* Custom Scrollbars */
+/* Hide default scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
 }
-::-webkit-scrollbar-track {
-  background: #000000;
-}
-::-webkit-scrollbar-thumb {
-  background: #2E54FE;
-  border: 2px solid #000000;
-  border-radius: 5px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #1d3dbd;
-}
-
-/* Hide scrollbar on mobile touch devices */
-@media (pointer: coarse) {
-  ::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-  }
+html, body {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
 
 .glow-blue {
