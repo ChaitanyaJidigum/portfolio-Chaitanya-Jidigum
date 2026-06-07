@@ -53,11 +53,13 @@ interface ClientLayoutProps {
 export default function ClientLayout({ children }: ClientLayoutProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [scrollPercent, setScrollPercent] = useState(0);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  const spotlightRef = useRef<HTMLDivElement>(null);
+  const progressBarRef = useRef<HTMLDivElement>(null);
   
   // Transition Loader states
   const [showLoader, setShowLoader] = useState(true);
@@ -73,13 +75,24 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
     return () => clearTimeout(timer);
   }, []);
 
-  // Initialize Lenis smooth scroll
+  // Detect touch device capability on mount
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
+    }, 0);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Initialize Lenis smooth scroll for non-touch screens
   useEffect(() => {
     if (typeof window === "undefined") return;
 
     if (window.history) {
       window.history.scrollRestoration = "manual";
     }
+
+    const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if (isTouch) return;
 
     const lenis = new Lenis({
       duration: 1.2,
@@ -102,14 +115,16 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
 
     // Sync scroll percentage and states with Lenis scroll events
     const handleLenisScroll = (e: { scroll: number }) => {
-      setIsScrolled(e.scroll > 40);
-      setShowScrollTop(e.scroll > 400);
+      const nextScrolled = e.scroll > 40;
+      setIsScrolled(prev => prev !== nextScrolled ? nextScrolled : prev);
+
+      const nextShowScrollTop = e.scroll > 400;
+      setShowScrollTop(prev => prev !== nextShowScrollTop ? nextShowScrollTop : prev);
       
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      if (docHeight > 0) {
-        setScrollPercent(e.scroll / docHeight);
-      } else {
-        setScrollPercent(0);
+      const pct = docHeight > 0 ? e.scroll / docHeight : 0;
+      if (progressBarRef.current) {
+        progressBarRef.current.style.transform = `scaleX(${pct})`;
       }
     };
     
@@ -118,6 +133,37 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
     return () => {
       lenis.destroy();
       cancelAnimationFrame(rafId);
+      lenisRef.current = null;
+    };
+  }, []);
+
+  // Set up native scroll listener fallback for touch screens
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if (!isTouch) return;
+
+    const handleNativeScroll = () => {
+      const scrollY = window.scrollY;
+      const nextScrolled = scrollY > 40;
+      setIsScrolled(prev => prev !== nextScrolled ? nextScrolled : prev);
+
+      const nextShowScrollTop = scrollY > 400;
+      setShowScrollTop(prev => prev !== nextShowScrollTop ? nextShowScrollTop : prev);
+
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = docHeight > 0 ? scrollY / docHeight : 0;
+      if (progressBarRef.current) {
+        progressBarRef.current.style.transform = `scaleX(${pct})`;
+      }
+    };
+
+    window.addEventListener("scroll", handleNativeScroll, { passive: true });
+    handleNativeScroll(); // Initial sync
+
+    return () => {
+      window.removeEventListener("scroll", handleNativeScroll);
     };
   }, []);
 
@@ -131,14 +177,18 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
 
   // Handle smooth scroll to hash on initial load or route transition
   useEffect(() => {
-    if (typeof window !== "undefined" && lenisRef.current) {
+    if (typeof window !== "undefined") {
       const hash = window.location.hash;
       if (hash) {
         // Wait a brief moment for loader fade and layout adjustments
         const timer = setTimeout(() => {
           const element = document.querySelector(hash) as HTMLElement | null;
-          if (element && lenisRef.current) {
-            lenisRef.current.scrollTo(element, { immediate: false, duration: 1.8 });
+          if (element) {
+            if (lenisRef.current) {
+              lenisRef.current.scrollTo(element, { immediate: false, duration: 1.8 });
+            } else {
+              element.scrollIntoView({ behavior: "smooth" });
+            }
           }
         }, 400);
         return () => clearTimeout(timer);
@@ -199,11 +249,15 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
           if (hrefPath === currentPath) {
             // standard scroll for same-page anchors
             const hash = href.split("#")[1];
-            if (hash && lenisRef.current) {
+            if (hash) {
               const element = document.getElementById(hash);
               if (element) {
                 e.preventDefault();
-                lenisRef.current.scrollTo(element, { duration: 1.5 });
+                if (lenisRef.current) {
+                  lenisRef.current.scrollTo(element, { duration: 1.5 });
+                } else {
+                  element.scrollIntoView({ behavior: "smooth" });
+                }
               }
             }
             return;
@@ -221,16 +275,19 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
 
   // Mouse tracker for cursor spotlight glow effect
   useEffect(() => {
-    let rafId: number;
+    if (typeof window === "undefined") return;
+
+    const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if (isTouch) return;
+
     const updateMousePos = (e: MouseEvent) => {
-      rafId = requestAnimationFrame(() => {
-        setMousePos({ x: e.clientX, y: e.clientY });
-      });
+      if (spotlightRef.current) {
+        spotlightRef.current.style.background = `radial-gradient(400px circle at ${e.clientX}px ${e.clientY}px, rgba(46, 84, 254, 0.12), transparent 80%)`;
+      }
     };
     window.addEventListener("pointermove", updateMousePos, { passive: true });
     return () => {
       window.removeEventListener("pointermove", updateMousePos);
-      cancelAnimationFrame(rafId);
     };
   }, []);
 
@@ -326,47 +383,40 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
         )}
       </AnimatePresence>
       {/* 3D Smoky GhostCursor Backdrop Layer */}
-      <GhostCursor
-        trailLength={35}
-        inertia={0.7}
-        grainIntensity={0.03}
-        bloomStrength={0.8}
-        bloomRadius={2.5}
-        brightness={2.5}
-        color="#2E54FE"
-        className="absolute inset-0 pointer-events-none"
-        style={{ opacity: 0.65 }}
-        zIndex={0}
-      />
+      {!isTouchDevice && (
+        <GhostCursor
+          trailLength={35}
+          inertia={0.7}
+          grainIntensity={0.03}
+          bloomStrength={0.8}
+          bloomRadius={2.5}
+          brightness={2.5}
+          color="#2E54FE"
+          className="absolute inset-0 pointer-events-none"
+          style={{ opacity: 0.65 }}
+          zIndex={0}
+        />
+      )}
       
       {/* Dynamic Cursor Spotlight Effect */}
-      <div 
-        className="pointer-events-none fixed inset-0 z-30"
-        style={{
-          background: `radial-gradient(400px circle at ${mousePos.x}px ${mousePos.y}px, rgba(46, 84, 254, 0.12), transparent 80%)`
-        }}
-      />
+      {!isTouchDevice && (
+        <div 
+          ref={spotlightRef}
+          className="pointer-events-none fixed inset-0 z-30"
+          style={{
+            background: `radial-gradient(400px circle at -9999px -9999px, rgba(46, 84, 254, 0.12), transparent 80%)`
+          }}
+        />
+      )}
       
       <div className="relative z-10 flex flex-col grow">
         {/* Sliding Persistent Header */}
-        <motion.header 
-          initial={{ y: -70, opacity: 0 }}
-          animate={{ 
-            y: isScrolled ? 12 : 0,
-            opacity: 1,
-            width: isScrolled ? "90%" : "100%",
-            maxWidth: isScrolled ? "800px" : "100%",
-            borderRadius: isScrolled ? "9999px" : "0px",
-            borderColor: isScrolled ? "rgba(46, 84, 254, 0.3)" : "rgba(255, 255, 255, 0.05)",
-            boxShadow: isScrolled ? "0 10px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(46, 84, 254, 0.15)" : "none",
-            borderTopWidth: isScrolled ? "1px" : "0px",
-            borderLeftWidth: isScrolled ? "1px" : "0px",
-            borderRightWidth: isScrolled ? "1px" : "0px",
-            borderBottomWidth: "1px",
-            borderStyle: "solid"
-          }}
-          transition={{ type: "spring", stiffness: 200, damping: 25 }}
-          className="sticky top-0 z-50 mx-auto bg-black/85 backdrop-blur-md text-white overflow-hidden w-full"
+        <header 
+          className={`sticky top-0 z-50 mx-auto text-white overflow-hidden transition-all duration-300 ease-in-out w-full border-b animate-header-enter ${
+            isScrolled 
+              ? "md:mt-3 md:w-[90%] md:max-w-[800px] md:rounded-full border-[#2E54FE]/30 bg-black/95 shadow-[0_10px_30px_rgba(0,0,0,0.5),0_0_15px_rgba(46,84,254,0.15)] md:translate-y-3" 
+              : "w-full border-white/5 bg-black/85 backdrop-blur-md translate-y-0"
+          }`}
         >
           <div className="mx-auto max-w-5xl px-5 sm:px-8 h-16 flex items-center justify-between">
             <div className="flex items-center gap-8 md:gap-12 lg:gap-16 h-full">
@@ -449,7 +499,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
               </button>
             </div>
           </div>
-        </motion.header>
+        </header>
 
         {/* Mobile Navigation Menu Panel */}
         <AnimatePresence>
@@ -490,14 +540,14 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
           )}
         </AnimatePresence>
 
-        {/* Dynamic Page Content with Slide & Fade Page Transition */}
+        {/* Dynamic Page Content with Fade Page Transition */}
         <AnimatePresence mode="wait">
           <motion.main
             key={pathname}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
             className="flex flex-col grow"
           >
             {children}
@@ -566,8 +616,9 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
 
         {/* Minimalist Top Scroll Progress Bar */}
         <div 
+          ref={progressBarRef}
           className="fixed top-0 left-0 right-0 h-[3px] bg-[#2E54FE] z-[9999] origin-left pointer-events-none transition-transform duration-75"
-          style={{ transform: `scaleX(${scrollPercent})` }}
+          style={{ transform: `scaleX(0)` }}
         />
 
         {/* Floating Scroll-to-Top Button */}

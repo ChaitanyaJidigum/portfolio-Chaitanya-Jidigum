@@ -21,7 +21,7 @@ const GhostCursor = ({
   mixBlendMode = 'screen',
   edgeIntensity = 0,
 
-  maxDevicePixelRatio = 0.5,
+  maxDevicePixelRatio = 0.35,
   targetPixels = undefined,
 
   fadeDelayMs = undefined,
@@ -214,6 +214,7 @@ const GhostCursor = ({
   }
 
   useEffect(() => {
+    if (isTouch) return;
     const host = containerRef.current;
     const parent = host?.parentElement;
     if (!host || !parent) return;
@@ -511,6 +512,7 @@ const GhostCursor = ({
 
   const mergedStyle = useMemo(() => ({ zIndex, ...style }), [zIndex, style]);
 
+  if (isTouch) return null;
   return <div ref={containerRef} className={`ghost-cursor ${className ?? ''}`} style={mergedStyle} />;
 };
 
