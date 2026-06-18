@@ -175,19 +175,19 @@ export default function WordClock() {
   }, [time]);
 
   return (
-    <div className="flex flex-col items-center gap-5 p-6 md:p-8 rounded-xl border border-white/5 bg-gradient-to-br from-[#2E54FE]/[0.01] to-[#cbd5e1]/[0.01] backdrop-blur-md shadow-2xl relative overflow-hidden max-w-[340px] mx-auto w-full select-none">
+    <div className="flex flex-col items-center gap-3.5 p-4 sm:p-5 rounded-xl border border-white/5 bg-gradient-to-br from-[#2E54FE]/[0.01] to-[#cbd5e1]/[0.01] backdrop-blur-md shadow-2xl relative overflow-hidden max-w-[280px] mx-auto w-full select-none">
       {/* Absolute Ambient Background Glow */}
       <div className="absolute top-0 right-0 w-32 h-32 bg-[#2E54FE]/5 rounded-full filter blur-2xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#2E54FE]/3 rounded-full filter blur-2xl pointer-events-none" />
 
       {/* Title */}
-      <div className="flex items-center justify-between w-full border-b border-white/5 pb-3">
+      <div className="flex items-center justify-between w-full border-b border-white/5 pb-2">
         <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#2E54FE]">Time Zone Clock</span>
         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-[pulse_1.5s_infinite]" />
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-12 gap-y-2 md:gap-y-2.5 gap-x-1.5 text-center font-bold tracking-widest text-[13px] sm:text-[14px] font-mono leading-none">
+      <div className="grid grid-cols-12 gap-y-1 md:gap-y-1.5 gap-x-1 text-center font-bold tracking-widest text-[11px] sm:text-xs font-mono leading-none">
         {GRID.map((row, rIdx) =>
           row.map((char, cIdx) => {
             const isLit = activeCoords.has(`${rIdx}-${cIdx}`);
@@ -196,7 +196,7 @@ export default function WordClock() {
             return (
               <div
                 key={`${rIdx}-${cIdx}`}
-                className={`w-6 h-6 flex items-center justify-center transition-all duration-300 ${
+                className={`w-5 h-5 flex items-center justify-center transition-all duration-300 ${
                   isLit
                     ? "text-[#2E54FE] font-black drop-shadow-[0_0_8px_rgba(46,84,254,0.9)] scale-[1.05]"
                     : isDot
@@ -220,8 +220,8 @@ export default function WordClock() {
         )}
       </div>
 
-      {/* Footer Readouts */}
-      <div className="flex flex-col items-center gap-1.5 mt-2 border-t border-white/5 pt-4 w-full text-center">
+      {/* Footer Readouts (No top border/dividers for portrait grouping) */}
+      <div className="flex flex-col items-center gap-1.5 mt-2.5 w-full text-center">
         <span className="text-[9px] font-mono font-bold text-[#cbd5e1]/45 tracking-widest uppercase truncate max-w-full">
           {timezoneName}
         </span>
