@@ -99,14 +99,19 @@ export default function ContactPage() {
       <div className="mx-auto max-w-5xl px-5 sm:px-8 flex flex-col gap-12 animate-slide-up w-full">
 
         {/* ── Header ──────────────────────────────── */}
-        <div className="flex flex-col gap-3 border-b border-white/5 pb-10">
-          <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#2E54FE]">Collaboration</span>
-          <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter leading-none">
-            Let&apos;s build<br className="hidden sm:block" /> something.
-          </h1>
-          <p className="text-sm text-[#cbd5e1]/55 max-w-md leading-relaxed mt-1">
-            Open to freelance projects, contract work, and engineering collaborations. Get in touch via the form or directly.
-          </p>
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 border-b border-white/5 pb-10">
+          <div className="flex flex-col gap-3 max-w-md">
+            <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#2E54FE]">Collaboration</span>
+            <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter leading-none">
+              Let&apos;s build<br className="hidden sm:block" /> together.
+            </h1>
+            <p className="text-sm text-[#cbd5e1]/55 leading-relaxed mt-1">
+              Open to freelance projects, contract work, and engineering collaborations. Get in touch via the form or directly.
+            </p>
+          </div>
+          <div className="shrink-0 w-full md:w-auto">
+            <WordClock />
+          </div>
         </div>
 
         {/* ── Content ─────────────────────────────── */}
@@ -170,11 +175,6 @@ export default function ContactPage() {
               <FileText className="w-3.5 h-3.5" />
               Download Resume (PDF)
             </a>
-
-            {/* Word Clock */}
-            <div className="mt-4 pt-4 border-t border-white/5 w-full">
-              <WordClock />
-            </div>
           </div>
 
           {/* Right: Form */}

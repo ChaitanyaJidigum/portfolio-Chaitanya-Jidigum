@@ -19,7 +19,7 @@ export default function ExperiencePage() {
       ]
     },
     {
-      period: "2022 — 2024",
+      period: "2022 — Present",
       role: "AI/ML Developer Intern",
       org: "Decibel Systems & Contract Work",
       location: "Bengaluru, India (Remote)",
@@ -32,7 +32,7 @@ export default function ExperiencePage() {
       ]
     },
     {
-      period: "2020 — 2022",
+      period: "2020 — Present",
       role: "Web Automation & Software Developer",
       org: "Independent / Academic Projects",
       location: "Hyderabad, India",

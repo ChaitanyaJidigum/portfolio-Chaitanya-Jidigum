@@ -1,4 +1,5 @@
 import { Sparkles, MapPin, Calendar } from "lucide-react";
+import Link from "next/link";
 
 export default function AboutPage() {
   return (
@@ -103,12 +104,12 @@ export default function AboutPage() {
               <p className="text-xs text-[#cbd5e1]/50 leading-relaxed">
                 Check out the dedicated Experience page for a detailed chronological map of my software development roles, internship milestones, and key academic and commercial achievements.
               </p>
-              <a
+              <Link
                 href="/experience"
-                className="mt-2 inline-flex h-11 items-center justify-center rounded-lg bg-[#2E54FE] hover:bg-[#1d3dbd] text-white font-semibold text-sm transition-all active:scale-[0.98] w-full"
+                className="mt-2 inline-flex h-11 items-center justify-center rounded-lg bg-[#2E54FE] hover:bg-[#1d3dbd] text-white font-semibold text-sm transition-all active:scale-[0.98] w-full text-center"
               >
                 Explore Full Experience &rarr;
-              </a>
+              </Link>
             </div>
           </div>
 
