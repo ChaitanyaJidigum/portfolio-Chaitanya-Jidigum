@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Mail, FileText, CheckCircle2, Copy, Send } from "lucide-react";
+import WordClock from "@/components/WordClock";
 
 function GithubIcon({ className = "w-4 h-4" }: { className?: string }) {
   return (
@@ -169,6 +170,11 @@ export default function ContactPage() {
               <FileText className="w-3.5 h-3.5" />
               Download Resume (PDF)
             </a>
+
+            {/* Word Clock */}
+            <div className="mt-4 pt-4 border-t border-white/5 w-full">
+              <WordClock />
+            </div>
           </div>
 
           {/* Right: Form */}

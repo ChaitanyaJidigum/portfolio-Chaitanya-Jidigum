@@ -1,30 +1,6 @@
 import { Sparkles, MapPin, Calendar } from "lucide-react";
 
 export default function AboutPage() {
-  const timeline = [
-    {
-      period: "2024 — Present",
-      role: "Software Developer & IoT Club Coordinator",
-      org: "Sri Indu Institute & Freelance",
-      desc: "Coordinating CSE (IoT) department portals and club databases. Building freelance automation pipelines and custom Next.js portfolio sites for clients.",
-      active: true,
-    },
-    {
-      period: "2022 — 2024",
-      role: "AI/ML Developer Intern",
-      org: "Decibel Systems & Contract Work",
-      desc: "Trained supervised regression models for price forecasting. Designed computer vision surveillance tracking systems using transfer learning.",
-      active: true,
-    },
-    {
-      period: "2020 — 2022",
-      role: "Web Automation & Software Developer",
-      org: "Independent / Academic Projects",
-      desc: "Built browser automation scrapers with Selenium, configured MySQL relational databases, and developed responsive frontend layouts.",
-      active: false,
-    },
-  ];
-
   return (
     <section className="relative min-h-screen py-20 md:py-28 w-full">
       <div className="mx-auto max-w-5xl px-5 sm:px-8 flex flex-col gap-16 animate-slide-up w-full">
@@ -114,47 +90,28 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* Timeline Column */}
-          <div id="experience" className="lg:col-span-6 flex flex-col gap-6 scroll-mt-24">
-            <div className="flex flex-col gap-1">
-              <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#2E54FE]">Career</span>
-              <h2 className="text-xl font-bold text-white tracking-tight">Professional Timeline</h2>
-            </div>
-
-            <div className="flex flex-col gap-0">
-              {timeline.map((item, i) => (
-                <div key={i} className="relative flex gap-5 pb-8 last:pb-0">
-                  {/* Vertical line */}
-                  {i < timeline.length - 1 && (
-                    <div className="absolute left-[9px] top-5 bottom-0 w-px bg-white/5" />
-                  )}
-
-                  {/* Dot */}
-                  <div className="relative mt-1.5 shrink-0">
-                    <div className={`w-[18px] h-[18px] rounded-full border-2 ${
-                      item.active
-                        ? "bg-[#2E54FE] border-[#2E54FE] shadow-[0_0_12px_rgba(46,84,254,0.5)]"
-                        : "bg-[#0b0b0b] border-white/20"
-                    }`} />
-                  </div>
-
-                  {/* Content */}
-                  <div className="flex flex-col gap-2 pt-0.5">
-                    <span className={`inline-block text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded border w-fit ${
-                      item.active
-                        ? "text-[#2E54FE] bg-[#2E54FE]/5 border-[#2E54FE]/15"
-                        : "text-[#cbd5e1]/40 bg-white/3 border-white/8"
-                    }`}>
-                      {item.period}
-                    </span>
-                    <h3 className="text-sm font-bold text-white leading-snug">{item.role}</h3>
-                    <span className="text-[11px] text-[#cbd5e1]/45 font-mono">{item.org}</span>
-                    <p className="text-xs text-[#cbd5e1]/65 leading-relaxed">{item.desc}</p>
-                  </div>
-                </div>
-              ))}
+          {/* Timeline Link Column */}
+          <div className="lg:col-span-6 flex flex-col gap-6">
+            <div className="flex flex-col gap-5 p-8 rounded-xl border border-white/5 bg-gradient-to-br from-white/[0.01] to-[#2E54FE]/[0.02] hover:border-[#2E54FE]/30 transition-all duration-300">
+              <div className="flex flex-col gap-1.5">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#2E54FE]">Professional Experience</span>
+                <h3 className="text-xl font-black text-white tracking-tight">Career & Timeline</h3>
+              </div>
+              <p className="text-sm text-[#cbd5e1]/65 leading-relaxed">
+                I coordinate CSE (IoT) activities and portals, design prediction pipelines for pricing algorithms, and build responsive frontend web applications.
+              </p>
+              <p className="text-xs text-[#cbd5e1]/50 leading-relaxed">
+                Check out the dedicated Experience page for a detailed chronological map of my software development roles, internship milestones, and key academic and commercial achievements.
+              </p>
+              <a
+                href="/experience"
+                className="mt-2 inline-flex h-11 items-center justify-center rounded-lg bg-[#2E54FE] hover:bg-[#1d3dbd] text-white font-semibold text-sm transition-all active:scale-[0.98] w-full"
+              >
+                Explore Full Experience &rarr;
+              </a>
             </div>
           </div>
+
         </div>
       </div>
     </section>
