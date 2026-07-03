@@ -49,19 +49,19 @@ export default function ConsolePage() {
         break;
       case "about":
         next.push({
-          text: "Chaitanya Jidigum — Software Engineer & IoT Coordinator\nSpecializing in AI/ML, computer vision, and automation.\nLocation: Hyderabad, India  ·  B.Tech CSE (IoT)",
+          text: "Chaitanya Jidigum — Computer Science & Engineering Student\nSpecializing in Machine Learning and Computer Vision.\nCoordinator for CSE (IoT) Department.\nLocation: Hyderabad, India  ·  B.Tech CSE (8.69 CGPA)",
           type: "output",
         });
         break;
       case "skills":
         next.push({
-          text: "Languages  → Python, Java, C++, C, JavaScript, HTML5, CSS3\nLibraries  → Pandas, NumPy, Scikit-Learn, OpenCV, Selenium\nDatabases  → MySQL, Relational Modeling\nTools      → Jupyter Notebook, Eclipse, VS Code, Git",
+          text: "Languages  → C, C++, C#, Python, Java, JavaScript, HTML, CSS, Tailwind CSS, Dart\nFrameworks → MongoDB, Express.Js, React.Js, Node.Js, Next.Js, Discord.Js, Tensorflow, Matplotlib, Pandas\nTools/Tech → Android Studio, Git, VS Code, Antigravity IDE, Unreal Engine, Flutter, MySQL Workbench, Jupyter, Selenium\nOther      → AWS, RESTful API, YouTube/Discord API, Windows, Linux, Mac OS, Android",
           type: "output",
         });
         break;
       case "projects":
         next.push({
-          text: "1. Airfare Prices Prediction   [ML / Regression]\n2. AI Crowd Analytics & CCTV   [Computer Vision]\n3. IoT Campus Events Dashboard  [Frontend / MySQL]\n4. Web Automation & Scraping    [Selenium / Python]",
+          text: "1. Airfare Prices Prediction Using Machine Learning   [ML / Regression]\n2. Using Existing CCTV Network for Crowd Management    [AI / Computer Vision]\n3. IoT Campus Events Dashboard                         [Frontend / MySQL]\n4. Web Automation & Scraping Suite                     [Selenium / Python]",
           type: "output",
         });
         break;

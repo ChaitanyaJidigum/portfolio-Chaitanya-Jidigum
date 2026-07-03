@@ -6,42 +6,38 @@ import { Briefcase, MapPin, Award } from "lucide-react";
 export default function ExperiencePage() {
   const timeline = [
     {
-      period: "2024 — Present",
-      role: "Software Developer & IoT Club Coordinator",
-      org: "Sri Indu Institute & Freelance",
+      period: "Sep 2022 — Present",
+      role: "Bachelor of Technology, Computer Science and Engineering",
+      org: "Sri Indu Institute of Engineering and Technology",
       location: "Hyderabad, India",
-      desc: "Coordinating CSE (IoT) department portals and club databases. Building freelance automation pipelines and custom Next.js portfolio sites for clients.",
+      desc: "Currently pursuing B.Tech in CSE with a strong academic record (8.69 CGPA) and active leadership in the department's technical clubs.",
       active: true,
       milestones: [
-        "Architected department databases improving query speeds by 30%.",
-        "Coordinated technical events with 500+ participants.",
-        "Delivered 3+ freelance production Next.js apps with optimized lighthouse scores."
+        "Maintaining a 8.69 CGPA score in core curriculum courses.",
+        "Serving as the Computer Science (Internet of Things) Club Coordinator.",
+        "Organized and managed a major campus event attended by over 500 students."
       ]
     },
     {
-      period: "2022 — Present",
-      role: "AI/ML Developer Intern",
-      org: "Decibel Systems & Contract Work",
-      location: "Bengaluru, India (Remote)",
-      desc: "Trained supervised regression models for price forecasting. Designed computer vision surveillance tracking systems using transfer learning.",
-      active: true,
-      milestones: [
-        "Implemented supervised learning pipelines yielding 94% prediction accuracy.",
-        "Optimized CNN image classification layers using PyTorch/TensorFlow.",
-        "Architected real-time vehicle monitoring dashboards."
-      ]
-    },
-    {
-      period: "2020 — Present",
-      role: "Web Automation & Software Developer",
-      org: "Independent / Academic Projects",
+      period: "Jun 2022",
+      role: "Intermediate Education",
+      org: "Narayana Junior College",
       location: "Hyderabad, India",
-      desc: "Built browser automation scrapers with Selenium, configured MySQL relational databases, and developed responsive frontend layouts.",
+      desc: "Completed secondary intermediate studies in MPC (Mathematics, Physics, Chemistry) streams.",
       active: false,
       milestones: [
-        "Engineered web scraper scraping 10,000+ data points daily with rotation proxies.",
-        "Designed schemas for CSE database courses using MySQL Workbench.",
-        "Created portfolio templates featuring hardware-accelerated animations."
+        "Graduated with a final score of 84.7%."
+      ]
+    },
+    {
+      period: "Jun 2020",
+      role: "Secondary Education",
+      org: "St. Thomas High School",
+      location: "Hyderabad, India",
+      desc: "Completed high school studies with high distinction and top academic marks.",
+      active: false,
+      milestones: [
+        "Graduated with a final GPA of 9.3 CGPA."
       ]
     },
   ];

@@ -5,30 +5,30 @@ import { Brain, Code2, Database, Layers } from "lucide-react";
 
 const skillGroups = [
   {
-    icon: Brain,
-    title: "AI, Machine Learning & Deep Learning",
-    summary: "Supervised price forecasting, convolutional networks (CNNs), object tracking via CCTV models, crowd density analytics, and model parameter optimization.",
-    tools: ["Python", "TensorFlow", "PyTorch", "OpenCV", "Scikit-Learn", "Transfer Learning", "CNNs", "Object Detection", "Pandas", "NumPy", "Jupyter Notebook", "Regression Analysis"],
-    featured: true,
-  },
-  {
     icon: Code2,
-    title: "React.js & Frontend Engineering",
-    summary: "Responsive, animated React web applications utilizing server-side layout optimizations, Next.js routing structures, TypeScript, and Tailwind CSS.",
-    tools: ["React.js", "Next.js", "TypeScript", "JavaScript (ES6+)", "Tailwind CSS", "HTML5", "CSS3", "Framer Motion", "Lenis Smooth Scroll", "Responsive Design"],
+    title: "Programming Languages & Web Engineering",
+    summary: "Languages and frameworks for building responsive web applications, interactive layouts, and cross-platform developer tools.",
+    tools: ["C", "C++", "C#", "Python", "Java", "JavaScript", "HTML", "CSS", "Tailwind CSS", "Dart", "MERN (MongoDB, Express, React, Node)", "Next.Js"],
     featured: true,
   },
   {
-    icon: Database,
-    title: "Databases & Web Automation",
-    summary: "Relational database schema modeling, SQL query tuning, Selenium-based browser automation scripting, and large-scale web scrapers.",
-    tools: ["MySQL", "PostgreSQL", "MySQL Workbench", "Selenium", "Web Scraping", "API Integration", "Test Automation"],
+    icon: Brain,
+    title: "AI, Machine Learning & Data Science",
+    summary: "Building predictive ML models, regression analytics, training computer vision surveillance systems, transfer learning, and deep neural networks.",
+    tools: ["Python", "Tensorflow", "Matplotlib", "Pandas", "Jupyter Notebook", "OpenCV", "Regression Analysis", "Transfer Learning"],
+    featured: true,
   },
   {
     icon: Layers,
-    title: "Packages & Operating Environments",
-    summary: "Experienced in setting up virtual environments, tracking version control repository updates, and OOP-based scripts.",
-    tools: ["Git & GitHub", "VS Code", "Eclipse IDE", "Windows", "Ubuntu / Linux", "OOP Principles", "Agile Methodologies"],
+    title: "Tools, Technologies & Environments",
+    summary: "Mobile app frameworks, game engines, version control platforms, web automation utilities, and native operating environments.",
+    tools: ["Android Studio", "Git", "Visual Studio Code", "Antigravity IDE", "Unreal Engine", "Flutter", "My SQL Workbench", "Selenium (Basics)", "Windows", "Linux", "Mac OS", "Android"],
+  },
+  {
+    icon: Database,
+    title: "Cloud, Databases & Integrations",
+    summary: "Relational database schema modeling, cloud platforms, custom REST web APIs, chat bots, and payment gateway gateways.",
+    tools: ["My SQL", "AWS", "RESTful API", "YouTube API", "Discord API", "Discord.Js", "Payment Gateways"],
   }
 ];
 
@@ -42,7 +42,7 @@ export default function SkillsPage() {
           <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#2E54FE]">Expertise</span>
           <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter leading-none">Tech Stack</h1>
           <p className="text-sm text-[#cbd5e1]/55 max-w-md leading-relaxed mt-1">
-            My engineering tools and specializations — featuring data science pipelines, deep learning computer vision, and high-performance React web interfaces.
+            My engineering tools and specializations — featuring data science pipelines, deep learning computer vision, and high-performance web interfaces.
           </p>
         </div>
 
@@ -111,9 +111,9 @@ export default function SkillsPage() {
 
         {/* ── Additional tools row ────────────────── */}
         <div className="flex flex-col gap-4 pt-2">
-          <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#cbd5e1]/30">Also familiar with</span>
+          <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#cbd5e1]/30">Productivity, Media & Soft Skills</span>
           <div className="flex flex-wrap gap-2">
-            {["MS Excel", "MS Word", "PowerPoint", "Postman", "OOP Principles", "Agile Methodologies", "Communication Skills", "Team Management", "Public Speaking", "Leadership"].map((t, i) => (
+            {["MS Word", "MS Excel", "PowerPoint", "Adobe Premier Pro", "Adobe Illustrator", "Communication Skills", "Team Management", "Public Speaking", "Leadership"].map((t, i) => (
               <span key={i} className="px-3 py-1 rounded-md text-[10px] font-mono text-[#cbd5e1]/40 border border-white/5 hover:border-[#2E54FE]/15 transition-all">
                 {t}
               </span>

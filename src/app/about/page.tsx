@@ -12,7 +12,7 @@ export default function AboutPage() {
           <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter leading-none">About Me</h1>
           <div className="flex flex-wrap items-center gap-4 mt-2 text-xs text-[#cbd5e1]/50 font-mono">
             <span className="flex items-center gap-1.5"><MapPin className="w-3 h-3" /> Hyderabad, India</span>
-            <span className="flex items-center gap-1.5"><Calendar className="w-3 h-3" /> B.Tech CSE (IoT)</span>
+            <span className="flex items-center gap-1.5"><Calendar className="w-3 h-3" /> B.Tech CSE (8.69 CGPA)</span>
           </div>
         </div>
 
@@ -23,31 +23,31 @@ export default function AboutPage() {
           <div className="lg:col-span-5 flex flex-col gap-8">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] font-mono uppercase tracking-wider border border-[#2E54FE]/20 text-[#2E54FE] bg-[#2E54FE]/5 w-fit">
               <Sparkles className="w-3 h-3" />
-              <span>Coordinator & Developer</span>
+              <span>CSE Student & Coordinator</span>
             </div>
 
             <div className="flex flex-col gap-5">
               <p className="text-[15px] text-[#cbd5e1]/90 leading-[1.8]">
-                I am a Software Engineer specializing in machine learning solutions, computer vision networks, and lightweight automation utilities. Currently coordinating B.Tech CSE (Internet of Things) activities, I design and oversee campus event dashboards while developing automated web scraping suites for academic and contract-based workflows.
+                I am a dedicated Computer Science and Engineering student at Sri Indu Institute of Engineering and Technology. Passionate about exploring new technologies emerging in the industry, I am a committed continuous learner, goal-oriented, and focused on building professional software solutions.
               </p>
               <p className="text-sm text-[#cbd5e1]/65 leading-[1.9]">
-                My core focus lies in building clean interfaces backed by robust data pipelines. Whether training predictive regression models in Python or architecting complex SQL databases with MySQL Workbench, I strive to make web assets feel premium, visually cohesive, and intuitive to use.
+                My primary focus spans Machine Learning, computer vision networks, and high-performance web development. As the Computer Science (Internet of Things) Club Coordinator, I lead technical initiatives, organize campus events, and collaborate on building predictive pipelines and data-driven systems.
               </p>
             </div>
 
             {/* Stats */}
             <div className="grid grid-cols-2 border border-white/5 rounded-xl overflow-hidden mt-2">
               <div className="flex flex-col gap-1.5 p-5 border-r border-white/5">
-                <span className="text-3xl font-black text-white">4+</span>
-                <span className="text-[10px] font-mono uppercase tracking-widest text-[#cbd5e1]/40">Years Experience</span>
+                <span className="text-3xl font-black text-white">8.69</span>
+                <span className="text-[10px] font-mono uppercase tracking-widest text-[#cbd5e1]/40">B.Tech CGPA</span>
               </div>
               <div className="flex flex-col gap-1.5 p-5">
-                <span className="text-3xl font-black text-[#2E54FE]">40+</span>
-                <span className="text-[10px] font-mono uppercase tracking-widest text-[#cbd5e1]/40">Projects Built</span>
+                <span className="text-3xl font-black text-[#2E54FE]">500+</span>
+                <span className="text-[10px] font-mono uppercase tracking-widest text-[#cbd5e1]/40">Event Attendees</span>
               </div>
             </div>
 
-            {/* Languages Known & Duolingo */}
+            {/* Languages Known */}
             <div className="flex flex-col gap-5 p-6 rounded-xl border border-white/5 bg-white/[0.01] mt-5">
               <div className="flex flex-col gap-1.5">
                 <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#2E54FE]">Languages</span>
@@ -56,9 +56,8 @@ export default function AboutPage() {
               <div className="flex flex-wrap gap-2">
                 {[
                   { name: "English", level: "Fluent" },
-                  { name: "Hindi", level: "Conversational" },
                   { name: "Telugu", level: "Native" },
-                  { name: "German", level: "Elementary (A1)" }
+                  { name: "Hindi", level: "Conversational" }
                 ].map((lang, lIdx) => (
                   <span 
                     key={lIdx} 
@@ -71,20 +70,17 @@ export default function AboutPage() {
                 ))}
               </div>
 
-              {/* Duolingo Learning Streak Widget */}
-              <div className="flex items-center gap-4 pt-4 border-t border-white/5 mt-1 bg-gradient-to-r from-emerald-500/[0.02] to-transparent p-3 rounded-lg border border-emerald-500/10">
-                <div className="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-center text-emerald-400 shrink-0 font-black text-xl animate-[pulse_2s_infinite]" title="Duolingo">
-                  🦉
+              {/* Hobbies Widget */}
+              <div className="flex items-center gap-4 pt-4 border-t border-white/5 mt-1 bg-gradient-to-r from-[#2E54FE]/[0.02] to-transparent p-3 rounded-lg border border-white/5">
+                <div className="w-10 h-10 rounded-lg bg-[#2E54FE]/10 border border-[#2E54FE]/25 flex items-center justify-center text-indigo-400 shrink-0 text-lg" title="Hobbies">
+                  🎮
                 </div>
                 <div className="flex flex-col gap-0.5 grow">
-                  <span className="text-xs font-bold text-white flex items-center gap-1.5">
-                    German learning on Duolingo
-                    <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[9px] font-mono bg-amber-500/10 border border-amber-500/20 text-amber-400">
-                      🔥 150+ Day Streak
-                    </span>
+                  <span className="text-xs font-bold text-white">
+                    Hobbies & Interests
                   </span>
-                  <span className="text-[10px] text-[#cbd5e1]/50 font-mono">
-                    XP: 4,820 · Level: A1 · Daily Active Practice
+                  <span className="text-[10px] text-[#cbd5e1]/55 font-mono">
+                    Reading · Music · Games · Gym
                   </span>
                 </div>
               </div>
@@ -95,14 +91,14 @@ export default function AboutPage() {
           <div className="lg:col-span-6 flex flex-col gap-6">
             <div className="flex flex-col gap-5 p-8 rounded-xl border border-white/5 bg-gradient-to-br from-white/[0.01] to-[#2E54FE]/[0.02] hover:border-[#2E54FE]/30 transition-all duration-300">
               <div className="flex flex-col gap-1.5">
-                <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#2E54FE]">Professional Experience</span>
-                <h3 className="text-xl font-black text-white tracking-tight">Career & Timeline</h3>
+                <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#2E54FE]">Academic timeline</span>
+                <h3 className="text-xl font-black text-white tracking-tight">Education & Achievements</h3>
               </div>
               <p className="text-sm text-[#cbd5e1]/65 leading-relaxed">
-                I coordinate CSE (IoT) activities and portals, design prediction pipelines for pricing algorithms, and build responsive frontend web applications.
+                I coordinate CSE (IoT) activities and campus events while maintaining academic performance in computer science engineering.
               </p>
               <p className="text-xs text-[#cbd5e1]/50 leading-relaxed">
-                Check out the dedicated Experience page for a detailed chronological map of my software development roles, internship milestones, and key academic and commercial achievements.
+                Check out the dedicated Experience page for a detailed chronological map of my academic background, intermediate milestones, school achievements, and leadership roles.
               </p>
               <Link
                 href="/experience"
