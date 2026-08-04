@@ -27,7 +27,7 @@ const CATEGORIES = [
   { key: "ml_ai", label: "AI / ML" },
   { key: "fullstack", label: "Full-Stack" },
   { key: "frontend", label: "Frontend" },
-] as const;
+ ] as const;
 
 export default function ProjectsPage() {
   const [activeTab, setActiveTab] = useState<"all" | "frontend" | "fullstack" | "ml_ai">("all");
@@ -78,26 +78,26 @@ export default function ProjectsPage() {
       <div className="mx-auto max-w-5xl px-5 sm:px-8 flex flex-col gap-12 animate-slide-up w-full">
 
         {/* ── Header ──────────────────────────────── */}
-        <div className="flex flex-col gap-3 border-b border-white/5 pb-10">
+        <div className="flex flex-col gap-3 border-b border-border pb-10">
           <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#2E54FE]">Portfolio</span>
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="flex flex-col gap-2">
-              <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter leading-none">Projects</h1>
-              <p className="text-sm text-[#cbd5e1]/55 max-w-md leading-relaxed mt-1">
+              <h1 className="text-4xl md:text-6xl font-black text-foreground tracking-tighter leading-none">Projects</h1>
+              <p className="text-sm text-foreground/55 max-w-md leading-relaxed mt-1">
                 A selection of software systems, automated pipelines, and predictive models built for real-world use cases.
               </p>
             </div>
 
             {/* Filter tabs */}
-            <div className="flex items-center gap-1 p-1 rounded-lg border border-white/5 shrink-0 overflow-x-auto">
+            <div className="flex items-center gap-1 p-1 rounded-lg border border-border bg-white dark:bg-transparent shrink-0 overflow-x-auto">
               {CATEGORIES.map(({ key, label }) => (
                 <button
                   key={key}
                   onClick={() => setActiveTab(key as typeof activeTab)}
-                  className={`px-3.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap transition-all ${
+                  className={`px-3.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                     activeTab === key
                       ? "bg-[#2E54FE] text-white"
-                      : "text-[#cbd5e1]/50 hover:text-white"
+                      : "text-foreground/50 hover:text-foreground"
                   }`}
                 >
                   {label}
@@ -112,7 +112,7 @@ export default function ProjectsPage() {
           {filtered.map((project, idx) => (
             <div
               key={idx}
-              className="group flex flex-col justify-between p-6 rounded-xl border border-white/5 hover:border-[#2E54FE]/30 transition-all duration-300 hover-lift hover:bg-[#2E54FE]/[0.02]"
+              className="group flex flex-col justify-between p-6 rounded-xl border border-border bg-white dark:bg-transparent hover:border-[#2E54FE]/30 transition-all duration-300 hover-lift hover:bg-[#2E54FE]/[0.02]"
             >
               <div className="flex flex-col gap-4">
                 {/* Top row */}
@@ -125,7 +125,7 @@ export default function ProjectsPage() {
                       href={project.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-1.5 rounded-md text-[#cbd5e1]/40 hover:text-[#2E54FE] hover:bg-[#2E54FE]/5 transition-all"
+                      className="p-1.5 rounded-md text-foreground/40 hover:text-[#2E54FE] hover:bg-[#2E54FE]/5 transition-all"
                       title="GitHub"
                     >
                       <GithubIcon className="w-3.5 h-3.5" />
@@ -134,7 +134,7 @@ export default function ProjectsPage() {
                       href={project.live}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-1.5 rounded-md text-[#cbd5e1]/40 hover:text-[#2E54FE] hover:bg-[#2E54FE]/5 transition-all"
+                      className="p-1.5 rounded-md text-foreground/40 hover:text-[#2E54FE] hover:bg-[#2E54FE]/5 transition-all"
                       title="Live"
                     >
                       <ArrowUpRight className="w-3.5 h-3.5" />
@@ -144,21 +144,21 @@ export default function ProjectsPage() {
 
                 {/* Text */}
                 <div className="flex flex-col gap-2">
-                  <h3 className="text-[15px] font-bold text-white group-hover:text-[#2E54FE] transition-colors leading-snug">
+                  <h3 className="text-[15px] font-bold text-foreground group-hover:text-[#2E54FE] transition-colors leading-snug">
                     {project.title}
                   </h3>
-                  <p className="text-xs text-[#cbd5e1]/55 leading-relaxed">
+                  <p className="text-xs text-foreground/55 leading-relaxed">
                     {project.description}
                   </p>
                 </div>
               </div>
 
               {/* Tags */}
-              <div className="flex flex-wrap gap-1.5 mt-5 pt-4 border-t border-white/5">
+              <div className="flex flex-wrap gap-1.5 mt-5 pt-4 border-t border-border">
                 {project.tags.map((tag, ti) => (
                   <span
                     key={ti}
-                    className="px-2 py-0.5 rounded text-[10px] font-mono text-[#cbd5e1]/50 border border-white/5 group-hover:border-[#2E54FE]/15 group-hover:text-[#cbd5e1]/70 transition-all"
+                    className="px-2 py-0.5 rounded text-[10px] font-mono text-foreground/50 border border-border group-hover:border-[#2E54FE]/15 group-hover:text-foreground/70 transition-all"
                   >
                     {tag}
                   </span>
@@ -169,7 +169,7 @@ export default function ProjectsPage() {
         </div>
 
         {/* Count note */}
-        <p className="text-[11px] font-mono text-[#cbd5e1]/30 text-center">
+        <p className="text-[11px] font-mono text-foreground/30 text-center">
           Showing {filtered.length} of {projects.length} projects
         </p>
       </div>

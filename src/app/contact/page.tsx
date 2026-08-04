@@ -99,13 +99,13 @@ export default function ContactPage() {
       <div className="mx-auto max-w-5xl px-5 sm:px-8 flex flex-col gap-12 animate-slide-up w-full">
 
         {/* ── Header ──────────────────────────────── */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 border-b border-white/5 pb-10">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 border-b border-border pb-10">
           <div className="flex flex-col gap-3 max-w-md">
             <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#2E54FE]">Collaboration</span>
-            <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter leading-none">
+            <h1 className="text-4xl md:text-6xl font-black text-foreground tracking-tighter leading-none">
               Let&apos;s build<br className="hidden sm:block" /> together.
             </h1>
-            <p className="text-sm text-[#cbd5e1]/55 leading-relaxed mt-1">
+            <p className="text-sm text-foreground/55 leading-relaxed mt-1">
               Open to freelance projects, contract work, and engineering collaborations. Get in touch via the form or directly.
             </p>
           </div>
@@ -122,13 +122,13 @@ export default function ContactPage() {
 
             {/* Email row */}
             <div className="flex flex-col gap-3">
-              <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#cbd5e1]/35">Email</span>
-              <div className="flex items-center gap-2 p-2 pl-4 rounded-lg border border-white/5 hover:border-[#2E54FE]/25 transition-colors">
-                <Mail className="w-3.5 h-3.5 text-[#cbd5e1]/40 shrink-0" />
-                <code className="text-xs font-mono text-white/80 select-all grow">chaitanyajidigum@gmail.com</code>
+              <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-foreground/35">Email</span>
+              <div className="flex items-center gap-2 p-2 pl-4 rounded-lg border border-border hover:border-[#2E54FE]/25 transition-colors bg-white dark:bg-transparent">
+                <Mail className="w-3.5 h-3.5 text-foreground/40 shrink-0" />
+                <code className="text-xs font-mono text-foreground/80 select-all grow">chaitanyajidigum@gmail.com</code>
                 <button
                   onClick={copyEmailAddress}
-                  className="flex items-center justify-center p-1.5 rounded-md text-[#cbd5e1]/40 hover:text-[#2E54FE] hover:bg-[#2E54FE]/5 border border-white/5 transition-all active:scale-95 shrink-0 cursor-pointer"
+                  className="flex items-center justify-center p-1.5 rounded-md text-foreground/40 hover:text-[#2E54FE] hover:bg-[#2E54FE]/5 border border-border transition-all active:scale-95 shrink-0 cursor-pointer"
                   title="Copy email"
                 >
                   {copiedEmail ? (
@@ -142,13 +142,13 @@ export default function ContactPage() {
 
             {/* Links */}
             <div className="flex flex-col gap-3">
-              <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#cbd5e1]/35">Profiles</span>
+              <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-foreground/35">Profiles</span>
               <div className="flex flex-col gap-2">
                 <a
                   href="https://github.com/ChaitanyaJidigum"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 p-3 rounded-lg border border-white/5 hover:border-[#2E54FE]/25 hover:text-[#2E54FE] text-[#cbd5e1]/60 transition-all group"
+                  className="flex items-center gap-3 p-3 rounded-lg border border-border hover:border-[#2E54FE]/25 hover:text-[#2E54FE] text-foreground/60 transition-all group bg-white dark:bg-transparent"
                 >
                   <GithubIcon className="w-4 h-4 shrink-0" />
                   <span className="text-xs font-mono">github.com/ChaitanyaJidigum</span>
@@ -157,7 +157,7 @@ export default function ContactPage() {
                   href="https://www.linkedin.com/in/chaitanya-jidigum-082091268/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 p-3 rounded-lg border border-white/5 hover:border-[#2E54FE]/25 hover:text-[#2E54FE] text-[#cbd5e1]/60 transition-all"
+                  className="flex items-center gap-3 p-3 rounded-lg border border-border hover:border-[#2E54FE]/25 hover:text-[#2E54FE] text-foreground/60 transition-all bg-white dark:bg-transparent"
                 >
                   <LinkedinIcon className="w-4 h-4 shrink-0" />
                   <span className="text-xs font-mono">chaitanya-jidigum</span>
@@ -170,7 +170,7 @@ export default function ContactPage() {
               href="/resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-xs font-semibold text-[#cbd5e1]/50 hover:text-[#2E54FE] transition-colors w-fit border border-white/5 hover:border-[#2E54FE]/25 rounded-lg px-4 py-2.5"
+              className="inline-flex items-center gap-2 text-xs font-semibold text-foreground/50 hover:text-[#2E54FE] transition-colors w-fit border border-border hover:border-[#2E54FE]/25 rounded-lg px-4 py-2.5 bg-white dark:bg-transparent"
             >
               <FileText className="w-3.5 h-3.5" />
               Download Resume (PDF)
@@ -181,16 +181,16 @@ export default function ContactPage() {
           <div className="lg:col-span-7">
             <form
               onSubmit={handleContactSubmit}
-              className="flex flex-col gap-5 p-6 md:p-8 rounded-xl border border-white/5 hover:border-[#2E54FE]/20 transition-colors duration-300"
+              className="flex flex-col gap-5 p-6 md:p-8 rounded-xl border border-border bg-white dark:bg-transparent hover:border-[#2E54FE]/20 transition-colors duration-300"
             >
               <div className="flex flex-col gap-1">
-                <h2 className="text-base font-bold text-white">Send a Message</h2>
-                <p className="text-xs text-[#cbd5e1]/40">I typically respond within 24 hours.</p>
+                <h2 className="text-base font-bold text-foreground">Send a Message</h2>
+                <p className="text-xs text-foreground/40">I typically respond within 24 hours.</p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="flex flex-col gap-2">
-                  <label htmlFor="form-name" className="text-[10px] font-mono font-bold uppercase tracking-[0.15em] text-[#cbd5e1]/40">
+                  <label htmlFor="form-name" className="text-[10px] font-mono font-bold uppercase tracking-[0.15em] text-foreground/40">
                     Your Name
                   </label>
                   <input
@@ -200,11 +200,11 @@ export default function ContactPage() {
                     value={formState.name}
                     onChange={(e) => setFormState({ ...formState, name: e.target.value })}
                     placeholder="John Doe"
-                    className="w-full rounded-lg border border-white/8 bg-transparent px-3.5 py-2.5 text-sm text-white placeholder:text-[#cbd5e1]/20 focus:border-[#2E54FE]/50 focus:outline-none focus:ring-1 focus:ring-[#2E54FE]/20 transition-all"
+                    className="w-full rounded-lg border border-border bg-transparent px-3.5 py-2.5 text-sm text-foreground placeholder:text-foreground/20 focus:border-[#2E54FE]/50 focus:outline-none focus:ring-1 focus:ring-[#2E54FE]/20 transition-all"
                   />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label htmlFor="form-email" className="text-[10px] font-mono font-bold uppercase tracking-[0.15em] text-[#cbd5e1]/40">
+                  <label htmlFor="form-email" className="text-[10px] font-mono font-bold uppercase tracking-[0.15em] text-foreground/40">
                     Email Address
                   </label>
                   <input
@@ -214,13 +214,13 @@ export default function ContactPage() {
                     value={formState.email}
                     onChange={(e) => setFormState({ ...formState, email: e.target.value })}
                     placeholder="john@example.com"
-                    className="w-full rounded-lg border border-white/8 bg-transparent px-3.5 py-2.5 text-sm text-white placeholder:text-[#cbd5e1]/20 focus:border-[#2E54FE]/50 focus:outline-none focus:ring-1 focus:ring-[#2E54FE]/20 transition-all"
+                    className="w-full rounded-lg border border-border bg-transparent px-3.5 py-2.5 text-sm text-foreground placeholder:text-foreground/20 focus:border-[#2E54FE]/50 focus:outline-none focus:ring-1 focus:ring-[#2E54FE]/20 transition-all"
                   />
                 </div>
               </div>
 
               <div className="flex flex-col gap-2">
-                <label htmlFor="form-message" className="text-[10px] font-mono font-bold uppercase tracking-[0.15em] text-[#cbd5e1]/40">
+                <label htmlFor="form-message" className="text-[10px] font-mono font-bold uppercase tracking-[0.15em] text-foreground/40">
                   Message
                 </label>
                 <textarea
@@ -230,7 +230,7 @@ export default function ContactPage() {
                   value={formState.message}
                   onChange={(e) => setFormState({ ...formState, message: e.target.value })}
                   placeholder="Hi Chaitanya, I'd like to discuss..."
-                  className="w-full rounded-lg border border-white/8 bg-transparent px-3.5 py-2.5 text-sm text-white placeholder:text-[#cbd5e1]/20 focus:border-[#2E54FE]/50 focus:outline-none focus:ring-1 focus:ring-[#2E54FE]/20 transition-all resize-none"
+                  className="w-full rounded-lg border border-border bg-transparent px-3.5 py-2.5 text-sm text-foreground placeholder:text-foreground/20 focus:border-[#2E54FE]/50 focus:outline-none focus:ring-1 focus:ring-[#2E54FE]/20 transition-all resize-none"
                 />
               </div>
 
@@ -248,8 +248,8 @@ export default function ContactPage() {
                   </>
                 ) : (
                   <>
-                    <Send className="w-4 h-4" />
                     <span>Send Message</span>
+                    <Send className="w-4 h-4" />
                   </>
                 )}
               </button>

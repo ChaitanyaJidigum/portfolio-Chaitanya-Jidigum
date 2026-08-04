@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-import { ArrowUp, Mail, MapPin } from "lucide-react";
+import { ArrowUp, Mail, MapPin, Sun, Moon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Lenis from "lenis";
 
@@ -57,9 +57,29 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [theme, setTheme] = useState<"light" | "dark">("dark");
 
   const spotlightRef = useRef<HTMLDivElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
+
+  // Handle theme initialization
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
+    if (savedTheme) {
+      setTheme(savedTheme);
+      document.documentElement.classList.toggle("dark", savedTheme === "dark");
+    } else {
+      setTheme("dark");
+      document.documentElement.classList.add("dark");
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const nextTheme = theme === "dark" ? "light" : "dark";
+    setTheme(nextTheme);
+    localStorage.setItem("theme", nextTheme);
+    document.documentElement.classList.toggle("dark", nextTheme === "dark");
+  };
   
   // Transition Loader states
   const [showLoader, setShowLoader] = useState(true);
@@ -72,7 +92,16 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
     const timer = setTimeout(() => {
       setShowLoader(false);
     }, 1800);
-    return () => clearTimeout(timer);
+
+    // Enable transitions after initial render has settled to prevent reload flash
+    const transitionTimer = setTimeout(() => {
+      document.documentElement.classList.add("theme-transition");
+    }, 100);
+
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(transitionTimer);
+    };
   }, []);
 
   // Detect touch device capability on mount
@@ -314,7 +343,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-black text-[#cbd5e1] selection:bg-[#2E54FE]/20 selection:text-[#2E54FE] relative dot-grid-blue">
+    <div className="min-h-screen flex flex-col bg-background text-foreground selection:bg-[#2E54FE]/20 selection:text-[#2E54FE] relative dot-grid-blue transition-colors duration-300">
       {/* Lusion-Inspired Twisting C Loading Overlay */}
       <AnimatePresence>
         {showLoader && (
@@ -322,7 +351,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="fixed inset-0 bg-black z-[9999] flex flex-col items-center justify-center gap-8 text-white select-none pointer-events-auto"
+            className="fixed inset-0 bg-background z-[9999] flex flex-col items-center justify-center gap-8 text-foreground select-none pointer-events-auto transition-colors duration-300"
           >
             <div className="flex flex-col items-center gap-6">
               {/* Twisting C Drawing SVG */}
@@ -330,7 +359,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
                 width="120" 
                 height="120" 
                 viewBox="0 0 100 100" 
-                className="text-white relative"
+                className="text-foreground relative"
                 initial={{ rotate: -15, scale: 0.9 }}
                 animate={{ rotate: 0, scale: 1 }}
                 transition={{ duration: 1.1, ease: "easeOut" }}
@@ -339,7 +368,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
                 {/* Vertical bar (Step 01) */}
                 <motion.path
                   d="M 35 25 L 35 75"
-                  stroke="white"
+                  stroke="currentColor"
                   strokeWidth={14}
                   strokeLinecap="square"
                   initial={{ pathLength: 0 }}
@@ -349,7 +378,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
                 {/* Top bar (Step 02) */}
                 <motion.path
                   d="M 35 25 L 65 25"
-                  stroke="white"
+                  stroke="currentColor"
                   strokeWidth={14}
                   strokeLinecap="square"
                   initial={{ pathLength: 0 }}
@@ -359,7 +388,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
                 {/* Bottom bar (Step 03) */}
                 <motion.path
                   d="M 35 75 L 65 75"
-                  stroke="white"
+                  stroke="currentColor"
                   strokeWidth={14}
                   strokeLinecap="square"
                   initial={{ pathLength: 0 }}
@@ -375,7 +404,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
                 transition={{ duration: 0.5, delay: 1.0, ease: "easeOut" }}
                 className="flex flex-col items-center gap-1.5 text-center tracking-[0.35em]"
               >
-                <span className="text-sm font-black tracking-[0.45em] uppercase text-white">Chaitanya</span>
+                <span className="text-sm font-black tracking-[0.45em] uppercase text-foreground">Chaitanya</span>
                 <span className="text-[9px] font-mono text-[#2E54FE] uppercase tracking-[0.25em]">Engineer &bull; Developer</span>
               </motion.div>
             </div>
@@ -391,7 +420,8 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
           bloomStrength={0.8}
           bloomRadius={2.5}
           brightness={2.5}
-          color="#2E54FE"
+          color={theme === "light" ? "#ffffff" : "#2E54FE"}
+          mixBlendMode={theme === "light" ? "difference" : "screen"}
           className="absolute inset-0 pointer-events-none"
           style={{ opacity: 0.65 }}
           zIndex={0}
@@ -412,26 +442,26 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
       <div className="relative z-10 flex flex-col grow">
         {/* Sliding Persistent Header */}
         <header 
-          className={`sticky top-0 z-50 mx-auto text-white overflow-hidden transition-all duration-300 ease-in-out w-full border-b animate-header-enter ${
+          className={`sticky top-0 z-50 mx-auto text-foreground overflow-hidden transition-all duration-300 ease-in-out w-full border-b border-border animate-header-enter ${
             isScrolled 
-              ? "md:mt-3 md:w-[90%] md:max-w-[800px] md:rounded-full border-[#2E54FE]/30 bg-black/95 shadow-[0_10px_30px_rgba(0,0,0,0.5),0_0_15px_rgba(46,84,254,0.15)] md:translate-y-3" 
-              : "w-full border-white/5 bg-black/85 backdrop-blur-md translate-y-0"
+              ? "md:mt-3 md:w-[90%] md:max-w-[800px] md:rounded-full border-[#2E54FE]/30 bg-card/95 shadow-xl md:translate-y-3" 
+              : "w-full bg-background/85 backdrop-blur-md translate-y-0"
           }`}
         >
           <div className="mx-auto max-w-5xl px-5 sm:px-8 h-16 flex items-center justify-between">
             <div className="flex items-center gap-8 md:gap-12 lg:gap-16 h-full">
               <Link href="/" className="flex items-center gap-2.5 group">
                 <div 
-                  className="w-8 h-8 flex items-center justify-center text-white group-hover:scale-105 transition-transform duration-200"
+                  className="w-8 h-8 flex items-center justify-center text-foreground group-hover:scale-105 transition-transform duration-200"
                   style={{ filter: "drop-shadow(0 0 8px rgba(46, 84, 254, 0.45))" }}
                 >
-                  <svg viewBox="0 0 100 100" className="w-6 h-6 fill-white">
+                  <svg viewBox="0 0 100 100" className="w-6 h-6 fill-current text-foreground">
                     <path d="M 10 10 H 90 V 30 H 30 V 70 H 90 V 90 H 10 Z" />
                   </svg>
                 </div>
-                <span className="font-bold text-white tracking-tight group-hover:text-[#2E54FE] transition-colors whitespace-nowrap">Chaitanya Jidigum</span>
+                <span className="font-bold text-foreground tracking-tight group-hover:text-[#2E54FE] transition-colors whitespace-nowrap">Chaitanya Jidigum</span>
               </Link>
-
+ 
               {/* Desktop Nav Links with Sliding Active Underline */}
               <nav className="hidden md:flex items-center gap-4 lg:gap-6 text-xs lg:text-sm font-semibold relative h-full">
                 {navLinks.map((link) => {
@@ -443,7 +473,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
                       className={`relative py-1.5 transition-colors font-semibold ${
                         isActive 
                           ? "text-[#2E54FE]" 
-                          : "text-[#cbd5e1]/70 hover:text-[#2E54FE]"
+                          : "text-foreground/70 hover:text-[#2E54FE]"
                       }`}
                     >
                       {link.name}
@@ -459,17 +489,49 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
                 })}
               </nav>
             </div>
-
+ 
             {/* Social Icons & CTA */}
             <div className="flex items-center gap-3">
-              <a href="https://github.com/ChaitanyaJidigum" target="_blank" rel="noopener noreferrer" className="text-[#cbd5e1]/70 hover:text-[#2E54FE] transition-colors p-1.5" aria-label="GitHub">
+              <a href="https://github.com/ChaitanyaJidigum" target="_blank" rel="noopener noreferrer" className="text-foreground/70 hover:text-[#2E54FE] transition-colors p-1.5" aria-label="GitHub">
                 <GithubIcon className="w-4 h-4" />
               </a>
-              <a href="https://www.linkedin.com/in/chaitanya-jidigum-082091268/" target="_blank" rel="noopener noreferrer" className="text-[#cbd5e1]/70 hover:text-[#2E54FE] transition-colors p-1.5" aria-label="LinkedIn">
+              <a href="https://www.linkedin.com/in/chaitanya-jidigum-082091268/" target="_blank" rel="noopener noreferrer" className="text-foreground/70 hover:text-[#2E54FE] transition-colors p-1.5" aria-label="LinkedIn">
                 <LinkedinIcon className="w-4 h-4" />
               </a>
+              {/* Theme Toggle Switch */}
+              <button
+                onClick={toggleTheme}
+                className="flex items-center justify-center p-2 rounded-lg border border-border bg-transparent hover:border-[#2E54FE]/50 text-foreground transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer ml-1"
+                aria-label="Toggle Theme"
+              >
+                <AnimatePresence mode="wait" initial={false}>
+                  {theme === "dark" ? (
+                    <motion.div
+                      key="moon"
+                      initial={{ y: -10, opacity: 0, rotate: -40 }}
+                      animate={{ y: 0, opacity: 1, rotate: 0 }}
+                      exit={{ y: 10, opacity: 0, rotate: 40 }}
+                      transition={{ duration: 0.2 }}
+                      className="flex items-center justify-center"
+                    >
+                      <Moon className="w-4 h-4 text-yellow-400" />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="sun"
+                      initial={{ y: -10, opacity: 0, rotate: 40 }}
+                      animate={{ y: 0, opacity: 1, rotate: 0 }}
+                      exit={{ y: 10, opacity: 0, rotate: -40 }}
+                      transition={{ duration: 0.2 }}
+                      className="flex items-center justify-center"
+                    >
+                      <Sun className="w-4 h-4 text-amber-500" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </button>
               {/* Divider */}
-              <div className="hidden sm:block w-px h-4 bg-white/10 mx-4" />
+              <div className="hidden sm:block w-px h-4 bg-border mx-2" />
               <Link 
                 href="/contact" 
                 className={`hidden sm:inline-flex h-9 items-center justify-center rounded-lg border px-4 text-xs font-semibold transition-all ${
@@ -484,7 +546,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
               {/* Mobile Menu Toggle Button */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="md:hidden p-2 text-[#cbd5e1]/70 hover:text-[#2E54FE] transition-colors focus:outline-hidden cursor-pointer"
+                className="md:hidden p-2 text-foreground/70 hover:text-[#2E54FE] transition-colors focus:outline-hidden cursor-pointer"
                 aria-label="Toggle Navigation Menu"
               >
                 {isMobileMenuOpen ? (
@@ -509,7 +571,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="md:hidden border-b border-white/5 bg-black/95 backdrop-blur-lg overflow-hidden fixed left-0 w-full z-40 shadow-2xl"
+              className="md:hidden border-b border-border bg-background/95 backdrop-blur-lg overflow-hidden fixed left-0 w-full z-40 shadow-2xl"
               style={{ top: isScrolled ? "76px" : "64px" }}
             >
               <nav className="mx-auto max-w-5xl px-5 sm:px-8 flex flex-col py-5 gap-1 text-sm font-semibold">
@@ -520,8 +582,8 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
                       key={link.href}
                       href={link.href}
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className={`py-2 border-b border-white/5 last:border-0 transition-colors ${
-                        isActive ? "text-[#2E54FE]" : "text-[#cbd5e1]/70 hover:text-[#2E54FE]"
+                      className={`py-2 border-b border-border last:border-0 transition-colors ${
+                        isActive ? "text-[#2E54FE]" : "text-foreground/70 hover:text-[#2E54FE]"
                       }`}
                     >
                       {link.name}
@@ -559,26 +621,26 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
           initial={{ y: 70, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="border-t border-white/5 bg-black/90 backdrop-blur-sm text-[#cbd5e1]/40 relative z-10 w-full" 
+          className="border-t border-border bg-card/90 backdrop-blur-sm text-foreground/40 relative z-10 w-full" 
           style={{ paddingBottom: 'max(1.5rem, env(safe-area-inset-bottom))' }}
         >
           {/* Upper row: Let's build something, contacts, social links */}
-          <div className="mx-auto max-w-5xl px-5 sm:px-8 pt-12 pb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 border-b border-white/5">
+          <div className="mx-auto max-w-5xl px-5 sm:px-8 pt-12 pb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 border-b border-border">
             {/* Left side: branding text */}
             <div className="flex flex-col gap-1 max-w-xs text-left">
-              <h3 className="text-base font-bold text-white leading-tight">
+              <h3 className="text-base font-bold text-foreground leading-tight">
                 Let&apos;s build something <br />
                 <span className="text-[#2E54FE]">amazing</span> together.
               </h3>
             </div>
 
             {/* Middle: contact info details */}
-            <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-4 sm:gap-6 text-xs text-[#cbd5e1]/65 font-mono">
+            <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-4 sm:gap-6 text-xs text-foreground/65 font-mono">
               <a href="mailto:chaitanyajidigum@gmail.com" className="flex items-center gap-2 hover:text-[#2E54FE] transition-colors">
                 <Mail className="w-3.5 h-3.5" />
                 <span>chaitanyajidigum@gmail.com</span>
               </a>
-              <div className="flex items-center gap-2 text-[#cbd5e1]/45">
+              <div className="flex items-center gap-2 text-foreground/45">
                 <MapPin className="w-3.5 h-3.5" />
                 <span>Hyderabad, India</span>
               </div>
@@ -590,7 +652,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
                 href="https://github.com/ChaitanyaJidigum" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="w-9 h-9 rounded-lg border border-white/10 bg-white/[0.02] hover:border-[#2E54FE]/50 hover:text-[#2E54FE] flex items-center justify-center text-[#cbd5e1]/60 transition-all cursor-pointer"
+                className="w-9 h-9 rounded-lg border border-border bg-transparent hover:border-[#2E54FE]/50 hover:text-[#2E54FE] flex items-center justify-center text-foreground/60 transition-all cursor-pointer"
                 aria-label="GitHub"
               >
                 <GithubIcon className="w-4 h-4" />
@@ -599,7 +661,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
                 href="https://www.linkedin.com/in/chaitanya-jidigum-082091268/" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="w-9 h-9 rounded-lg border border-white/10 bg-white/[0.02] hover:border-[#2E54FE]/50 hover:text-[#2E54FE] flex items-center justify-center text-[#cbd5e1]/60 transition-all cursor-pointer"
+                className="w-9 h-9 rounded-lg border border-border bg-transparent hover:border-[#2E54FE]/50 hover:text-[#2E54FE] flex items-center justify-center text-foreground/60 transition-all cursor-pointer"
                 aria-label="LinkedIn"
               >
                 <LinkedinIcon className="w-4 h-4" />
@@ -608,7 +670,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
           </div>
 
           {/* Lower row: copyright */}
-          <div className="mx-auto max-w-5xl px-5 sm:px-8 py-5 flex items-center justify-between text-[10px] font-mono text-[#cbd5e1]/30">
+          <div className="mx-auto max-w-5xl px-5 sm:px-8 py-5 flex items-center justify-between text-[10px] font-mono text-foreground/30">
             <span>&copy; 2025 Chaitanya Jidigum. All rights reserved.</span>
             <span className="hidden sm:inline">Built with Next.js &amp; Framer Motion</span>
           </div>
@@ -625,7 +687,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
         {showScrollTop && (
           <button
             onClick={scrollToTop}
-            className="fixed bottom-6 right-4 sm:right-6 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-black/85 text-[#cbd5e1] border border-white/10 hover:border-[#2E54FE] hover:text-[#2E54FE] shadow-[0_0_15px_rgba(46,84,254,0.15)] transition-all duration-300 hover:scale-110 active:scale-95 animate-fade-in group cursor-pointer"
+            className="fixed bottom-6 right-4 sm:right-6 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-transparent backdrop-blur-md text-foreground border border-border hover:border-[#2E54FE] hover:text-[#2E54FE] shadow-[0_0_15px_rgba(46,84,254,0.15)] transition-all duration-300 hover:scale-110 active:scale-95 animate-fade-in group cursor-pointer"
             aria-label="Scroll to Top"
           >
             <ArrowUp className="w-5 h-5 group-hover:-translate-y-0.5 transition-transform" />

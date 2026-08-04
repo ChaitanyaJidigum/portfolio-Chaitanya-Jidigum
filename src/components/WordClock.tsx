@@ -175,13 +175,13 @@ export default function WordClock() {
   }, [time]);
 
   return (
-    <div className="flex flex-col items-center gap-3.5 p-4 sm:p-5 rounded-xl border border-white/5 bg-gradient-to-br from-[#2E54FE]/[0.01] to-[#cbd5e1]/[0.01] backdrop-blur-md shadow-2xl relative overflow-hidden max-w-[280px] mx-auto w-full select-none">
+    <div className="flex flex-col items-center gap-3.5 p-4 sm:p-5 rounded-xl border border-border bg-gradient-to-br from-[#2E54FE]/[0.01] to-[#cbd5e1]/[0.01] backdrop-blur-md shadow-lg relative overflow-hidden max-w-[280px] mx-auto w-full select-none">
       {/* Absolute Ambient Background Glow */}
       <div className="absolute top-0 right-0 w-32 h-32 bg-[#2E54FE]/5 rounded-full filter blur-2xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#2E54FE]/3 rounded-full filter blur-2xl pointer-events-none" />
 
       {/* Title */}
-      <div className="flex items-center justify-between w-full border-b border-white/5 pb-2">
+      <div className="flex items-center justify-between w-full border-b border-border pb-2">
         <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#2E54FE]">Time Zone Clock</span>
         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-[pulse_1.5s_infinite]" />
       </div>
@@ -200,14 +200,14 @@ export default function WordClock() {
                   isLit
                     ? "text-[#2E54FE] font-black drop-shadow-[0_0_8px_rgba(46,84,254,0.9)] scale-[1.05]"
                     : isDot
-                    ? "text-white/5 font-light scale-75"
-                    : "text-white/10 font-normal hover:text-white/20"
+                    ? "text-foreground/5 font-light scale-75"
+                    : "text-foreground/10 font-normal hover:text-foreground/20"
                 }`}
               >
                 {char === "O'" ? (
                   <span className="relative">
                     O
-                    <span className={`absolute -right-1.5 -top-1.5 text-[9px] font-sans font-normal ${isLit ? "text-[#2E54FE]" : "text-white/15"}`}>
+                    <span className={`absolute -right-1.5 -top-1.5 text-[9px] font-sans font-normal ${isLit ? "text-[#2E54FE]" : "text-foreground/15"}`}>
                     &apos;
                     </span>
                   </span>
@@ -222,10 +222,10 @@ export default function WordClock() {
 
       {/* Footer Readouts (No top border/dividers for portrait grouping) */}
       <div className="flex flex-col items-center gap-1.5 mt-2.5 w-full text-center">
-        <span className="text-[9px] font-mono font-bold text-[#cbd5e1]/45 tracking-widest uppercase truncate max-w-full">
+        <span className="text-[9px] font-mono font-bold text-foreground/45 tracking-widest uppercase truncate max-w-full">
           {timezoneName}
         </span>
-        <span className="text-xs font-mono font-bold text-[#cbd5e1]/70 bg-white/[0.02] border border-white/5 px-3 py-1 rounded-md tracking-wider">
+        <span className="text-xs font-mono font-bold text-foreground/70 bg-white dark:bg-transparent border border-border px-3 py-1 rounded-md tracking-wider">
           {formattedDigital || "00:00:00"}
         </span>
       </div>

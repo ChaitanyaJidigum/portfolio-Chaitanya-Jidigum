@@ -53,7 +53,7 @@ function TypewriterEffect() {
   }, [text, isDeleting, loopNum, typingSpeed]);
 
   return (
-    <span className="relative font-bold text-white">
+    <span className="relative font-bold text-foreground">
       <span>{text}</span>
       <span className="ml-1 inline-block w-[2.5px] h-4 sm:h-5 bg-[#2E54FE] animate-[pulse_0.75s_infinite] align-middle" />
     </span>
@@ -97,26 +97,26 @@ export default function Home() {
         {/* Centered square C logo (9th image layout) */}
         <div className="flex flex-col items-center gap-5">
           <div 
-            className="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center text-white relative"
+            className="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center text-foreground relative"
             style={{ filter: "drop-shadow(0 0 25px rgba(46, 84, 254, 0.4))" }}
           >
-            <svg viewBox="0 0 100 100" className="w-full h-full fill-white">
+            <svg viewBox="0 0 100 100" className="w-full h-full fill-current text-foreground">
               <path d="M 10 10 H 90 V 30 H 30 V 70 H 90 V 90 H 10 Z" />
             </svg>
           </div>
 
           <div className="flex flex-col items-center gap-1 text-center tracking-[0.35em] mt-1">
-            <h2 className="text-lg sm:text-xl font-black uppercase tracking-[0.45em] text-white">Chaitanya</h2>
-            <span className="text-[9px] font-mono text-[#cbd5e1]/45 uppercase tracking-[0.25em]">Engineer &bull; Developer</span>
+            <h2 className="text-lg sm:text-xl font-black uppercase tracking-[0.45em] text-foreground">Chaitanya</h2>
+            <span className="text-[9px] font-mono text-foreground/45 uppercase tracking-[0.25em]">Engineer &bull; Developer</span>
           </div>
         </div>
 
         {/* Centered Name and Typewriter Profession */}
         <div className="flex flex-col gap-3 max-w-xl">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tighter leading-none">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-foreground tracking-tighter leading-none">
             Chaitanya Jidigum
           </h1>
-          <p className="text-sm sm:text-base font-mono text-[#cbd5e1]/60 leading-relaxed">
+          <p className="text-sm sm:text-base font-mono text-foreground/60 leading-relaxed">
             I am <TypewriterEffect />
           </p>
         </div>
@@ -127,15 +127,15 @@ export default function Home() {
             <Link
               key={idx}
               href={link.href}
-              className="group relative flex flex-col gap-3 p-5 rounded-xl border border-white/5 bg-white/[0.015] hover:border-[#2E54FE]/30 transition-all duration-300 hover:bg-[#2E54FE]/[0.02] hover-lift text-left"
+              className="group relative flex flex-col gap-3 p-5 rounded-xl border border-border bg-white dark:bg-transparent hover:border-[#2E54FE]/30 transition-all duration-300 hover:bg-[#2E54FE]/[0.02] hover-lift text-left"
             >
               <div className="flex items-center justify-between">
-                <h3 className="text-sm font-bold text-white group-hover:text-[#2E54FE] transition-colors leading-snug">
+                <h3 className="text-sm font-bold text-foreground group-hover:text-[#2E54FE] transition-colors leading-snug">
                   {link.name}
                 </h3>
-                <ArrowRight className="w-3.5 h-3.5 text-[#cbd5e1]/40 group-hover:text-[#2E54FE] group-hover:translate-x-1 transition-all" />
+                <ArrowRight className="w-3.5 h-3.5 text-foreground/40 group-hover:text-[#2E54FE] group-hover:translate-x-1 transition-all" />
               </div>
-              <p className="text-xs text-[#cbd5e1]/55 leading-relaxed">
+              <p className="text-xs text-foreground/55 leading-relaxed">
                 {link.desc}
               </p>
             </Link>

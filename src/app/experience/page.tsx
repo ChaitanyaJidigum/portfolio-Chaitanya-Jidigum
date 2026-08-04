@@ -47,10 +47,10 @@ export default function ExperiencePage() {
       <div className="mx-auto max-w-4xl px-5 sm:px-8 flex flex-col gap-16 animate-slide-up w-full">
 
         {/* ── Page Header ─────────────────────────── */}
-        <div className="flex flex-col gap-3 border-b border-white/5 pb-10">
+        <div className="flex flex-col gap-3 border-b border-border pb-10">
           <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#2E54FE]">My Journey</span>
-          <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter leading-none">Experience</h1>
-          <p className="text-sm text-[#cbd5e1]/55 max-w-lg leading-relaxed mt-1">
+          <h1 className="text-4xl md:text-6xl font-black text-foreground tracking-tighter leading-none">Experience</h1>
+          <p className="text-sm text-foreground/55 max-w-lg leading-relaxed mt-1">
             A chronological overview of my professional roles, academic coordination, and freelance engineering projects.
           </p>
         </div>
@@ -58,7 +58,7 @@ export default function ExperiencePage() {
         {/* ── Main Timeline ────────────────────────── */}
         <div className="relative flex flex-col gap-10">
           {/* Vertical central tracking line (aligned to left on mobile, center on md+) */}
-          <div className="absolute left-[18px] md:left-1/2 top-4 bottom-4 w-px bg-white/5 md:-translate-x-1/2" />
+          <div className="absolute left-[18px] md:left-1/2 top-4 bottom-4 w-px bg-border md:-translate-x-1/2" />
 
           {timeline.map((item, idx) => {
             const isEven = idx % 2 === 0;
@@ -73,34 +73,34 @@ export default function ExperiencePage() {
                 <div className="absolute left-0 md:left-1/2 top-4 z-10 flex h-9 w-9 items-center justify-center -translate-x-[0px] md:-translate-x-1/2">
                   <div className={`flex h-6 w-6 items-center justify-center rounded-full border-2 transition-all duration-300 ${
                     item.active
-                      ? "bg-black border-[#2E54FE] shadow-[0_0_15px_rgba(46,84,254,0.6)]"
-                      : "bg-[#0b0b0b] border-white/10"
+                      ? "bg-background border-[#2E54FE] shadow-[0_0_15px_rgba(46,84,254,0.6)]"
+                      : "bg-white dark:bg-transparent border-border"
                   }`}>
-                    <div className={`h-2 w-2 rounded-full ${item.active ? "bg-[#2E54FE]" : "bg-white/20"}`} />
+                    <div className={`h-2 w-2 rounded-full ${item.active ? "bg-[#2E54FE]" : "bg-foreground/20"}`} />
                   </div>
                 </div>
 
                 {/* Content Card (Left or Right side) */}
                 <div className="w-full md:w-[45%] pl-10 md:pl-0">
-                  <div className="flex flex-col gap-4 p-6 rounded-xl border border-white/5 bg-white/[0.01] hover:border-[#2E54FE]/20 hover:bg-[#2E54FE]/[0.01] transition-all duration-300 group hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)]">
+                  <div className="flex flex-col gap-4 p-6 rounded-xl border border-border bg-white dark:bg-transparent hover:border-[#2E54FE]/20 hover:bg-[#2E54FE]/[0.01] transition-all duration-300 group hover:shadow-lg">
                     <div className="flex flex-col gap-1.5">
                       <span className={`inline-block text-[9px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded border w-fit ${
                         item.active
                           ? "text-[#2E54FE] bg-[#2E54FE]/5 border-[#2E54FE]/15"
-                          : "text-[#cbd5e1]/40 bg-white/3 border-white/8"
+                          : "text-foreground/40 bg-muted border-border"
                       }`}>
                         {item.period}
                       </span>
-                      <h3 className="text-base font-bold text-white group-hover:text-[#2E54FE] transition-colors leading-snug">
+                      <h3 className="text-base font-bold text-foreground group-hover:text-[#2E54FE] transition-colors leading-snug">
                         {item.role}
                       </h3>
-                      <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-[#cbd5e1]/45 font-mono">
-                        <span className="flex items-center gap-1"><Briefcase className="w-3 h-3 text-[#cbd5e1]/30" /> {item.org}</span>
-                        <span className="flex items-center gap-1"><MapPin className="w-3 h-3 text-[#cbd5e1]/30" /> {item.location}</span>
+                      <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-foreground/45 font-mono">
+                        <span className="flex items-center gap-1"><Briefcase className="w-3 h-3 text-foreground/30" /> {item.org}</span>
+                        <span className="flex items-center gap-1"><MapPin className="w-3 h-3 text-foreground/30" /> {item.location}</span>
                       </div>
                     </div>
 
-                    <p className="text-xs text-[#cbd5e1]/65 leading-relaxed border-t border-white/5 pt-3 mt-1">
+                    <p className="text-xs text-foreground/65 leading-relaxed border-t border-border pt-3 mt-1">
                       {item.desc}
                     </p>
 
@@ -109,7 +109,7 @@ export default function ExperiencePage() {
                       <span className="text-[9px] font-mono uppercase tracking-widest text-[#2E54FE] font-bold flex items-center gap-1">
                         <Award className="w-3 h-3" /> Key Accomplishments
                       </span>
-                      <ul className="flex flex-col gap-1.5 pl-1.5 text-xs text-[#cbd5e1]/55 list-none">
+                      <ul className="flex flex-col gap-1.5 pl-1.5 text-xs text-foreground/55 list-none">
                         {item.milestones.map((m, mIdx) => (
                           <li key={mIdx} className="relative pl-3.5 leading-relaxed">
                             <span className="absolute left-0 top-1.5 w-1 h-1 rounded-full bg-[#2E54FE]" />

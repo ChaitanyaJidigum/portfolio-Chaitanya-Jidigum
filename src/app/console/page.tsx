@@ -91,30 +91,30 @@ export default function ConsolePage() {
       <div className="mx-auto max-w-5xl px-5 sm:px-8 flex flex-col gap-10 animate-slide-up w-full">
 
         {/* ── Header ──────────────────────────────── */}
-        <div className="flex flex-col gap-3 border-b border-white/5 pb-10">
+        <div className="flex flex-col gap-3 border-b border-border pb-10">
           <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#2E54FE]">Sandbox</span>
-          <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter leading-none">Console</h1>
-          <p className="text-sm text-[#cbd5e1]/55 max-w-md leading-relaxed mt-1">
+          <h1 className="text-4xl md:text-6xl font-black text-foreground tracking-tighter leading-none">Console</h1>
+          <p className="text-sm text-foreground/55 max-w-md leading-relaxed mt-1">
             An interactive terminal to query my resume details in real-time. Type <code className="font-mono text-[#2E54FE]">help</code> to get started.
           </p>
         </div>
 
         {/* ── Terminal Widget ──────────────────────── */}
-        <div className="w-full rounded-xl border border-white/5 hover:border-[#2E54FE]/25 overflow-hidden transition-all duration-300 shadow-2xl shadow-black/40">
+        <div className="w-full rounded-xl border border-border bg-white dark:bg-transparent hover:border-[#2E54FE]/25 overflow-hidden transition-all duration-300 shadow-lg">
 
           {/* Toolbar */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-white/5 bg-white/[0.02]">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-muted/40">
             <div className="flex items-center gap-1.5">
               <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
               <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
-              <span className="text-[11px] font-mono text-[#cbd5e1]/35 ml-3">chaitanya_workspace — bash</span>
+              <span className="text-[11px] font-mono text-foreground/35 ml-3">chaitanya_workspace — bash</span>
             </div>
             <div className="flex items-center gap-3">
-              <Terminal className="w-3.5 h-3.5 text-[#cbd5e1]/30" />
+              <Terminal className="w-3.5 h-3.5 text-foreground/30" />
               <button
                 onClick={() => setHistory(INIT_HISTORY)}
-                className="text-[#cbd5e1]/30 hover:text-[#2E54FE] transition-colors cursor-pointer"
+                className="text-foreground/30 hover:text-[#2E54FE] transition-colors cursor-pointer"
                 title="Reset terminal"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
@@ -132,7 +132,7 @@ export default function ConsolePage() {
                     ? "text-[#2E54FE]"
                     : entry.type === "error"
                     ? "text-rose-400/90"
-                    : "text-[#cbd5e1]/75"
+                    : "text-foreground/75"
                 }`}
               >
                 {entry.text}
@@ -144,7 +144,7 @@ export default function ConsolePage() {
           {/* Input row */}
           <form
             onSubmit={handleSubmit}
-            className="flex items-center border-t border-white/5 bg-white/[0.015] px-5 py-3 gap-2"
+            className="flex items-center border-t border-border bg-muted/20 px-5 py-3 gap-2"
           >
             <ChevronRight className="w-3.5 h-3.5 text-[#2E54FE] shrink-0" />
             <input
@@ -153,7 +153,7 @@ export default function ConsolePage() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="enter command..."
-              className="w-full bg-transparent border-none outline-none font-mono text-[13px] text-white placeholder:text-[#cbd5e1]/20 focus:outline-none"
+              className="w-full bg-transparent border-none outline-none font-mono text-[13px] text-foreground placeholder:text-foreground/20 focus:outline-none"
             />
           </form>
         </div>
@@ -167,7 +167,7 @@ export default function ConsolePage() {
                 setInput(cmd);
                 inputRef.current?.focus({ preventScroll: true });
               }}
-              className="px-3 py-1 rounded-md text-[10px] font-mono text-[#cbd5e1]/35 border border-white/5 hover:border-[#2E54FE]/25 hover:text-[#2E54FE] transition-all cursor-pointer"
+              className="px-3 py-1 rounded-md text-[10px] font-mono text-foreground/35 border border-border hover:border-[#2E54FE]/25 hover:text-[#2E54FE] transition-all cursor-pointer"
             >
               {cmd}
             </button>
