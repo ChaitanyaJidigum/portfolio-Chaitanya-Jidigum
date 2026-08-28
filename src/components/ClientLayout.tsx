@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-import { ArrowUp, Mail, MapPin, Sun, Moon } from "lucide-react";
+import { ArrowUp, ArrowRight, Mail, MapPin, Sun, Moon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Lenis from "lenis";
 
@@ -616,65 +616,90 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
           </motion.main>
         </AnimatePresence>
 
-        {/* Sliding Persistent Footer */}
-        <motion.footer 
-          initial={{ y: 70, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="border-t border-border bg-card/90 backdrop-blur-sm text-foreground/40 relative z-10 w-full" 
-          style={{ paddingBottom: 'max(1.5rem, env(safe-area-inset-bottom))' }}
-        >
-          {/* Upper row: Let's build something, contacts, social links */}
-          <div className="mx-auto max-w-5xl px-5 sm:px-8 pt-12 pb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 border-b border-border">
-            {/* Left side: branding text */}
-            <div className="flex flex-col gap-1 max-w-xs text-left">
-              <h3 className="text-base font-bold text-foreground leading-tight">
-                Let&apos;s build something <br />
-                <span className="text-[#2E54FE]">amazing</span> together.
-              </h3>
-            </div>
+        {/* ── Premium Footer ── */}
+        <footer className="relative pt-16 pb-0 px-5 sm:px-8 overflow-hidden border-t border-border bg-[#f5f5f7] dark:bg-[#0a0a0a] transition-colors duration-300">
+          <div className="max-w-5xl mx-auto relative z-10 space-y-12">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
-            {/* Middle: contact info details */}
-            <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-4 sm:gap-6 text-xs text-foreground/65 font-mono">
-              <a href="mailto:chaitanyajidigum@gmail.com" className="flex items-center gap-2 hover:text-[#2E54FE] transition-colors">
-                <Mail className="w-3.5 h-3.5" />
-                <span>chaitanyajidigum@gmail.com</span>
-              </a>
-              <div className="flex items-center gap-2 text-foreground/45">
-                <MapPin className="w-3.5 h-3.5" />
-                <span>Hyderabad, India</span>
+              {/* Left Column: Socials, Email & Location */}
+              <div className="lg:col-span-4 space-y-4">
+                <div className="flex items-center gap-2.5">
+                  <a
+                    href="https://github.com/ChaitanyaJidigum"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-9 h-9 rounded-full border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-[#2E54FE] hover:border-[#2E54FE]/50 transition-all cursor-pointer"
+                    aria-label="GitHub"
+                  >
+                    <GithubIcon className="w-4 h-4" />
+                  </a>
+                  <a
+                    href="https://www.linkedin.com/in/chaitanya-jidigum-082091268/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-9 h-9 rounded-full border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-[#2E54FE] hover:border-[#2E54FE]/50 transition-all cursor-pointer"
+                    aria-label="LinkedIn"
+                  >
+                    <LinkedinIcon className="w-4 h-4" />
+                  </a>
+                  <a
+                    href="mailto:chaitanyajidigum@gmail.com"
+                    className="w-9 h-9 rounded-full border border-gray-300 dark:border-white/10 bg-white dark:bg-white/5 flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-[#2E54FE] hover:border-[#2E54FE]/50 transition-all cursor-pointer"
+                    aria-label="Email"
+                  >
+                    <Mail className="w-4 h-4" />
+                  </a>
+                </div>
+                <div>
+                  <a href="mailto:chaitanyajidigum@gmail.com" className="text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-white hover:text-[#2E54FE] transition-colors">
+                    chaitanyajidigum@gmail.com
+                  </a>
+                </div>
+                <div className="text-[13px] text-gray-500 dark:text-gray-500 font-normal flex items-center gap-1.5">
+                  <MapPin className="w-3.5 h-3.5 shrink-0" />
+                  Hyderabad, India
+                </div>
               </div>
+
+              {/* Middle Column: Central Action Button */}
+              <div className="lg:col-span-5 flex items-center justify-center">
+                <Link
+                  href="/contact"
+                  className="px-6 py-2.5 rounded-full bg-[#2E54FE] text-white hover:bg-[#1d3dbd] transition-all shadow-xl shadow-[#2E54FE]/20 flex items-center gap-2.5 text-xs sm:text-sm font-semibold cursor-pointer active:scale-[0.97]"
+                >
+                  <span>Get in Touch</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+
+              {/* Right Column: Navigation Links */}
+              <div className="lg:col-span-3 flex lg:justify-end">
+                <ul className="space-y-2 text-left lg:text-right font-medium text-sm text-gray-700 dark:text-gray-300">
+                  {navLinks.map((link) => (
+                    <li key={link.href}>
+                      <Link href={link.href} className="hover:text-[#2E54FE] transition-colors">
+                        {link.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
             </div>
 
-            {/* Right: Social icons inside rounded borders */}
-            <div className="flex items-center gap-2.5">
-              <a 
-                href="https://github.com/ChaitanyaJidigum" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="w-9 h-9 rounded-lg border border-border bg-transparent hover:border-[#2E54FE]/50 hover:text-[#2E54FE] flex items-center justify-center text-foreground/60 transition-all cursor-pointer"
-                aria-label="GitHub"
-              >
-                <GithubIcon className="w-4 h-4" />
-              </a>
-              <a 
-                href="https://www.linkedin.com/in/chaitanya-jidigum-082091268/" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="w-9 h-9 rounded-lg border border-border bg-transparent hover:border-[#2E54FE]/50 hover:text-[#2E54FE] flex items-center justify-center text-foreground/60 transition-all cursor-pointer"
-                aria-label="LinkedIn"
-              >
-                <LinkedinIcon className="w-4 h-4" />
-              </a>
+            {/* Bottom Row: Legal & Copyright */}
+            <div className="pt-8 border-t border-gray-200 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-[10px] font-mono text-gray-400 dark:text-gray-600">
+              <span>Built with Next.js &amp; Framer Motion</span>
+              <span>&copy; {new Date().getFullYear()} Chaitanya Jidigum. All rights reserved.</span>
+              <span className="hidden sm:inline">Engineer &bull; Developer</span>
             </div>
           </div>
 
-          {/* Lower row: copyright */}
-          <div className="mx-auto max-w-5xl px-5 sm:px-8 py-5 flex items-center justify-between text-[10px] font-mono text-foreground/30">
-            <span>&copy; 2025 Chaitanya Jidigum. All rights reserved.</span>
-            <span className="hidden sm:inline">Built with Next.js &amp; Framer Motion</span>
+          {/* Huge Background Watermark Text */}
+          <div className="w-full text-center text-[70px] sm:text-[120px] md:text-[160px] lg:text-[200px] font-black tracking-tighter text-gray-200 dark:text-white/[0.03] leading-none select-none pointer-events-none -mb-4 sm:-mb-8 md:-mb-12 mt-4 overflow-hidden">
+            CHAITANYA
           </div>
-        </motion.footer>
+        </footer>
 
         {/* Minimalist Top Scroll Progress Bar */}
         <div 
