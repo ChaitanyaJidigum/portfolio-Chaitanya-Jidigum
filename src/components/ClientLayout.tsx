@@ -10,6 +10,7 @@ import Lenis from "lenis";
 
 // Dynamically import GhostCursor to avoid SSR issues with canvas/WebGL
 const GhostCursor = dynamic(() => import("@/components/GhostCursor"), { ssr: false });
+import FooterScene from "@/components/FooterScene";
 
 function GithubIcon({ className = "w-4 h-4" }: { className?: string }) {
   return (
@@ -617,7 +618,8 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
         </AnimatePresence>
 
         {/* ── Premium Footer ── */}
-        <footer className="relative pt-16 pb-0 px-5 sm:px-8 overflow-hidden border-t border-border bg-[#f5f5f7] dark:bg-[#0a0a0a] transition-colors duration-300">
+        <footer className="relative pt-0 pb-0 px-5 sm:px-8 overflow-hidden border-t border-border bg-[#f5f5f7] dark:bg-[#0a0a0a] transition-colors duration-300">
+          <FooterScene />
           <div className="max-w-5xl mx-auto relative z-10 space-y-12">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 

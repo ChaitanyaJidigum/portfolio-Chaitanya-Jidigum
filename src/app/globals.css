@@ -334,3 +334,244 @@ html.lenis, html.lenis body {
 .animate-header-enter {
   animation: slideDownFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* Footer Cute Creature / Dinosaur Idle Animations */
+@keyframes dino-breathe-1 {
+  0%, 100% {
+    transform: translateY(0) scaleY(1);
+  }
+  50% {
+    transform: translateY(-2px) scaleY(1.02);
+  }
+}
+
+@keyframes dino-breathe-2 {
+  0%, 100% {
+    transform: translateY(0) scaleY(1);
+  }
+  50% {
+    transform: translateY(-1.5px) scaleY(1.015);
+  }
+}
+
+@keyframes dino-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2.5px);
+  }
+}
+
+/* ==================================================
+   FOOTER SCENE ANIMATIONS (Compact & Clean)
+   ================================================== */
+
+/* 0. Footer Scene Container Boundary & Absolute Transparency */
+.footer-scene {
+  position: relative !important;
+  margin-inline: auto !important;
+  overflow: hidden !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  width: calc(100% - 24px);
+  height: 78px;
+}
+
+@media (min-width: 640px) {
+  .footer-scene {
+    width: min(650px, calc(100% - 28px));
+    height: 92px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .footer-scene {
+    width: min(760px, calc(100% - 32px));
+    height: 105px;
+  }
+}
+
+.footer-scene * {
+  background-color: transparent;
+}
+
+/* 1. Dragon Flight (Visible 5s continuous LEFT -> RIGHT flight across entire bounded scene) */
+.dragon-flight {
+  position: absolute;
+  top: 8px;
+  left: -50px;
+  width: max-content;
+  z-index: 3;
+  pointer-events: none;
+  animation-name: dragon-real-flight;
+  animation-duration: 5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: left;
+}
+
+@keyframes dragon-real-flight {
+  0% {
+    left: -50px;
+  }
+  100% {
+    left: calc(100% + 50px);
+  }
+}
+
+/* 2. Dragon Vertical Bob (1.5s gentle vertical bobbing) */
+.dragon-bob {
+  animation: dragon-vertical-bob 1.5s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes dragon-vertical-bob {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* 3. Dragon Body Wrapper */
+.dragon-body {
+  position: relative;
+  width: 48px;
+  height: 38px;
+}
+
+/* 4. Dragon Wings Flapping (0.35s active UP/DOWN flapping) */
+.dragon-wing-back {
+  transform-box: fill-box;
+  transform-origin: 90% 80%;
+  animation: dragon-wing-flap-back 0.35s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.dragon-wing-front {
+  transform-box: fill-box;
+  transform-origin: 85% 85%;
+  animation: dragon-wing-flap-front 0.35s ease-in-out infinite alternate;
+  animation-delay: 0.04s;
+  will-change: transform;
+}
+
+@keyframes dragon-wing-flap-back {
+  0% {
+    transform: rotate(18deg) scaleY(0.9);
+  }
+  100% {
+    transform: rotate(-35deg) scaleY(0.45);
+  }
+}
+
+@keyframes dragon-wing-flap-front {
+  0% {
+    transform: rotate(20deg) scaleY(0.95);
+  }
+  100% {
+    transform: rotate(-32deg) scaleY(0.5);
+  }
+}
+
+/* 5. Ground Creatures Visible Handcrafted Idle Animations */
+@keyframes creature-idle-bean {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-3px) rotate(1.2deg);
+  }
+}
+
+@keyframes creature-idle-bubba {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-3px) scale(1.025);
+  }
+}
+
+@keyframes creature-idle-pip {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-3px) rotate(-1.5deg);
+  }
+}
+
+@keyframes creature-idle-mochi {
+  0%, 100% {
+    transform: translateY(0px) scaleY(1);
+  }
+  50% {
+    transform: translateY(-2.5px) scaleY(1.03);
+  }
+}
+
+.creature-idle-bean {
+  animation: creature-idle-bean 3.8s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+.creature-idle-bubba {
+  animation: creature-idle-bubba 4.4s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+.creature-idle-pip {
+  animation: creature-idle-pip 5.1s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+.creature-idle-mochi {
+  animation: creature-idle-mochi 4.7s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+/* 6. Night Stars Subtle Twinkle */
+@keyframes star-twinkle {
+  0%, 100% {
+    opacity: 0.25;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.15);
+  }
+}
+
+.animate-star-twinkle-1 {
+  animation: star-twinkle 3.2s ease-in-out infinite;
+}
+
+.animate-star-twinkle-2 {
+  animation: star-twinkle 4.5s ease-in-out infinite 1.2s;
+}
+
+.animate-star-twinkle-3 {
+  animation: star-twinkle 3.8s ease-in-out infinite 2.1s;
+}
+
+/* 7. Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .creature-idle-bean,
+  .creature-idle-bubba,
+  .creature-idle-pip,
+  .creature-idle-mochi,
+  .animate-star-twinkle-1,
+  .animate-star-twinkle-2,
+  .animate-star-twinkle-3 {
+    animation: none !important;
+  }
+}

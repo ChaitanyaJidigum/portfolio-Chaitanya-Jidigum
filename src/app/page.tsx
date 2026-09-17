@@ -90,7 +90,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="flex flex-col grow justify-center items-center py-12 sm:py-20 animate-slide-up">
+    <div className="flex flex-col grow justify-center items-center pt-10 sm:pt-14 pb-0 animate-slide-up">
       {/* ── Landing Page Main Hero (Minimal Layout) ──────── */}
       <section className="mx-auto max-w-5xl px-5 sm:px-8 w-full flex flex-col items-center text-center gap-10">
         
