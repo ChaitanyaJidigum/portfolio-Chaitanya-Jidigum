@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { Mail, FileText, CheckCircle2, Copy, Send } from "lucide-react";
 import WordClock from "@/components/WordClock";
+import { useSystemTelemetry } from "@/components/SystemTelemetryToast";
+import { canTriggerHumor, HUMOR_CONFIG } from "@/lib/humorConfig";
 
 function GithubIcon({ className = "w-4 h-4" }: { className?: string }) {
   return (
@@ -24,6 +26,7 @@ function LinkedinIcon({ className = "w-4 h-4" }: { className?: string }) {
 }
 
 export default function ContactPage() {
+  const { emitTelemetry } = useSystemTelemetry();
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [contactSuccess, setContactSuccess] = useState(false);
   const [isSending, setIsSending] = useState(false);
@@ -47,6 +50,7 @@ export default function ContactPage() {
       const body = encodeURIComponent(`Name: ${formState.name}\nEmail: ${formState.email}\n\nMessage:\n${formState.message}`);
       window.location.href = `mailto:chaitanyajidigum@gmail.com?subject=${subject}&body=${body}`;
       setContactSuccess(true);
+      emitTelemetry(HUMOR_CONFIG.contact.transmittedSuccess, 4000);
       setFormState({ name: "", email: "", message: "" });
       setTimeout(() => setContactSuccess(false), 4000);
       return;
@@ -71,6 +75,7 @@ export default function ContactPage() {
       const res = await response.json();
       if (res.success) {
         setContactSuccess(true);
+        emitTelemetry(HUMOR_CONFIG.contact.transmittedSuccess, 4000);
         setFormState({ name: "", email: "", message: "" });
       } else {
         // Fallback to mailto redirect
@@ -170,6 +175,11 @@ export default function ContactPage() {
               href="/resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
+              onMouseEnter={() => {
+                if (canTriggerHumor("resume_hover", 25000)) {
+                  emitTelemetry(HUMOR_CONFIG.resume.hoverTelemetry, 2600);
+                }
+              }}
               className="inline-flex items-center gap-2 text-xs font-semibold text-foreground/50 hover:text-[#2E54FE] transition-colors w-fit border border-border hover:border-[#2E54FE]/25 rounded-lg px-4 py-2.5 bg-white dark:bg-transparent"
             >
               <FileText className="w-3.5 h-3.5" />
@@ -228,6 +238,11 @@ export default function ContactPage() {
                   required
                   rows={5}
                   value={formState.message}
+                  onFocus={() => {
+                    if (canTriggerHumor("contact_focus", 30000)) {
+                      emitTelemetry(HUMOR_CONFIG.contact.focusTransmission, 2600);
+                    }
+                  }}
                   onChange={(e) => setFormState({ ...formState, message: e.target.value })}
                   placeholder="Hi Chaitanya, I'd like to discuss..."
                   className="w-full rounded-lg border border-border bg-transparent px-3.5 py-2.5 text-sm text-foreground placeholder:text-foreground/20 focus:border-[#2E54FE]/50 focus:outline-none focus:ring-1 focus:ring-[#2E54FE]/20 transition-all resize-none"

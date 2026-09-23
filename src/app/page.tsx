@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { useSystemTelemetry } from "@/components/SystemTelemetryToast";
+import { HUMOR_CONFIG } from "@/lib/humorConfig";
 
 // Custom typewriter effect component
 function TypewriterEffect() {
@@ -61,6 +63,18 @@ function TypewriterEffect() {
 }
 
 export default function Home() {
+  const { emitTelemetry } = useSystemTelemetry();
+  const [orbTaps, setOrbTaps] = useState(0);
+
+  const handleOrbClick = () => {
+    if (orbTaps === 0) {
+      setOrbTaps(1);
+      emitTelemetry(HUMOR_CONFIG.hero.orbInitial, 3000);
+    } else {
+      setOrbTaps(prev => prev + 1);
+      emitTelemetry(HUMOR_CONFIG.hero.orbRepeated, 3000);
+    }
+  };
   const portalLinks = [
     {
       name: "About Me",
@@ -108,6 +122,18 @@ export default function Home() {
           <div className="flex flex-col items-center gap-1 text-center tracking-[0.35em] mt-1">
             <h2 className="text-lg sm:text-xl font-black uppercase tracking-[0.45em] text-foreground">Chaitanya</h2>
             <span className="text-[9px] font-mono text-foreground/45 uppercase tracking-[0.25em]">Engineer &bull; Developer</span>
+            
+            {/* Subtle telemetry status & orb Easter egg */}
+            <div 
+              onClick={handleOrbClick}
+              className="mt-2.5 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border border-border/60 bg-muted/20 text-[9px] font-mono text-foreground/45 select-none transition-colors hover:border-[#2E54FE]/30 cursor-default tracking-normal w-fit"
+              title="System telemetry active"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/80 animate-[pulse_2.5s_infinite]" />
+              <span>SYSTEM ONLINE</span>
+              <span className="text-foreground/25">{"//"}</span>
+              <span>Human developer detected.</span>
+            </div>
           </div>
         </div>
 

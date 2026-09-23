@@ -1,7 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Brain, Code2, Database, Layers } from "lucide-react";
+import { HUMOR_CONFIG } from "@/lib/humorConfig";
 
 const skillGroups = [
   {
@@ -33,13 +34,29 @@ const skillGroups = [
 ];
 
 export default function SkillsPage() {
+  const [diagIdx, setDiagIdx] = useState(0);
+
+  const handleCycleDiagnostic = () => {
+    setDiagIdx((prev) => (prev + 1) % HUMOR_CONFIG.skills.diagnosticsPool.length);
+  };
+
   return (
     <section className="py-20 md:py-28 w-full min-h-screen">
       <div className="mx-auto max-w-5xl px-5 sm:px-8 flex flex-col gap-12 animate-slide-up w-full">
 
         {/* ── Header ──────────────────────────────── */}
         <div className="flex flex-col gap-3 border-b border-border pb-10">
-          <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#2E54FE]">Expertise</span>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#2E54FE]">Expertise</span>
+            <span 
+              onClick={handleCycleDiagnostic}
+              className="text-[9px] font-mono text-foreground/40 flex items-center gap-1.5 select-none hover:text-[#2E54FE] transition-colors cursor-default"
+              title="Click to cycle telemetry"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/80" />
+              <span>STACK ANALYSIS COMPLETE // {HUMOR_CONFIG.skills.diagnosticsPool[diagIdx]}</span>
+            </span>
+          </div>
           <h1 className="text-4xl md:text-6xl font-black text-foreground tracking-tighter leading-none">Tech Stack</h1>
           <p className="text-sm text-foreground/55 max-w-md leading-relaxed mt-1">
             My engineering tools and specializations — featuring data science pipelines, deep learning computer vision, and high-performance web interfaces.

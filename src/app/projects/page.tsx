@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
+import { useSystemTelemetry } from "@/components/SystemTelemetryToast";
+import { canTriggerHumor, HUMOR_CONFIG } from "@/lib/humorConfig";
 
 function GithubIcon({ className = "w-4 h-4" }: { className?: string }) {
   return (
@@ -17,8 +19,8 @@ interface Project {
   description: string;
   tags: string[];
   category: "all" | "frontend" | "fullstack" | "ml_ai";
-  github: string;
-  live: string;
+  github?: string;
+  live?: string;
   year: string;
 }
 
@@ -30,44 +32,64 @@ const CATEGORIES = [
  ] as const;
 
 export default function ProjectsPage() {
+  const { emitTelemetry } = useSystemTelemetry();
   const [activeTab, setActiveTab] = useState<"all" | "frontend" | "fullstack" | "ml_ai">("all");
 
   const projects: Project[] = [
     {
+      title: "Agent-Forge — AI Engineering Workspace",
+      description: "Autonomous AI software engineering workspace utilizing specialized agent architectures to plan, build, test, review, and debug software projects.",
+      tags: ["Next.js", "TypeScript", "FastAPI", "Gemini", "LangGraph", "PostgreSQL", "AI Agents"],
+      category: "ml_ai",
+      github: "https://github.com/ChaitanyaJidigum/Agent-Forge",
+      year: "2026",
+    },
+    {
+      title: "Atlas-go — Map Exploration & Territory Game",
+      description: "Interactive geospatial discovery game transforming real-world movement into territory discovery and conquest using spatial indexing and historical replay.",
+      tags: ["Next.js", "React", "MapLibre GL", "OpenStreetMap", "Uber H3", "TypeScript"],
+      category: "fullstack",
+      github: "https://github.com/ChaitanyaJidigum/Atlas-go",
+      year: "2026",
+    },
+    {
+      title: "C_GAINS — Performance & Workout Intelligence",
+      description: "Modern mobile fitness tracking application built with Flutter featuring workout logging, nutrition tracking, progress analytics, and AI plan foundations.",
+      tags: ["Flutter", "Dart", "Mobile App", "Analytics", "AI Foundation"],
+      category: "fullstack",
+      github: "https://github.com/ChaitanyaJidigum/C_GAINS",
+      year: "2026",
+    },
+    {
+      title: "Developer Portfolio & Telemetry Terminal",
+      description: "Personal developer portfolio built with Next.js and Three.js featuring an integrated developer terminal, system telemetry, word clock, and smooth transitions.",
+      tags: ["Next.js", "TypeScript", "Tailwind CSS", "Three.js", "Framer Motion", "Lenis"],
+      category: "frontend",
+      github: "https://github.com/ChaitanyaJidigum/portfolio-Chaitanya-Jidigum",
+      live: "https://portfolio-chaitanya-jidigum.vercel.app",
+      year: "2026",
+    },
+    {
+      title: "E-Commerce QA Automation & Test Suite",
+      description: "End-to-end automated testing framework for e-commerce web applications using Selenium and Python, covering authentication, cart flows, and Pytest reporting.",
+      tags: ["Python", "Selenium", "Pytest", "QA Automation", "Test Suites"],
+      category: "frontend",
+      github: "https://github.com/ChaitanyaJidigum/e-commerce-QA-testing.",
+      year: "2026",
+    },
+    {
       title: "Airfare Prices Prediction Using Machine Learning",
-      description: "Developed a machine learning model to predict airfare prices, providing a solution to uncertainty in flight pricing. Implemented data preprocessing techniques and feature engineering to improve prediction accuracy.",
+      description: "Supervised machine learning regression model predicting airfare prices to resolve ticket pricing volatility using feature engineering and hyperparameter tuning.",
       tags: ["Python", "Pandas", "NumPy", "Scikit-Learn", "ML / Regression"],
       category: "ml_ai",
-      github: "https://github.com/ChaitanyaJidigum",
-      live: "https://github.com/ChaitanyaJidigum",
       year: "2024",
     },
     {
-      title: "Using Existing CCTV Network for Crowd Management, Crime Prevention & Work Monitoring Using AI & ML",
-      description: "Designed a system monitoring CCTV networks using Machine Learning. Improved model performance by optimizing hyperparameters and utilizing transfer learning techniques for security-related applications.",
+      title: "Existing CCTV Network for Crowd Management & Surveillance",
+      description: "Computer vision surveillance system leveraging deep learning and transfer learning to analyze crowd density, track movement, and assist in safety monitoring.",
       tags: ["Python", "TensorFlow", "OpenCV", "Transfer Learning", "AI & ML"],
       category: "ml_ai",
-      github: "https://github.com/ChaitanyaJidigum",
-      live: "https://github.com/ChaitanyaJidigum",
       year: "2023",
-    },
-    {
-      title: "IoT Campus Events Dashboard",
-      description: "Centralized event management portal for coordinating IoT club activities across the department, tracking 500+ event attendees and streamlining registrations.",
-      tags: ["HTML5", "CSS3", "JavaScript", "MySQL", "Event Coordination"],
-      category: "frontend",
-      github: "https://github.com/ChaitanyaJidigum",
-      live: "https://github.com/ChaitanyaJidigum",
-      year: "2024",
-    },
-    {
-      title: "Web Automation & Scraping Suite",
-      description: "Lightweight automation engine using Selenium to scrape structured web data, validate page states, and execute repetitive testing workflows.",
-      tags: ["Python", "Selenium", "MySQL Workbench", "Web Scraping", "Basics"],
-      category: "frontend",
-      github: "https://github.com/ChaitanyaJidigum",
-      live: "https://github.com/ChaitanyaJidigum",
-      year: "2022",
     },
   ];
 
@@ -109,38 +131,69 @@ export default function ProjectsPage() {
 
         {/* ── Project Grid ────────────────────────── */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {filtered.map((project, idx) => (
-            <div
-              key={idx}
-              className="group flex flex-col justify-between p-6 rounded-xl border border-border bg-white dark:bg-transparent hover:border-[#2E54FE]/30 transition-all duration-300 hover-lift hover:bg-[#2E54FE]/[0.02]"
-            >
-              <div className="flex flex-col gap-4">
-                {/* Top row */}
-                <div className="flex items-center justify-between">
-                  <span className="text-[9px] font-mono font-bold uppercase tracking-[0.15em] text-[#2E54FE]/60 border border-[#2E54FE]/15 px-2 py-0.5 rounded">
-                    {project.year}
-                  </span>
-                  <div className="flex gap-1">
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-1.5 rounded-md text-foreground/40 hover:text-[#2E54FE] hover:bg-[#2E54FE]/5 transition-all"
-                      title="GitHub"
-                    >
-                      <GithubIcon className="w-3.5 h-3.5" />
-                    </a>
-                    <a
-                      href={project.live}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-1.5 rounded-md text-foreground/40 hover:text-[#2E54FE] hover:bg-[#2E54FE]/5 transition-all"
-                      title="Live"
-                    >
-                      <ArrowUpRight className="w-3.5 h-3.5" />
-                    </a>
+          {filtered.map((project, idx) => {
+            const hasStatus1 = idx === 0;
+            const hasStatus2 = idx === 1;
+
+            const handleCardHover = () => {
+              if (hasStatus1 && canTriggerHumor("proj_hover_0", 30000)) {
+                emitTelemetry(HUMOR_CONFIG.projects.hoverInspect1, 2600);
+              } else if (hasStatus2 && canTriggerHumor("proj_hover_1", 30000)) {
+                emitTelemetry(HUMOR_CONFIG.projects.hoverInspect2, 2600);
+              }
+            };
+
+            return (
+              <div
+                key={idx}
+                onMouseEnter={handleCardHover}
+                className="group flex flex-col justify-between p-6 rounded-xl border border-border bg-white dark:bg-transparent hover:border-[#2E54FE]/30 transition-all duration-300 hover-lift hover:bg-[#2E54FE]/[0.02]"
+              >
+                <div className="flex flex-col gap-4">
+                  {/* Top row */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[9px] font-mono font-bold uppercase tracking-[0.15em] text-[#2E54FE]/60 border border-[#2E54FE]/15 px-2 py-0.5 rounded">
+                        {project.year}
+                      </span>
+                      {hasStatus1 && (
+                        <span className="text-[8px] font-mono uppercase tracking-wider text-emerald-500/75 border border-emerald-500/20 bg-emerald-500/5 px-1.5 py-0.5 rounded">
+                          {HUMOR_CONFIG.projects.card1Status}
+                        </span>
+                      )}
+                      {hasStatus2 && (
+                        <span className="text-[8px] font-mono uppercase tracking-wider text-[#2E54FE]/75 border border-[#2E54FE]/20 bg-[#2E54FE]/5 px-1.5 py-0.5 rounded">
+                          {HUMOR_CONFIG.projects.card2Status}
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-1">
+                      {project.github && (
+                        <a
+                          href={project.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-1.5 rounded-md text-foreground/40 hover:text-[#2E54FE] hover:bg-[#2E54FE]/5 transition-all"
+                          title="View Source on GitHub"
+                          aria-label={`View source for ${project.title} on GitHub`}
+                        >
+                          <GithubIcon className="w-3.5 h-3.5" />
+                        </a>
+                      )}
+                      {project.live && (
+                        <a
+                          href={project.live}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-1.5 rounded-md text-foreground/40 hover:text-[#2E54FE] hover:bg-[#2E54FE]/5 transition-all"
+                          title="View Live Demo"
+                          aria-label={`View live demo for ${project.title}`}
+                        >
+                          <ArrowUpRight className="w-3.5 h-3.5" />
+                        </a>
+                      )}
+                    </div>
                   </div>
-                </div>
 
                 {/* Text */}
                 <div className="flex flex-col gap-2">
@@ -165,8 +218,9 @@ export default function ProjectsPage() {
                 ))}
               </div>
             </div>
-          ))}
-        </div>
+          );
+        })}
+      </div>
 
         {/* Count note */}
         <p className="text-[11px] font-mono text-foreground/30 text-center">

@@ -129,6 +129,20 @@ export default function AboutPage() {
           </div>
 
         </div>
+
+        {/* ── Subtle Diagnostic Status Line ───────── */}
+        <div className="pt-6 border-t border-border/40 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[10px] font-mono text-foreground/35 select-none">
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/70" />
+            <span className="uppercase tracking-wider text-foreground/45">Background Scan: Complete</span>
+            <span className="text-foreground/20">|</span>
+            <span>Developer confirmed</span>
+          </div>
+          <span className="text-foreground/30 font-mono">
+            Curiosity: excessive &bull; Sleep schedule: classified &bull; Confidence: questionable
+          </span>
+        </div>
+
       </div>
     </section>
   );

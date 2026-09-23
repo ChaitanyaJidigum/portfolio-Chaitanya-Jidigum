@@ -47,11 +47,38 @@ function LinkedinIcon({ className = "w-4 h-4" }: { className?: string }) {
   );
 }
 
+import { SystemTelemetryProvider, useSystemTelemetry } from "@/components/SystemTelemetryToast";
+import { canTriggerHumor, HUMOR_CONFIG } from "@/lib/humorConfig";
+
 interface ClientLayoutProps {
   children: React.ReactNode;
 }
 
 export default function ClientLayout({ children }: ClientLayoutProps) {
+  return (
+    <SystemTelemetryProvider>
+      <ClientLayoutInner>{children}</ClientLayoutInner>
+    </SystemTelemetryProvider>
+  );
+}
+
+function ClientLayoutInner({ children }: ClientLayoutProps) {
+  const { emitTelemetry } = useSystemTelemetry();
+  const logoClickCountRef = useRef(0);
+  const logoClickTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleLogoClick = () => {
+    logoClickCountRef.current += 1;
+    if (logoClickTimerRef.current) clearTimeout(logoClickTimerRef.current);
+    if (logoClickCountRef.current >= 5) {
+      emitTelemetry(HUMOR_CONFIG.easterEggs.logoAchievement, 4000);
+      logoClickCountRef.current = 0;
+    } else {
+      logoClickTimerRef.current = setTimeout(() => {
+        logoClickCountRef.current = 0;
+      }, 2500);
+    }
+  };
   const pathname = usePathname();
   const router = useRouter();
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -451,17 +478,21 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
         >
           <div className="mx-auto max-w-5xl px-5 sm:px-8 h-16 flex items-center justify-between">
             <div className="flex items-center gap-8 md:gap-12 lg:gap-16 h-full">
-              <Link href="/" className="flex items-center gap-2.5 group">
+              <div className="flex items-center gap-2.5 group">
                 <div 
-                  className="w-8 h-8 flex items-center justify-center text-foreground group-hover:scale-105 transition-transform duration-200"
+                  onClick={handleLogoClick}
+                  className="w-8 h-8 flex items-center justify-center text-foreground group-hover:scale-105 transition-transform duration-200 cursor-pointer"
                   style={{ filter: "drop-shadow(0 0 8px rgba(46, 84, 254, 0.45))" }}
+                  title="Chaitanya Jidigum"
                 >
                   <svg viewBox="0 0 100 100" className="w-6 h-6 fill-current text-foreground">
                     <path d="M 10 10 H 90 V 30 H 30 V 70 H 90 V 90 H 10 Z" />
                   </svg>
                 </div>
-                <span className="font-bold text-foreground tracking-tight group-hover:text-[#2E54FE] transition-colors whitespace-nowrap">Chaitanya Jidigum</span>
-              </Link>
+                <Link href="/" className="font-bold text-foreground tracking-tight group-hover:text-[#2E54FE] transition-colors whitespace-nowrap">
+                  Chaitanya Jidigum
+                </Link>
+              </div>
  
               {/* Desktop Nav Links with Sliding Active Underline */}
               <nav className="hidden md:flex items-center gap-4 lg:gap-6 text-xs lg:text-sm font-semibold relative h-full">
@@ -471,6 +502,12 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
                     <Link 
                       key={link.href} 
                       href={link.href} 
+                      onMouseEnter={() => {
+                        if (canTriggerHumor(`nav_hover_${link.href}`, 25000)) {
+                          const msg = HUMOR_CONFIG.navigation[link.href];
+                          if (msg) emitTelemetry(msg, 2400);
+                        }
+                      }}
                       className={`relative py-1.5 transition-colors font-semibold ${
                         isActive 
                           ? "text-[#2E54FE]" 
@@ -583,6 +620,12 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
                       key={link.href}
                       href={link.href}
                       onClick={() => setIsMobileMenuOpen(false)}
+                      onMouseEnter={() => {
+                        if (canTriggerHumor(`nav_hover_${link.href}`, 25000)) {
+                          const msg = HUMOR_CONFIG.navigation[link.href];
+                          if (msg) emitTelemetry(msg, 2400);
+                        }
+                      }}
                       className={`py-2 border-b border-border last:border-0 transition-colors ${
                         isActive ? "text-[#2E54FE]" : "text-foreground/70 hover:text-[#2E54FE]"
                       }`}
@@ -693,7 +736,9 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
             <div className="pt-8 border-t border-gray-200 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-[10px] font-mono text-gray-400 dark:text-gray-600">
               <span>Built with Next.js &amp; Framer Motion</span>
               <span>&copy; {new Date().getFullYear()} Chaitanya Jidigum. All rights reserved.</span>
-              <span className="hidden sm:inline">Engineer &bull; Developer</span>
+              <span className="hidden sm:inline text-foreground/35 hover:text-[#2E54FE] transition-colors cursor-default select-none" title="Telemetry nominal">
+                {HUMOR_CONFIG.footer.statusLine}
+              </span>
             </div>
           </div>
 
